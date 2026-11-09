@@ -99,6 +99,24 @@ If automatic publishing is paused, you can still update from a zip:
 
 It backs up the database, copies the new code, applies any database changes and restarts the site.
 
+## Connecting Stripe for donations
+
+Until these steps are done, the Donate button opens an email, and only admins see the donation page, as a preview.
+
+1. **Get the secret key.** In the Stripe Dashboard, turn on **Test mode**, open **Developers → API keys** and copy the **Secret key** (it starts `sk_test_`). Test mode takes test payments only, so nothing real is charged while you try it.
+2. **Add it to the server.** In the VPS console, as root, run `nano /srv/tahoetable/.env` and add these lines at the end, pasting your key after the `=`:
+
+        STRIPE_SECRET_KEY=
+        DONATIONS_TAX_ID=
+
+   Put the organization's EIN after `DONATIONS_TAX_ID=` to print it on receipts, or leave it empty. Save with Ctrl+O, Enter, then Ctrl+X, and run `systemctl restart tahoetable`.
+3. **Connect.** Run `sudo -u tahoetable /srv/tahoetable/manage.sh connect_stripe`. It sets up three things in Stripe: the webhook that tells the site about payments, the Donation product, and the page where monthly donors change or stop their donation. Running it again is safe.
+4. **Try it.** Donate on the site with the test card 4242 4242 4242 4242, any future expiry date and any CVC. The thank-you page should show a receipt, and the donation should appear under **Donations** in the admin site.
+5. **Receipts by email.** Until the site has email settings, turn on Stripe's own receipts: in the Stripe Dashboard, open **Settings → Customer emails** and turn on emails for **Successful payments**.
+6. **Go live** once Stripe has approved the account: in Stripe, turn off **Test mode** and copy the live secret key (`sk_live_`). Replace the test key in `/srv/tahoetable/.env`, restart the site, and run `connect_stripe` again.
+
+Stripe offers lower card fees to registered nonprofits that take at least 80% of their payments as tax-deductible donations; apply through Stripe support once the account is active. If the rate changes, set `DONATION_FEE_PERCENT` and `DONATION_FEE_CENTS` in `/srv/tahoetable/.env` so the "cover the card fee" amount matches.
+
 ## Everyday tasks
 
 Run these on the VPS as root.
@@ -110,6 +128,7 @@ Run these on the VPS as root.
 | Restart the site | `systemctl restart tahoetable` |
 | Change someone's password | `sudo -u tahoetable /srv/tahoetable/manage.sh changepassword Admin` |
 | Create another admin | `sudo -u tahoetable /srv/tahoetable/manage.sh createsuperuser` |
+| Connect or reconnect Stripe | `sudo -u tahoetable /srv/tahoetable/manage.sh connect_stripe` |
 | Back up the database now | `sudo -u tahoetable /srv/tahoetable/backup_db.sh` |
 | Install Ubuntu updates | `apt-get update && apt-get upgrade` |
 | See recent publishes | `journalctl -u tahoetable-publish -n 100` |

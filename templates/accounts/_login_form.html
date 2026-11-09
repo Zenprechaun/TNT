@@ -15,5 +15,6 @@
     {% translate "Keep me signed in" %}
   </label>
   <button class="login-form__submit" type="submit" data-login-submit>{% translate "Log in" %}</button>
+  <p class="login-form__help">{% translate "New here?" %} <a href="{% url 'accounts:register' %}{% if next %}?next={{ next|urlencode }}{% endif %}">{% translate "Create an account" %}</a></p>
   <p class="login-form__help">{% blocktranslate trimmed with email=site_email %}Trouble logging in? Email <span class="nowrap">{{ email }}</span>.{% endblocktranslate %}</p>
 </form>

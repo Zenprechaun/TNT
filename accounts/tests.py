@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.test import TestCase
 from django.urls import reverse
 
@@ -175,3 +176,61 @@ class RoleManagementTests(TestCase):
         response = self.client.post(self.roles_url(self.person), {"roles": [self.admin_role.pk]})
         self.assertEqual(response.status_code, 403)
         self.assertFalse(get_profile(self.person).is_admin)
+
+
+class RegisterTests(TestCase):
+    url = reverse("accounts:register")
+
+    def setUp(self):
+        cache.clear()
+
+    def data(self, **changes):
+        data = {"first_name": "Rosa", "last_name": "Díaz", "email": "Rosa@Example.com",
+                "password1": "maple-river-lantern-42", "password2": "maple-river-lantern-42"}
+        data.update(changes)
+        return data
+
+    def test_creating_an_account_signs_you_in_and_returns_you(self):
+        response = self.client.post(self.url, {**self.data(), "next": "/donate/?amount=25"})
+        self.assertRedirects(response, "/donate/?amount=25", fetch_redirect_response=False)
+        user = User.objects.get(email__iexact="rosa@example.com")
+        self.assertEqual((user.username, user.first_name, user.last_name), ("rosa@example.com", "Rosa", "Díaz"))
+        self.assertEqual(list(user.profile.roles.values_list("slug", flat=True)), [Role.USER])
+        self.assertFalse(user.is_staff)
+        self.assertEqual(int(self.client.session["_auth_user_id"]), user.pk)
+        # The email works for logging in from then on.
+        self.client.logout()
+        self.assertTrue(self.client.login(username="rosa@example.com", password="maple-river-lantern-42"))
+
+    def test_without_somewhere_to_return_to(self):
+        response = self.client.post(self.url, self.data())
+        self.assertRedirects(response, reverse("accounts:user_dashboard"), fetch_redirect_response=False)
+
+    def test_problems_are_explained(self):
+        User.objects.create_user("taken", "taken@example.com", "x")
+        cases = [
+            ({"email": "TAKEN@example.com"}, "There’s already an account with this email."),
+            ({"email": "not-an-email"}, "Enter an email address like name@example.com."),
+            ({"first_name": ""}, "Enter your first name."),
+            ({"password2": "something-else-99"}, "The two passwords don’t match."),
+            ({"password1": "tahoe1", "password2": "tahoe1"}, "This password is too short."),
+            ({"password1": "password123", "password2": "password123"}, "This password is too common."),
+        ]
+        for changes, message in cases:
+            response = self.client.post(self.url, self.data(**changes))
+            self.assertContains(response, message, msg_prefix=str(changes))
+        self.assertEqual(User.objects.count(), 1)
+
+    def test_bots_and_floods_are_stopped(self):
+        self.client.post(self.url, self.data(website="spam"))
+        self.assertFalse(User.objects.filter(email__iexact="rosa@example.com").exists())
+        for n in range(10):
+            self.client.post(self.url, self.data(email=f"rosa{n}@example.com"))
+            self.client.logout()
+        response = self.client.post(self.url, self.data(email="one-more@example.com"))
+        self.assertContains(response, "Too many new accounts from here.")
+        self.assertFalse(User.objects.filter(email="one-more@example.com").exists())
+
+    def test_the_login_page_links_here(self):
+        response = self.client.get(reverse("accounts:login") + "?next=/donate/")
+        self.assertContains(response, f'href="{self.url}?next=/donate/"')

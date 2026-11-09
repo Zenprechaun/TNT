@@ -1,5 +1,5 @@
 {% extends "accounts/dashboard_base.html" %}
-{% load i18n %}
+{% load i18n donation_tags %}
 {% block title %}{% translate "User's Dashboard" %} · Tahoe Neighborhood Table{% endblock %}
 {% block dash %}
 <header class="dash-intro">
@@ -39,10 +39,12 @@
     <h2 id="involved-title">{% translate "Together, we can make a difference" %}</h2>
     <p>{% translate "Help your neighbors with food, warmth and housing." %}</p>
     <div class="card__acts">
-      {% translate "Donating to Tahoe Neighborhood Table" as donate_subject %}<a class="btn btn--primary" href="mailto:{{ site_email }}?subject={{ donate_subject|urlencode }}">{% translate "Donate" %}</a>
+      <a class="btn btn--primary" href="{{ donate_url }}">{% translate "Donate" %}</a>
       <a class="btn" href="{% url 'volunteers:start' %}">{% translate "Volunteer" %}</a>
     </div>
     <p class="card__note">{% blocktranslate trimmed with email=site_email %}To change your name, email or password, email <span class="nowrap">{{ email }}</span>.{% endblocktranslate %}</p>
   </section>
+
+  {% your_donations %}
 </div>
 {% endblock %}

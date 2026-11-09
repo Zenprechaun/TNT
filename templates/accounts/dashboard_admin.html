@@ -1,5 +1,5 @@
 {% extends "accounts/dashboard_base.html" %}
-{% load i18n %}
+{% load i18n donation_tags %}
 {% block title %}{% translate "Admin's Dashboard" %} · Tahoe Neighborhood Table{% endblock %}
 {% block dash %}
 <header class="dash-intro">
@@ -19,6 +19,8 @@
     <div class="stat"><b>{{ value }}</b><span>{{ label }}</span></div>
   {% endfor %}
 </section>
+
+<div class="cards dash-giving">{% donation_summary %}</div>
 
 <section class="people-section" aria-labelledby="people-title">
   <div class="people-head">

@@ -1,9 +1,10 @@
 import re
 
 from django import forms
-from django.conf import settings
-from django.utils.translation import get_language, gettext
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
+
+from pages.languages import current_language
 
 from .models import Shift, Signup, clock, short_day
 
@@ -11,16 +12,6 @@ from .models import Shift, Signup, clock, short_day
 def shift_name(shift):
     return gettext("%(role)s, %(day)s at %(time)s") % {
         "role": shift.role.local.name, "day": short_day(shift.date), "time": clock(shift.start)}
-
-
-def current_language():
-    """The language of this page, as one of settings.LANGUAGES."""
-    codes = dict(settings.LANGUAGES)
-    language = get_language() or settings.LANGUAGE_CODE
-    for code in (language, language.split("-")[0]):
-        if code in codes:
-            return code
-    return settings.LANGUAGE_CODE
 
 
 class TelInput(forms.TextInput):

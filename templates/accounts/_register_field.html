@@ -1,0 +1,5 @@
+<div class="field">
+  <label for="reg-{{ field.name }}">{{ field.label }}</label>
+  <input id="reg-{{ field.name }}" name="{{ field.name }}" type="{{ type }}" autocomplete="{{ autocomplete }}"{% if type != "password" %} value="{{ field.value|default_if_none:'' }}"{% endif %}{% if type == "email" %} autocapitalize="none" spellcheck="false"{% endif %} maxlength="150"{% if field.errors %} aria-invalid="true" aria-describedby="reg-{{ field.name }}-error"{% endif %}>
+  {% if field.errors %}<p class="field__error" id="reg-{{ field.name }}-error">{{ field.errors.0 }}</p>{% endif %}
+</div>

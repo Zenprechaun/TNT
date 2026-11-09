@@ -1,0 +1,17 @@
+{% load i18n %}{% autoescape off %}{% with first=donation.name.split.0 %}{% if first %}{% blocktranslate trimmed with name=first %}Hi {{ name }},{% endblocktranslate %}{% else %}{% translate "Hello," %}{% endif %}{% endwith %}
+
+{% if donation.is_monthly %}{% blocktranslate trimmed with amount=donation.amount_text %}Thank you for your monthly donation of {{ amount }} to Tahoe Neighborhood Table.{% endblocktranslate %}{% else %}{% blocktranslate trimmed with amount=donation.amount_text %}Thank you for your donation of {{ amount }} to Tahoe Neighborhood Table.{% endblocktranslate %}{% endif %}
+
+{% translate "Receipt number" %}: {{ donation.number }}
+{% translate "Date" %}: {{ donation.paid_at|date:"DATE_FORMAT" }}
+{% translate "Donation" %}: {{ donation.amount_text }}{% if donation.is_monthly %} {% translate "(monthly)" %}{% endif %}
+{% if tax %}
+{{ tax }}
+{% endif %}
+{% blocktranslate trimmed with url=receipt_url %}See or print this receipt at any time: {{ url }}{% endblocktranslate %}
+
+{% blocktranslate trimmed with email=site_email %}Questions? Write to {{ email }}.{% endblocktranslate %}
+
+Tahoe Neighborhood Table
+{% translate "Our neighbors." %} {% translate "Our community." %} {% translate "Our table." %}
+{% endautoescape %}

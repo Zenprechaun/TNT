@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static i18n %}{% comment %}
+  Layout for the donation pages (/donate/…): a compact masthead that links home, a ribbon with
+  the page title, the content, and the site's closing band.
+{% endcomment %}
+{% block head %}<link rel="stylesheet" href="{% static 'donations/donate.css' %}">{% endblock %}
+{% block body %}
+<div class="page">
+{% include "accounts/_account_controls.html" with variant="home" %}
+<div class="scene">
+  {% include "pages/_masthead.html" with compact=True %}
+  <div class="needs"><div class="needs__inner"><h1 class="ribbon">{% block ribbon %}{% translate "Donate" %}{% endblock %}</h1></div></div>
+</div>
+<main class="don-page">
+{% block content %}{% endblock %}
+</main>
+{% include "pages/_band.html" %}
+</div>
+{% endblock %}
+{% block scripts %}<script src="{% static 'site/js/site.js' %}" defer></script><script src="{% static 'donations/donate.js' %}" defer></script>{% endblock %}

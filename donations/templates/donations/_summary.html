@@ -1,0 +1,18 @@
+{% load i18n %}<section class="card" aria-labelledby="giving-title">
+  <h2 id="giving-title">{% translate "Donations" %}</h2>
+  {% if not connected %}
+    <p>{% translate "Stripe isn’t connected yet, so the site can’t take donations. Until it is, the Donate button opens an email, and you can preview the donation page." %}</p>
+  {% else %}
+    {% if not livemode %}<p class="card__note">{% translate "Test mode: these are Stripe test payments, not real money." %}</p>{% endif %}
+    <dl class="facts">
+      <dt>{% blocktranslate trimmed %}Donated in {{ year }}{% endblocktranslate %}</dt>
+      <dd>{{ total }} <span class="facts__aside">{% blocktranslate trimmed count count=count %}from {{ count }} donation{% plural %}from {{ count }} donations{% endblocktranslate %}</span></dd>
+      <dt>{% translate "Monthly donors" %}</dt>
+      <dd>{{ monthly_count }} <span class="facts__aside">{% blocktranslate trimmed with amount=monthly_total %}{{ amount }} a month{% endblocktranslate %}</span></dd>
+    </dl>
+  {% endif %}
+  <div class="card__acts">
+    <a class="btn btn--small" href="{% url 'donations:donate' %}">{% if connected %}{% translate "Donation page" %}{% else %}{% translate "Preview the donation page" %}{% endif %}</a>
+    <a class="btn btn--small" href="{% url 'admin:donations_donation_changelist' %}">{% translate "All donations" %}</a>
+  </div>
+</section>

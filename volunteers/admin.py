@@ -1,34 +1,16 @@
-import csv
-
 from django import forms
 from django.contrib import admin
 from django.db import models
 from django.db.models import Count, Q
-from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
+from pages.spreadsheets import csv_download
+
 from .models import Assignment, Event, Role, Shift, Signup
-
-
-def _cell(value):
-    """Keep spreadsheet apps from running anything that looks like a formula."""
-    text = "" if value is None else str(value)
-    return "'" + text if text[:1] in ("=", "+", "-", "@") else text
-
-
-def csv_download(filename, header, rows):
-    response = HttpResponse(content_type="text/csv; charset=utf-8")
-    response["Content-Disposition"] = f'attachment; filename="{filename}"'
-    response.write("﻿")  # lets Excel read accented names correctly
-    writer = csv.writer(response)
-    writer.writerow([str(h) for h in header])
-    for row in rows:
-        writer.writerow([_cell(v) for v in row])
-    return response
 
 
 ROSTER_HEADER = [_("Shift"), _("First name"), _("Last name"), _("Email"), _("Phone"), _("T-shirt"),

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}{% translate "Create an account" %} · Tahoe Neighborhood Table{% endblock %}
+{% block login_dialog %}{% endblock %}
+{% block body %}
+<main class="auth-page">
+  <div class="auth-lang">{% include "_language_switch.html" %}</div>
+  <div class="auth-card">
+    <div class="login__panel">
+      <a href="{% url 'pages:home' %}"><img class="login__emblem" src="{% static 'site/img/emblem.webp' %}" alt="{% translate "Tahoe Neighborhood Table home" %}" width="760" height="910"></a>
+      <h1 class="login__title">{% translate "Create an account" %}</h1>
+      <p class="login__lede">{% translate "Keep your donations and receipts in one place." %}</p>
+      <form class="login-form" method="post" action="{% url 'accounts:register' %}" novalidate>
+        {% csrf_token %}
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+        {% for problem in form.non_field_errors %}<p class="login-form__error" role="alert">{{ problem }}</p>{% endfor %}
+        <div class="field-row">
+          {% include "accounts/_register_field.html" with field=form.first_name type="text" autocomplete="given-name" %}
+          {% include "accounts/_register_field.html" with field=form.last_name type="text" autocomplete="family-name" %}
+        </div>
+        {% include "accounts/_register_field.html" with field=form.email type="email" autocomplete="email" %}
+        {% include "accounts/_register_field.html" with field=form.password1 type="password" autocomplete="new-password" %}
+        {% include "accounts/_register_field.html" with field=form.password2 type="password" autocomplete="new-password" %}
+        <div class="register-trap" aria-hidden="true"><label for="reg-website">{% translate "Leave this field empty" %}</label><input id="reg-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="login-form__submit" type="submit">{% translate "Create account" %}</button>
+        <p class="login-form__help">{% translate "Already have an account?" %} <a href="{% url 'accounts:login' %}{% if next %}?next={{ next|urlencode }}{% endif %}">{% translate "Log in" %}</a></p>
+      </form>
+    </div>
+  </div>
+  <a class="auth-back" href="{% url 'pages:home' %}">{% translate "Back to the website" %}</a>
+</main>
+{% endblock %}

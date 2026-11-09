@@ -21,7 +21,9 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_http_methods, require_POST
 
 from .decorators import role_required
-from .forms import LoginForm, RolesForm
+from pages.limits import over_limit
+
+from .forms import LoginForm, RegisterForm, RolesForm
 from .models import Role
 from .roles import dashboard_url_for, get_profile
 
@@ -72,6 +74,28 @@ def login_view(request):
             return JsonResponse({"ok": False, "message": error}, status=400)
 
     return render(request, "accounts/login.html", {"form": form, "error": error, "next": next_url})
+
+
+@require_http_methods(["GET", "POST"])
+@sensitive_post_parameters("password1", "password2")
+@csrf_protect
+@never_cache
+def register_view(request):
+    """Creating an account, for example to keep donations and receipts in one place."""
+    next_url = _safe_next(request)
+    if request.user.is_authenticated:
+        return redirect(next_url or dashboard_url_for(request.user))
+    form = RegisterForm(request.POST or None)
+    if request.method == "POST":
+        valid = form.is_valid()
+        if over_limit(request, "register", limit=10, seconds=3600):
+            form.add_error(None, _("Too many new accounts from here. Please try again later."))
+        elif valid:
+            user = form.save()
+            auth_login(request, user, backend="accounts.backends.EmailOrUsernameBackend")
+            messages.success(request, _("Welcome, %(name)s! Your account is ready.") % {"name": user.first_name})
+            return redirect(next_url or dashboard_url_for(user))
+    return render(request, "accounts/register.html", {"form": form, "next": next_url})
 
 
 @login_required

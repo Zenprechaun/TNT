@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
     "volunteers.apps.VolunteersConfig",
+    "donations.apps.DonationsConfig",
 ]
 
 MIDDLEWARE = [
@@ -73,6 +74,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "pages.context_processors.site",
                 "accounts.context_processors.account",
+                "donations.context_processors.donate",
             ],
         },
     },
@@ -136,6 +138,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Used for the Donate, Volunteer and contact links across the site.
 SITE_EMAIL = "info@tahoeneighborhoodtable.com"
+# The site's own address, for links in emails and for Stripe to send payment updates to.
+SITE_URL = os.environ.get("SITE_URL", "https://tahoeneighborhoodtable.com")
 
 # Email. Until EMAIL_HOST is set in /srv/tahoetable/.env, the site doesn't send email:
 # messages are written to the server log instead (journalctl -u tahoetable).
@@ -158,6 +162,22 @@ VOLUNTEER_CONTACT_EMAIL = SITE_EMAIL
 VOLUNTEER_SEND_CONFIRMATION = env_flag("VOLUNTEER_SEND_CONFIRMATION", "true" if EMAIL_HOST else "false")
 # Organizers to tell about each new sign-up, separated by commas. Leave empty for nobody.
 VOLUNTEER_NOTIFY_EMAILS = env_list("VOLUNTEER_NOTIFY_EMAILS")
+
+# Donations through Stripe (the donations app). Until STRIPE_SECRET_KEY is set in
+# /srv/tahoetable/.env, the Donate button opens an email instead, and admins see a preview.
+# A key starting sk_test_ or rk_test_ takes test payments only; sk_live_ or rk_live_ takes real ones.
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+# Optional. `manage.py connect_stripe` sets up the webhook and stores its secret in the database.
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+# Receipts say donations are tax-deductible (501(c)(3)). Set to false if that stops being true.
+DONATIONS_TAX_DEDUCTIBLE = env_flag("DONATIONS_TAX_DEDUCTIBLE", "true")
+# The organization's EIN, printed on receipts when set.
+DONATIONS_TAX_ID = os.environ.get("DONATIONS_TAX_ID", "")
+# Email donors a receipt from the site. Off until the site can send email; Stripe can send its own.
+DONATION_SEND_RECEIPTS = env_flag("DONATION_SEND_RECEIPTS", "true" if EMAIL_HOST else "false")
+# What Stripe charges per card payment, used to offer donors the option to cover it.
+DONATION_FEE_PERCENT = float(os.environ.get("DONATION_FEE_PERCENT", "2.9"))
+DONATION_FEE_CENTS = int(os.environ.get("DONATION_FEE_CENTS", "30"))
 
 # The version of the code that's running. On the live server, automatic publishing
 # (deploy/publish.sh) writes the Git commit into the REVISION file. /healthz reports it.

@@ -12,6 +12,8 @@ The Tahoe Neighborhood Table website, built with Python and Django 5.2, Django's
 - **Volunteer sign-up**: the footer's **Volunteer** button opens a pop-up where people pick shifts and sign up. The same sign-up is a full page at `/volunteer/`. See "Volunteer events" below.
 - **Health check** (`/healthz`): shows whether the site and its database work, which version of the code is running, and the result of the latest publish.
 - **English and Spanish**: the **EN | ES** switch at the top of every page changes the language. See "English and Spanish" below.
+- **Donations** (`/donate/`): one-time and monthly donations through Stripe. See "Donations" below.
+- **Create an account** (`/accounts/register/`): anyone can make an account with their email, for example to keep their donations and receipts in one place.
 
 Without JavaScript, **Log in** opens a full login page (`/accounts/login/`) instead of the popup.
 
@@ -42,6 +44,24 @@ The server checks every sign-up: shifts can't be overbooked, nobody can pick ove
 The site starts with a sample **Tahoe Community Thanksgiving** event, with sign-ups closed. Edit its details and shifts before opening it, or delete it.
 
 **Email:** until the server has email settings (see `deploy/env.example`), the site doesn't send email, and the confirmation doesn't promise one. With them, volunteers get a copy of their shifts, and the addresses in `VOLUNTEER_NOTIFY_EMAILS` hear about each sign-up.
+
+## Donations
+
+The **Donate** buttons open the donation page at `/donate/`:
+
+- Donors choose **one-time** or **monthly**, then $10, $25, $50, $100, $250 or another amount ($5 to $10,000). They can add a little to cover the card fee.
+- They can donate as a guest, or log in or create an account first so their donations and receipts stay together in their dashboard.
+- They pay on Stripe's own secure page (Stripe Checkout), in Spanish when the site is in Spanish. The site never sees card numbers.
+- Afterwards the thank-you page is their receipt: receipt number, date, amount and the 501(c)(3) statement, ready to print or save. The link keeps working, and signed-in donors find every receipt in their dashboard. Once the site can send email, donors also get the receipt by email.
+- Monthly donors change or stop their donation on a Stripe page: from their dashboard, or through the link on their receipt if they gave as a guest (Stripe emails them a sign-in link).
+
+Admins see every donation under **Donations** in the admin site, where they can download a spreadsheet. The Admin's Dashboard shows this year's total and the monthly donors.
+
+**Before Stripe is connected**, the Donate button opens an email for visitors, as before, and admins get the whole donation page as a preview that charges nothing. DEPLOY-HOSTINGER.md explains connecting Stripe.
+
+**Receipts** say Tahoe Neighborhood Table is a 501(c)(3) nonprofit and donations are tax-deductible. Set `DONATIONS_TAX_DEDUCTIBLE=false` in the server settings if that ever stops being true, and `DONATIONS_TAX_ID` to print the EIN.
+
+**How it's built:** `donations/services.py` opens Stripe Checkout and records what Stripe reports. Stripe tells the site about payments through a webhook (`/donate/stripe/webhook/`), and every message must carry Stripe's signature. `donations/stripe_api.py` holds every call to Stripe, and the tests replace it, so they never contact Stripe.
 
 ## English and Spanish
 
@@ -93,6 +113,7 @@ To check that everything works:
 | `pages/` | The home page, the health check and the `translations` command (`pages/translation_files.py`) |
 | `locale/es/` | The Spanish translations. See "English and Spanish" |
 | `volunteers/` | Volunteer events, shifts and sign-ups: the pop-up, the `/volunteer/` pages, the admin screens, emails and calendar files |
+| `donations/` | Donations through Stripe: the `/donate/` pages, receipts, the webhook, the admin screens and the `connect_stripe` command |
 | `templates/` | Page templates. The home page is `pages/home.html`, and its large drawings are in `pages/svg/` |
 | `static/site/` | Styles, scripts and images |
 
@@ -119,6 +140,6 @@ The site runs on a Hostinger VPS at https://tahoeneighborhoodtable.com. **DEPLOY
 
 During server setup you choose a new password for the Admin account.
 
-Two things the site doesn't do yet: people can't reset a forgotten password by email, and there's no sign-up page. Admins add people and change passwords for now.
+One thing the site doesn't do yet: people can't reset a forgotten password by email. Admins change passwords for now.
 
 `db.sqlite3` is listed in `.gitignore`, so accounts and password hashes stay out of version control.

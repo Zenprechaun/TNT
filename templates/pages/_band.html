@@ -5,7 +5,7 @@
     <div class="band__copy">
       <h2 class="band__title">{% translate "Together, we can make a difference." %}</h2>
       <div class="band__acts">
-        {% translate "Donating to Tahoe Neighborhood Table" as donate_subject %}<a class="act act--give" href="mailto:{{ site_email }}?subject={{ donate_subject|urlencode }}">{% translate "Donate" %}</a>
+        <a class="act act--give" href="{{ donate_url }}">{% translate "Donate" %}</a>
         <a class="act" href="{% url 'volunteers:start' %}" data-volunteer-open>{% translate "Volunteer" %}</a>
         <button class="act" id="share-toggle" type="button" aria-expanded="false" aria-controls="share-panel">{% translate "Share" %}</button>
       </div>

@@ -1,0 +1,20 @@
+{% load i18n %}<section class="card" aria-labelledby="donations-title">
+  <h2 id="donations-title">{% translate "Your donations" %}</h2>
+  {% if monthly %}
+    <p class="card__lead">{% blocktranslate trimmed with amount=monthly.amount_text since=monthly.started_at|date:"DATE_FORMAT" %}You give <strong>{{ amount }} a month</strong>, since {{ since }}.{% endblocktranslate %}{% if monthly.ends_at %} {% blocktranslate trimmed with day=monthly.ends_at|date:"DATE_FORMAT" %}It stops after {{ day }}.{% endblocktranslate %}{% endif %}</p>
+    {% if can_manage %}<form class="card__acts" method="post" action="{% url 'donations:manage' %}">{% csrf_token %}<button class="btn btn--small" type="submit">{% translate "Change or stop monthly donation" %}</button></form>{% endif %}
+  {% endif %}
+  {% if donations %}
+    <ul class="gifts">
+      {% for d in donations %}
+        <li class="gifts__item">
+          <span class="gifts__when">{{ d.paid_at|date:"SHORT_DATE_FORMAT" }}</span>
+          <span class="gifts__amount">{{ d.amount_text }}{% if d.is_monthly %} <span class="gifts__kind">{% translate "monthly" %}</span>{% endif %}{% if d.status == "refunded" %} <span class="gifts__kind">{% translate "refunded" %}</span>{% endif %}</span>
+          <a class="gifts__receipt" href="{% url 'donations:receipt' d.token %}">{% translate "Receipt" %}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{% translate "Donations you make while logged in show up here, with their receipts." %}</p>
+  {% endif %}
+</section>

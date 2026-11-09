@@ -1,0 +1,63 @@
+{% extends "donations/page.html" %}
+{% load i18n %}
+{% block title %}{% if thanks %}{% translate "Thank you" %}{% else %}{% translate "Donation receipt" %}{% endif %} | Tahoe Neighborhood Table{% endblock %}
+{% block ribbon %}{% if thanks %}{% translate "Thank you" %}{% else %}{% translate "Donation receipt" %}{% endif %}{% endblock %}
+
+{% block content %}
+{% with status=donation.status %}
+<div class="don don--receipt">
+  {% if preview %}<p class="don-note don-note--preview">{% blocktranslate trimmed %}<strong>Admin preview.</strong> This is the page a donor sees after paying. Nothing was charged or saved.{% endblocktranslate %}</p>{% endif %}
+
+  {% if thanks or status != "paid" and status != "refunded" %}
+  <div class="don-thanks">
+    <svg class="don-thanks__heart" viewBox="0 0 54 48" aria-hidden="true">{% include "pages/svg/heart_path.html" %}</svg>
+    {% if status == "paid" or status == "pending" %}
+      <h2 class="don-title">{% if not thanks %}{% translate "Donation receipt" %}{% elif first_name %}{% blocktranslate trimmed with name=first_name %}Thank you, {{ name }}!{% endblocktranslate %}{% else %}{% translate "Thank you!" %}{% endif %}</h2>
+      <p class="don-lede">
+        {% if status == "pending" %}{% translate "Your payment is still being processed. This page will show your receipt once Stripe confirms it, which can take a few days for a bank payment." %}
+        {% elif donation.is_monthly %}{% blocktranslate trimmed with amount=donation.amount_text %}Your monthly donation of {{ amount }} is set up. Thank you for standing with your neighbors every month.{% endblocktranslate %}
+        {% else %}{% blocktranslate trimmed with amount=donation.amount_text %}Your donation of {{ amount }} to Tahoe Neighborhood Table is complete.{% endblocktranslate %}{% endif %}
+      </p>
+    {% elif status == "refunded" %}
+      <h2 class="don-title">{% translate "Donation receipt" %}</h2>
+      <p class="don-lede">{% translate "This donation was refunded." %}</p>
+    {% else %}
+      <h2 class="don-title">{% if status == "failed" %}{% translate "Your payment didn’t go through" %}{% else %}{% translate "This donation wasn’t completed" %}{% endif %}</h2>
+      <p class="don-lede">{% translate "You weren’t charged. You’re welcome to try again." %}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if status == "paid" or status == "refunded" %}
+  <section class="don-receipt" aria-labelledby="don-receipt-title">
+    <div class="don-receipt__head">
+      <h3 class="don-receipt__title" id="don-receipt-title">{% translate "Donation receipt" %}</h3>
+      <p class="don-receipt__org">Tahoe Neighborhood Table<br>{{ site_email }}</p>
+    </div>
+    <dl class="don-receipt__facts">
+      <dt>{% translate "Receipt number" %}</dt><dd>{{ donation.number }}</dd>
+      <dt>{% translate "Date" %}</dt><dd>{{ donation.paid_at|date:"DATE_FORMAT" }}</dd>
+      <dt>{% translate "Donor" %}</dt><dd>{{ donation.name|default:"–" }}{% if donation.email %}<span class="don-receipt__sub">{{ donation.email }}</span>{% endif %}</dd>
+      <dt>{% translate "Donation" %}</dt>
+      <dd>{{ donation.amount_text }}{% if donation.is_monthly %} {% translate "(monthly)" %}{% endif %}{% if donation.fee_covered %}<span class="don-receipt__sub">{% blocktranslate trimmed with fee=donation.fee_text %}Includes {{ fee }} you added to cover the card fee{% endblocktranslate %}</span>{% endif %}</dd>
+      {% if donation.amount_refunded %}<dt>{% translate "Refunded" %}</dt><dd>{{ donation.refunded_text }}</dd>{% endif %}
+    </dl>
+    {% if tax_statement %}<p class="don-receipt__tax">{{ tax_statement }}</p>{% endif %}
+  </section>
+  {% endif %}
+
+  <div class="don-actions">
+    {% if status == "paid" or status == "refunded" %}<button type="button" class="don-btn" data-print>{% translate "Print or save receipt" %}</button>{% endif %}
+    {% if status == "failed" or status == "expired" %}<a class="don-btn" href="{% url 'donations:donate' %}">{% translate "Try again" %}</a>{% endif %}
+    {% if can_manage %}
+      <form method="post" action="{% url 'donations:manage' %}">{% csrf_token %}<button type="submit" class="don-btn don-btn--quiet">{% translate "Change or stop monthly donation" %}</button></form>
+    {% elif portal_login_url %}
+      <a class="don-btn don-btn--quiet" href="{{ portal_login_url }}">{% translate "Change or stop monthly donation" %}</a>
+    {% endif %}
+    <a class="don-btn don-btn--navy" href="{% url 'pages:home' %}">{% translate "Back to the home page" %}</a>
+  </div>
+  {% if portal_login_url %}<p class="don-fine">{% translate "Stripe will email you a link to sign in and change or stop your monthly donation." %}</p>{% endif %}
+  {% if thanks and not user.is_authenticated and status == "paid" %}<p class="don-fine">{% translate "Bookmark this page to see your receipt again." %}</p>{% endif %}
+</div>
+{% endwith %}
+{% endblock %}

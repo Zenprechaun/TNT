@@ -9,6 +9,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: donations/static/donations/donate.js
+#, javascript-format
+msgid "Add %(fee)s to cover the card fee, so your whole donation reaches our neighbors."
+msgstr "Agregue %(fee)s para cubrir la comisión de la tarjeta, así su donación llega completa a nuestros vecinos."
+
+#: donations/static/donations/donate.js
+#, javascript-format
+msgid "Donate %(amount)s a month"
+msgstr "Donar %(amount)s al mes"
+
+#: donations/static/donations/donate.js
+#, javascript-format
+msgid "Donate %(amount)s"
+msgstr "Donar %(amount)s"
+
+#: donations/static/donations/donate.js
+msgid "Add a little to cover the card fee, so your whole donation reaches our neighbors."
+msgstr "Agregue un poco más para cubrir la comisión de la tarjeta, así su donación llega completa a nuestros vecinos."
+
+#: donations/static/donations/donate.js
+msgid "Donate"
+msgstr "Donar"
+
+#: donations/static/donations/donate.js
+msgid "Opening secure payment…"
+msgstr "Abriendo el pago seguro…"
+
 #: static/site/js/accounts.js
 msgid "Logging in…"
 msgstr "Iniciando sesión…"

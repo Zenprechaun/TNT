@@ -25,6 +25,7 @@ msgid "Personal info"
 msgstr "Información personal"
 
 #: accounts/admin.py
+#: donations/admin.py
 msgid "Status"
 msgstr "Estado"
 
@@ -59,6 +60,75 @@ msgstr "Correo electrónico o nombre de usuario"
 msgid "Choose at least one role."
 msgstr "Elija al menos un rol."
 
+#: accounts/forms.py
+#: volunteers/admin.py
+msgid "First name"
+msgstr "Nombre"
+
+#: accounts/forms.py
+#: volunteers/forms.py
+msgid "Enter your first name."
+msgstr "Escriba su nombre."
+
+#: accounts/forms.py
+#: volunteers/admin.py
+msgid "Last name"
+msgstr "Apellido"
+
+#: accounts/forms.py
+#: volunteers/forms.py
+msgid "Enter your last name."
+msgstr "Escriba su apellido."
+
+#: accounts/forms.py
+#: donations/admin.py
+#: templates/accounts/dashboard_user.html
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: accounts/forms.py
+#: volunteers/forms.py
+msgid "Enter your email address."
+msgstr "Escriba su correo electrónico."
+
+#: accounts/forms.py
+#: volunteers/forms.py
+msgid "Enter an email address like name@example.com."
+msgstr "Escriba un correo electrónico como nombre@ejemplo.com."
+
+#: accounts/forms.py
+#: templates/accounts/_login_form.html
+msgid "Password"
+msgstr "Contraseña"
+
+#: accounts/forms.py
+msgid "Choose a password."
+msgstr "Elija una contraseña."
+
+#: accounts/forms.py
+msgid "Password again"
+msgstr "Repita la contraseña"
+
+#: accounts/forms.py
+msgid "Enter the same password again."
+msgstr "Escriba la misma contraseña otra vez."
+
+#: accounts/forms.py
+msgid "There’s already an account with this email. Log in instead."
+msgstr "Ya existe una cuenta con este correo electrónico. Inicie sesión."
+
+#: accounts/forms.py
+#: donations/forms.py
+#: volunteers/forms.py
+msgid "Leave this field empty."
+msgstr "Deje este campo vacío."
+
+#: accounts/forms.py
+msgid "The two passwords don’t match."
+msgstr "Las contraseñas no coinciden."
+
 #: accounts/models.py
 msgid "Short name used in the code, such as admin or user."
 msgstr "Nombre corto que se usa en el código, como admin o user."
@@ -79,6 +149,15 @@ msgstr "Perfil de %(username)s"
 #: accounts/views.py
 msgid "Enter your email or username and your password."
 msgstr "Escriba su correo electrónico o nombre de usuario y su contraseña."
+
+#: accounts/views.py
+msgid "Too many new accounts from here. Please try again later."
+msgstr "Se crearon demasiadas cuentas desde aquí. Inténtelo de nuevo más tarde."
+
+#: accounts/views.py
+#, python-format
+msgid "Welcome, %(name)s! Your account is ready."
+msgstr "¡Hola, %(name)s! Su cuenta está lista."
 
 #: accounts/views.py
 msgid "Admins"
@@ -106,6 +185,701 @@ msgstr "No puede quitarse su propio rol de Administrador. Otro administrador pue
 msgid "Saved roles for %(name)s: %(roles)s."
 msgstr "Se guardaron los roles de %(name)s: %(roles)s."
 
+#: donations/admin.py
+#: donations/templates/donations/_your_donations.html
+msgid "Receipt"
+msgstr "Recibo"
+
+#: donations/admin.py
+msgid "Date paid"
+msgstr "Fecha de pago"
+
+#: donations/admin.py
+#: templates/accounts/dashboard_user.html
+#: volunteers/admin.py
+#: volunteers/forms.py
+msgid "Name"
+msgstr "Nombre"
+
+#: donations/admin.py
+#: donations/templates/donations/donate.html
+msgid "Amount"
+msgstr "Monto"
+
+#: donations/admin.py
+msgid "Fee covered"
+msgstr "Comisión cubierta"
+
+#: donations/admin.py
+#: donations/models.py
+#: donations/templates/donations/receipt.html
+msgid "Refunded"
+msgstr "Reembolsada"
+
+#: donations/admin.py
+msgid "Frequency"
+msgstr "Frecuencia"
+
+#: donations/admin.py
+#: templates/_language_switch.html
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Language"
+msgstr "Idioma"
+
+#: donations/admin.py
+msgid "Real or test"
+msgstr "Real o de prueba"
+
+#: donations/admin.py
+msgid "Real"
+msgstr "Real"
+
+#: donations/admin.py
+msgid "Test"
+msgstr "Prueba"
+
+#: donations/admin.py
+msgid "payments"
+msgstr "pagos"
+
+#: donations/admin.py
+#: donations/templates/donations/receipt.html
+msgid "Donor"
+msgstr "Donante"
+
+#: donations/admin.py
+msgid "Stripe"
+msgstr "Stripe"
+
+#: donations/admin.py
+msgid "Payments"
+msgstr "Pagos"
+
+#: donations/admin.py
+msgid "Download the selected donations (CSV)"
+msgstr "Descargar las donaciones seleccionadas (CSV)"
+
+#: donations/admin.py
+msgid "Each month"
+msgstr "Cada mes"
+
+#: donations/apps.py
+#: donations/templates/donations/_summary.html
+#: templates/accounts/dashboard_base.html
+msgid "Donations"
+msgstr "Donaciones"
+
+#: donations/context_processors.py
+msgid "Donating to Tahoe Neighborhood Table"
+msgstr "Donación a Tahoe Neighborhood Table"
+
+#: donations/forms.py
+#: donations/templates/donations/donate.html
+msgid "Other"
+msgstr "Otro"
+
+#: donations/forms.py
+msgid "Choose an amount."
+msgstr "Elija un monto."
+
+#: donations/forms.py
+msgid "Enter an amount."
+msgstr "Escriba un monto."
+
+#: donations/forms.py
+msgid "Enter an amount in dollars, like 40 or 37.50."
+msgstr "Escriba un monto en dólares, como 40 o 37.50."
+
+#: donations/forms.py
+#, python-format
+msgid "The smallest donation we can take online is %(amount)s."
+msgstr "La donación mínima que podemos recibir en línea es de %(amount)s."
+
+#: donations/forms.py
+#, python-format
+msgid "For a donation over %(amount)s, please email us and we’ll help."
+msgstr "Para donar más de %(amount)s, escríbanos por correo y le ayudaremos."
+
+#: donations/models.py
+msgid "Active"
+msgstr "Activa"
+
+#: donations/models.py
+msgid "Payment overdue"
+msgstr "Pago atrasado"
+
+#: donations/models.py
+msgid "Unpaid"
+msgstr "Sin pagar"
+
+#: donations/models.py
+msgid "Not started"
+msgstr "No iniciada"
+
+#: donations/models.py
+msgid "Paused"
+msgstr "En pausa"
+
+#: donations/models.py
+msgid "Canceled"
+msgstr "Cancelada"
+
+#: donations/models.py
+msgid "Stripe subscription"
+msgstr "suscripción de Stripe"
+
+#: donations/models.py
+msgid "Stripe customer"
+msgstr "cliente de Stripe"
+
+#: donations/models.py
+msgid "account"
+msgstr "cuenta"
+
+#: donations/models.py
+#: volunteers/models.py
+msgid "name"
+msgstr "nombre"
+
+#: donations/models.py
+#: volunteers/models.py
+msgid "email"
+msgstr "correo electrónico"
+
+#: donations/models.py
+msgid "amount each month, in cents"
+msgstr "monto mensual, en centavos"
+
+#: donations/models.py
+msgid "fee covered each month, in cents"
+msgstr "comisión cubierta cada mes, en centavos"
+
+#: donations/models.py
+msgid "status"
+msgstr "estado"
+
+#: donations/models.py
+msgid "ends"
+msgstr "termina el"
+
+#: donations/models.py
+msgid "Set when the donor has asked to stop after the current month."
+msgstr "Se completa cuando el donante pidió terminar después del mes en curso."
+
+#: donations/models.py
+#: volunteers/models.py
+msgid "language"
+msgstr "idioma"
+
+#: donations/models.py
+msgid "real payments"
+msgstr "pagos reales"
+
+#: donations/models.py
+msgid "Unticked for test payments made with a Stripe test key."
+msgstr "Sin marcar para pagos de prueba hechos con una clave de prueba de Stripe."
+
+#: donations/models.py
+msgid "started"
+msgstr "inicio"
+
+#: donations/models.py
+msgid "stopped"
+msgstr "fecha de fin"
+
+#: donations/models.py
+msgid "monthly donation"
+msgstr "donación mensual"
+
+#: donations/models.py
+msgid "monthly donations"
+msgstr "donaciones mensuales"
+
+#: donations/models.py
+#, python-format
+msgid "%(amount)s a month from %(donor)s"
+msgstr "%(amount)s al mes de %(donor)s"
+
+#: donations/models.py
+msgid "a donor"
+msgstr "un donante"
+
+#: donations/models.py
+msgid "One-time"
+msgstr "Una vez"
+
+#: donations/models.py
+msgid "Monthly"
+msgstr "Mensual"
+
+#: donations/models.py
+msgid "Not paid yet"
+msgstr "Aún sin pagar"
+
+#: donations/models.py
+msgid "Paid"
+msgstr "Pagada"
+
+#: donations/models.py
+msgid "Payment failed"
+msgstr "Pago rechazado"
+
+#: donations/models.py
+msgid "Not completed"
+msgstr "No completada"
+
+#: donations/models.py
+msgid "frequency"
+msgstr "frecuencia"
+
+#: donations/models.py
+msgid "amount, in cents"
+msgstr "monto, en centavos"
+
+#: donations/models.py
+msgid "What the donor paid, fee included."
+msgstr "Lo que pagó el donante, con la comisión incluida."
+
+#: donations/models.py
+msgid "fee covered, in cents"
+msgstr "comisión cubierta, en centavos"
+
+#: donations/models.py
+msgid "The part of the amount the donor added for the card fee."
+msgstr "La parte del monto que el donante agregó para la comisión de la tarjeta."
+
+#: donations/models.py
+msgid "refunded, in cents"
+msgstr "reembolsado, en centavos"
+
+#: donations/models.py
+msgid "real payment"
+msgstr "pago real"
+
+#: donations/models.py
+msgid "Stripe Checkout session"
+msgstr "sesión de Stripe Checkout"
+
+#: donations/models.py
+msgid "Stripe invoice"
+msgstr "factura de Stripe"
+
+#: donations/models.py
+msgid "Stripe payment"
+msgstr "pago de Stripe"
+
+#: donations/models.py
+msgid "receipt emailed"
+msgstr "recibo enviado"
+
+#: donations/models.py
+msgid "date paid"
+msgstr "fecha de pago"
+
+#: donations/models.py
+msgid "donation"
+msgstr "donación"
+
+#: donations/models.py
+msgid "donations"
+msgstr "donaciones"
+
+#: donations/models.py
+#, python-format
+msgid "%(amount)s from %(donor)s"
+msgstr "%(amount)s de %(donor)s"
+
+#: donations/models.py
+msgid "Stripe customers"
+msgstr "clientes de Stripe"
+
+#: donations/models.py
+msgid "Stripe setup"
+msgstr "configuración de Stripe"
+
+#: donations/models.py
+msgid "Real payments"
+msgstr "Pagos reales"
+
+#: donations/models.py
+msgid "Test payments"
+msgstr "Pagos de prueba"
+
+#: donations/services.py
+msgid "Donation to Tahoe Neighborhood Table"
+msgstr "Donación a Tahoe Neighborhood Table"
+
+#: donations/services.py
+msgid "Tahoe Neighborhood Table is a 501(c)(3) nonprofit. Donations are tax-deductible to the extent allowed by law."
+msgstr "Tahoe Neighborhood Table es una organización sin fines de lucro 501(c)(3). Las donaciones son deducibles de impuestos en la medida que lo permita la ley."
+
+#: donations/services.py
+msgid "Tahoe Neighborhood Table is a tax-exempt organization under Section 501(c)(3) of the Internal Revenue Code. Donations are tax-deductible to the extent allowed by law. No goods or services were provided in exchange for this donation."
+msgstr "Tahoe Neighborhood Table es una organización exenta de impuestos según la Sección 501(c)(3) del Código de Impuestos Internos de los Estados Unidos. Las donaciones son deducibles de impuestos en la medida que lo permita la ley. No se entregaron bienes ni servicios a cambio de esta donación."
+
+#: donations/services.py
+#: donations/templates/donations/donate.html
+#, python-format
+msgid "EIN: %(ein)s"
+msgstr "EIN: %(ein)s"
+
+#: donations/services.py
+msgid "Your donation receipt from Tahoe Neighborhood Table"
+msgstr "Su recibo de donación de Tahoe Neighborhood Table"
+
+#: donations/services.py
+#, python-format
+msgid "Donate %(amount)s a month"
+msgstr "Donar %(amount)s al mes"
+
+#: donations/services.py
+#, python-format
+msgid "Donate %(amount)s"
+msgstr "Donar %(amount)s"
+
+#: donations/templates/donations/_summary.html
+msgid "Stripe isn’t connected yet, so the site can’t take donations. Until it is, the Donate button opens an email, and you can preview the donation page."
+msgstr "Stripe aún no está conectado, así que el sitio no puede recibir donaciones. Mientras tanto, el botón Donar abre un correo electrónico y usted puede ver una vista previa de la página de donaciones."
+
+#: donations/templates/donations/_summary.html
+msgid "Test mode: these are Stripe test payments, not real money."
+msgstr "Modo de prueba: son pagos de prueba de Stripe, no dinero real."
+
+#: donations/templates/donations/_summary.html
+#, python-format
+msgid "Donated in %(year)s"
+msgstr "Donado en %(year)s"
+
+#: donations/templates/donations/_summary.html
+#, python-format
+msgid "from %(count)s donation"
+msgid_plural "from %(count)s donations"
+msgstr[0] "en %(count)s donación"
+msgstr[1] "en %(count)s donaciones"
+
+#: donations/templates/donations/_summary.html
+msgid "Monthly donors"
+msgstr "Donantes mensuales"
+
+#: donations/templates/donations/_summary.html
+#, python-format
+msgid "%(amount)s a month"
+msgstr "%(amount)s al mes"
+
+#: donations/templates/donations/_summary.html
+msgid "Donation page"
+msgstr "Página de donaciones"
+
+#: donations/templates/donations/_summary.html
+msgid "Preview the donation page"
+msgstr "Vista previa de la página de donaciones"
+
+#: donations/templates/donations/_summary.html
+msgid "All donations"
+msgstr "Todas las donaciones"
+
+#: donations/templates/donations/_your_donations.html
+msgid "Your donations"
+msgstr "Sus donaciones"
+
+#: donations/templates/donations/_your_donations.html
+#, python-format
+msgid "You give <strong>%(amount)s a month</strong>, since %(since)s."
+msgstr "Usted dona <strong>%(amount)s al mes</strong> desde el %(since)s."
+
+#: donations/templates/donations/_your_donations.html
+#, python-format
+msgid "It stops after %(day)s."
+msgstr "Termina después del %(day)s."
+
+#: donations/templates/donations/_your_donations.html
+#: donations/templates/donations/receipt.html
+msgid "Change or stop monthly donation"
+msgstr "Cambiar o detener la donación mensual"
+
+#: donations/templates/donations/_your_donations.html
+msgid "monthly"
+msgstr "mensual"
+
+#: donations/templates/donations/_your_donations.html
+msgid "refunded"
+msgstr "reembolsada"
+
+#: donations/templates/donations/_your_donations.html
+msgid "Donations you make while logged in show up here, with their receipts."
+msgstr "Las donaciones que haga con su sesión iniciada aparecen aquí, con sus recibos."
+
+#: donations/templates/donations/donate.html
+#: donations/templates/donations/page.html
+#: donations/templates/donations/unavailable.html
+#: donations/views.py
+#: templates/accounts/dashboard_user.html
+#: templates/pages/_band.html
+msgid "Donate"
+msgstr "Donar"
+
+#: donations/templates/donations/donate.html
+msgid "<strong>Admin preview.</strong> Stripe isn’t connected yet, so only admins see this page and nothing is charged. Until it’s connected, everyone else’s Donate button opens an email."
+msgstr "<strong>Vista previa para administradores.</strong> Stripe aún no está conectado, así que solo los administradores ven esta página y no se cobra nada. Hasta que se conecte, el botón Donar de todos los demás abre un correo electrónico."
+
+#: donations/templates/donations/donate.html
+msgid "Your donation wasn’t completed, and you weren’t charged. You can try again below."
+msgstr "Su donación no se completó y no se le cobró nada. Puede intentarlo de nuevo abajo."
+
+#: donations/templates/donations/donate.html
+msgid "Make a donation"
+msgstr "Haga una donación"
+
+#: donations/templates/donations/donate.html
+msgid "Your donation helps our neighbors with food, warmth and housing."
+msgstr "Su donación ayuda a nuestros vecinos con comida, abrigo y vivienda."
+
+#: donations/templates/donations/donate.html
+msgid "How often"
+msgstr "Frecuencia"
+
+#: donations/templates/donations/donate.html
+msgid "Other amount, in US dollars"
+msgstr "Otro monto, en dólares estadounidenses"
+
+#: donations/templates/donations/donate.html
+#: volunteers/templates/volunteers/_widget.html
+msgid "Your details"
+msgstr "Sus datos"
+
+#: donations/templates/donations/donate.html
+#, python-format
+msgid "Donating as <strong>%(name)s</strong>."
+msgstr "Donará como <strong>%(name)s</strong>."
+
+#: donations/templates/donations/donate.html
+msgid "Your receipts are kept in your dashboard."
+msgstr "Sus recibos se guardan en su panel."
+
+#: donations/templates/donations/donate.html
+msgid "No account needed."
+msgstr "No necesita una cuenta."
+
+#: donations/templates/donations/donate.html
+msgid "Donate as a guest, and Stripe asks for your name and email for your receipt."
+msgstr "Done como invitado y Stripe le pedirá su nombre y correo electrónico para el recibo."
+
+#: donations/templates/donations/donate.html
+msgid "Want your donations and receipts in one place?"
+msgstr "¿Quiere tener sus donaciones y recibos en un solo lugar?"
+
+#: donations/templates/donations/donate.html
+#: templates/accounts/_account_controls.html
+#: templates/accounts/_login_dialog.html
+#: templates/accounts/_login_form.html
+#: templates/accounts/login.html
+#: templates/accounts/register.html
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+#: donations/templates/donations/donate.html
+#: templates/accounts/_login_form.html
+#: templates/accounts/register.html
+msgid "Create an account"
+msgstr "Crear una cuenta"
+
+#: donations/templates/donations/donate.html
+#: templates/accounts/register.html
+#: volunteers/templates/volunteers/_fields.html
+msgid "Leave this field empty"
+msgstr "Deje este campo vacío"
+
+#: donations/templates/donations/donate.html
+msgid "You’ll pay on Stripe’s secure page. We never see your card number."
+msgstr "Pagará en la página segura de Stripe. Nosotros nunca vemos el número de su tarjeta."
+
+#: donations/templates/donations/email/receipt.txt
+#: volunteers/templates/volunteers/email/confirmation.txt
+#, python-format
+msgid "Hi %(name)s,"
+msgstr "Hola, %(name)s:"
+
+#: donations/templates/donations/email/receipt.txt
+msgid "Hello,"
+msgstr "Hola:"
+
+#: donations/templates/donations/email/receipt.txt
+#, python-format
+msgid "Thank you for your monthly donation of %(amount)s to Tahoe Neighborhood Table."
+msgstr "Gracias por su donación mensual de %(amount)s a Tahoe Neighborhood Table."
+
+#: donations/templates/donations/email/receipt.txt
+#, python-format
+msgid "Thank you for your donation of %(amount)s to Tahoe Neighborhood Table."
+msgstr "Gracias por su donación de %(amount)s a Tahoe Neighborhood Table."
+
+#: donations/templates/donations/email/receipt.txt
+#: donations/templates/donations/receipt.html
+msgid "Receipt number"
+msgstr "Número de recibo"
+
+#: donations/templates/donations/email/receipt.txt
+#: donations/templates/donations/receipt.html
+msgid "Date"
+msgstr "Fecha"
+
+#: donations/templates/donations/email/receipt.txt
+#: donations/templates/donations/receipt.html
+msgid "Donation"
+msgstr "Donación"
+
+#: donations/templates/donations/email/receipt.txt
+#: donations/templates/donations/receipt.html
+msgid "(monthly)"
+msgstr "(mensual)"
+
+#: donations/templates/donations/email/receipt.txt
+#, python-format
+msgid "See or print this receipt at any time: %(url)s"
+msgstr "Vea o imprima este recibo cuando quiera: %(url)s"
+
+#: donations/templates/donations/email/receipt.txt
+#, python-format
+msgid "Questions? Write to %(email)s."
+msgstr "¿Preguntas? Escriba a %(email)s."
+
+#: donations/templates/donations/email/receipt.txt
+#: templates/pages/_band.html
+#: volunteers/templates/volunteers/email/confirmation.txt
+msgid "Our neighbors."
+msgstr "Nuestros vecinos."
+
+#: donations/templates/donations/email/receipt.txt
+#: templates/pages/_band.html
+#: volunteers/templates/volunteers/email/confirmation.txt
+msgid "Our community."
+msgstr "Nuestra comunidad."
+
+#: donations/templates/donations/email/receipt.txt
+#: templates/pages/_band.html
+#: volunteers/templates/volunteers/email/confirmation.txt
+msgid "Our table."
+msgstr "Nuestra mesa."
+
+#: donations/templates/donations/receipt.html
+#: volunteers/templates/volunteers/confirmed.html
+msgid "Thank you"
+msgstr "Gracias"
+
+#: donations/templates/donations/receipt.html
+msgid "Donation receipt"
+msgstr "Recibo de donación"
+
+#: donations/templates/donations/receipt.html
+msgid "<strong>Admin preview.</strong> This is the page a donor sees after paying. Nothing was charged or saved."
+msgstr "<strong>Vista previa para administradores.</strong> Esta es la página que ve un donante después de pagar. No se cobró ni se guardó nada."
+
+#: donations/templates/donations/receipt.html
+#, python-format
+msgid "Thank you, %(name)s!"
+msgstr "¡Gracias, %(name)s!"
+
+#: donations/templates/donations/receipt.html
+msgid "Thank you!"
+msgstr "¡Gracias!"
+
+#: donations/templates/donations/receipt.html
+msgid "Your payment is still being processed. This page will show your receipt once Stripe confirms it, which can take a few days for a bank payment."
+msgstr "Su pago todavía se está procesando. Esta página mostrará su recibo cuando Stripe lo confirme, lo que puede tardar unos días si pagó desde su banco."
+
+#: donations/templates/donations/receipt.html
+#, python-format
+msgid "Your monthly donation of %(amount)s is set up. Thank you for standing with your neighbors every month."
+msgstr "Su donación mensual de %(amount)s quedó lista. Gracias por apoyar a sus vecinos cada mes."
+
+#: donations/templates/donations/receipt.html
+#, python-format
+msgid "Your donation of %(amount)s to Tahoe Neighborhood Table is complete."
+msgstr "Su donación de %(amount)s a Tahoe Neighborhood Table se completó."
+
+#: donations/templates/donations/receipt.html
+msgid "This donation was refunded."
+msgstr "Esta donación fue reembolsada."
+
+#: donations/templates/donations/receipt.html
+msgid "Your payment didn’t go through"
+msgstr "Su pago no se completó"
+
+#: donations/templates/donations/receipt.html
+msgid "This donation wasn’t completed"
+msgstr "Esta donación no se completó"
+
+#: donations/templates/donations/receipt.html
+msgid "You weren’t charged. You’re welcome to try again."
+msgstr "No se le cobró nada. Puede intentarlo de nuevo."
+
+#: donations/templates/donations/receipt.html
+#, python-format
+msgid "Includes %(fee)s you added to cover the card fee"
+msgstr "Incluye %(fee)s que agregó para cubrir la comisión de la tarjeta"
+
+#: donations/templates/donations/receipt.html
+msgid "Print or save receipt"
+msgstr "Imprimir o guardar el recibo"
+
+#: donations/templates/donations/receipt.html
+msgid "Try again"
+msgstr "Intentar de nuevo"
+
+#: donations/templates/donations/receipt.html
+#: donations/templates/donations/unavailable.html
+#: volunteers/templates/volunteers/closed.html
+#: volunteers/templates/volunteers/confirmed.html
+msgid "Back to the home page"
+msgstr "Volver a la página de inicio"
+
+#: donations/templates/donations/receipt.html
+msgid "Stripe will email you a link to sign in and change or stop your monthly donation."
+msgstr "Stripe le enviará por correo un enlace para entrar y cambiar o detener su donación mensual."
+
+#: donations/templates/donations/receipt.html
+msgid "Bookmark this page to see your receipt again."
+msgstr "Guarde esta página en sus favoritos para volver a ver su recibo."
+
+#: donations/templates/donations/unavailable.html
+msgid "Online donations are coming soon"
+msgstr "Muy pronto podrá donar en línea"
+
+#: donations/templates/donations/unavailable.html
+#, python-format
+msgid "To donate now, email <a href=\"mailto:%(email)s\">%(email)s</a> and we’ll help you."
+msgstr "Para donar ahora, escriba a <a href=\"mailto:%(email)s\">%(email)s</a> y le ayudaremos."
+
+#: donations/views.py
+#, python-format
+msgid "Add %(fee)s to cover the card fee, so your whole donation reaches our neighbors."
+msgstr "Agregue %(fee)s para cubrir la comisión de la tarjeta, así su donación llega completa a nuestros vecinos."
+
+#: donations/views.py
+msgid "Add a little to cover the card fee, so your whole donation reaches our neighbors."
+msgstr "Agregue un poco más para cubrir la comisión de la tarjeta, así su donación llega completa a nuestros vecinos."
+
+#: donations/views.py
+msgid "Too many tries. Wait a few minutes, then try again."
+msgstr "Demasiados intentos. Espere unos minutos y vuelva a intentarlo."
+
+#: donations/views.py
+msgid "Sample Donor"
+msgstr "Donante de ejemplo"
+
+#: donations/views.py
+msgid "We couldn’t reach our payment service, so nothing was charged. Please try again in a minute."
+msgstr "No pudimos conectar con nuestro servicio de pagos, así que no se cobró nada. Inténtelo de nuevo en un minuto."
+
+#: donations/views.py
+msgid "There’s no monthly donation to change on this account."
+msgstr "Esta cuenta no tiene una donación mensual que cambiar."
+
+#: donations/views.py
+msgid "We couldn’t open that page just now. Please try again in a minute."
+msgstr "No pudimos abrir esa página en este momento. Inténtelo de nuevo en un minuto."
+
 #: tahoetable/urls.py
 msgid "Tahoe Neighborhood Table admin"
 msgstr "Administración de Tahoe Neighborhood Table"
@@ -132,6 +906,7 @@ msgstr "Ir a su panel"
 
 #: templates/403.html
 #: templates/accounts/login.html
+#: templates/accounts/register.html
 msgid "Back to the website"
 msgstr "Volver al sitio web"
 
@@ -160,12 +935,6 @@ msgstr "Algo salió mal"
 msgid "The website hit a problem. Try again in a few minutes. If it keeps happening, email info@tahoeneighborhoodtable.com."
 msgstr "El sitio web tuvo un problema. Inténtelo de nuevo en unos minutos. Si sigue ocurriendo, escriba a info@tahoeneighborhoodtable.com."
 
-#: templates/_language_switch.html
-#: volunteers/admin.py
-#: volunteers/templates/volunteers/email/organizer.txt
-msgid "Language"
-msgstr "Idioma"
-
 #: templates/accounts/_account_controls.html
 #: templates/accounts/dashboard_base.html
 msgid "Account"
@@ -185,13 +954,6 @@ msgstr "Panel"
 msgid "Log out"
 msgstr "Cerrar sesión"
 
-#: templates/accounts/_account_controls.html
-#: templates/accounts/_login_dialog.html
-#: templates/accounts/_login_form.html
-#: templates/accounts/login.html
-msgid "Log in"
-msgstr "Iniciar sesión"
-
 #: templates/accounts/_login_dialog.html
 #: volunteers/templates/volunteers/_widget.html
 #: volunteers/templates/volunteers/dialog.html
@@ -204,8 +966,8 @@ msgid "Welcome back to Tahoe Neighborhood Table."
 msgstr "Le damos la bienvenida de nuevo a Tahoe Neighborhood Table."
 
 #: templates/accounts/_login_form.html
-msgid "Password"
-msgstr "Contraseña"
+msgid "New here?"
+msgstr "¿Primera vez aquí?"
 
 #: templates/accounts/_login_form.html
 #, python-format
@@ -337,20 +1099,8 @@ msgid "Not added yet"
 msgstr "Aún no se ha agregado"
 
 #: templates/accounts/dashboard_user.html
-#: volunteers/admin.py
-#: volunteers/forms.py
-msgid "Name"
-msgstr "Nombre"
-
-#: templates/accounts/dashboard_user.html
 msgid "Username"
 msgstr "Nombre de usuario"
-
-#: templates/accounts/dashboard_user.html
-#: volunteers/admin.py
-#: volunteers/templates/volunteers/email/organizer.txt
-msgid "Email"
-msgstr "Correo electrónico"
 
 #: templates/accounts/dashboard_user.html
 msgid "No roles yet"
@@ -370,16 +1120,6 @@ msgstr "Ayude a sus vecinos con comida, abrigo y vivienda."
 
 #: templates/accounts/dashboard_user.html
 #: templates/pages/_band.html
-msgid "Donating to Tahoe Neighborhood Table"
-msgstr "Donación a Tahoe Neighborhood Table"
-
-#: templates/accounts/dashboard_user.html
-#: templates/pages/_band.html
-msgid "Donate"
-msgstr "Donar"
-
-#: templates/accounts/dashboard_user.html
-#: templates/pages/_band.html
 #: volunteers/admin.py
 #: volunteers/templates/volunteers/closed.html
 #: volunteers/templates/volunteers/signup_page.html
@@ -392,8 +1132,21 @@ msgid "To change your name, email or password, email <span class=\"nowrap\">%(em
 msgstr "Para cambiar su nombre, correo electrónico o contraseña, escriba a <span class=\"nowrap\">%(email)s</span>."
 
 #: templates/accounts/login.html
+#: templates/accounts/register.html
 msgid "Tahoe Neighborhood Table home"
 msgstr "Inicio de Tahoe Neighborhood Table"
+
+#: templates/accounts/register.html
+msgid "Keep your donations and receipts in one place."
+msgstr "Tenga sus donaciones y recibos en un solo lugar."
+
+#: templates/accounts/register.html
+msgid "Create account"
+msgstr "Crear cuenta"
+
+#: templates/accounts/register.html
+msgid "Already have an account?"
+msgstr "¿Ya tiene una cuenta?"
 
 #: templates/base.html
 msgid "Tahoe Neighborhood Table. Nourishing our community. Building hope. Outreach to those in need of food, warmth and housing."
@@ -422,21 +1175,6 @@ msgstr "Copiar el correo electrónico"
 #: templates/pages/_band.html
 msgid "Copy"
 msgstr "Copiar"
-
-#: templates/pages/_band.html
-#: volunteers/templates/volunteers/email/confirmation.txt
-msgid "Our neighbors."
-msgstr "Nuestros vecinos."
-
-#: templates/pages/_band.html
-#: volunteers/templates/volunteers/email/confirmation.txt
-msgid "Our community."
-msgstr "Nuestra comunidad."
-
-#: templates/pages/_band.html
-#: volunteers/templates/volunteers/email/confirmation.txt
-msgid "Our table."
-msgstr "Nuestra mesa."
 
 #: templates/pages/_masthead.html
 msgid "Tahoe Neighborhood Table emblem: a round table set with soup, bread, salad and wildflowers, with pines, a lake and a snow-capped mountain behind it."
@@ -546,14 +1284,6 @@ msgstr "Nuestros vecinos. Nuestra comunidad. Nuestra mesa."
 #: volunteers/admin.py
 msgid "Shift"
 msgstr "Turno"
-
-#: volunteers/admin.py
-msgid "First name"
-msgstr "Nombre"
-
-#: volunteers/admin.py
-msgid "Last name"
-msgstr "Apellido"
 
 #: volunteers/admin.py
 #: volunteers/forms.py
@@ -700,22 +1430,6 @@ msgid "Anything we should know?"
 msgstr "¿Algo que debamos saber?"
 
 #: volunteers/forms.py
-msgid "Enter your first name."
-msgstr "Escriba su nombre."
-
-#: volunteers/forms.py
-msgid "Enter your last name."
-msgstr "Escriba su apellido."
-
-#: volunteers/forms.py
-msgid "Enter your email address."
-msgstr "Escriba su correo electrónico."
-
-#: volunteers/forms.py
-msgid "Enter an email address like name@example.com."
-msgstr "Escriba un correo electrónico como nombre@ejemplo.com."
-
-#: volunteers/forms.py
 msgid "Enter a phone number we can reach you on during the event."
 msgstr "Escriba un número de teléfono donde podamos localizarle durante el evento."
 
@@ -734,10 +1448,6 @@ msgstr "Marque la casilla para aceptar las pautas para voluntarios."
 #: volunteers/forms.py
 msgid "Enter a phone number with its area code."
 msgstr "Escriba un número de teléfono con su código de área."
-
-#: volunteers/forms.py
-msgid "Leave this field empty."
-msgstr "Deje este campo vacío."
 
 #: volunteers/forms.py
 #, python-format
@@ -763,10 +1473,6 @@ msgstr "l j \\d\\e F"
 msgctxt "date format"
 msgid "D, M j"
 msgstr "D j b"
-
-#: volunteers/models.py
-msgid "name"
-msgstr "nombre"
 
 #: volunteers/models.py
 msgid "name in Spanish"
@@ -1027,10 +1733,6 @@ msgid "last name"
 msgstr "apellido"
 
 #: volunteers/models.py
-msgid "email"
-msgstr "correo electrónico"
-
-#: volunteers/models.py
 msgid "Mobile phone"
 msgstr "Teléfono celular"
 
@@ -1053,10 +1755,6 @@ msgstr "edad confirmada"
 #: volunteers/models.py
 msgid "Agreed to guidelines"
 msgstr "Aceptó las pautas"
-
-#: volunteers/models.py
-msgid "language"
-msgstr "idioma"
 
 #: volunteers/models.py
 msgid "The language they signed up in. Their confirmation email is in it too."
@@ -1159,10 +1857,6 @@ msgid "(optional)"
 msgstr "(opcional)"
 
 #: volunteers/templates/volunteers/_fields.html
-msgid "Leave this field empty"
-msgstr "Deje este campo vacío"
-
-#: volunteers/templates/volunteers/_fields.html
 msgid "We only use your details to organize this event."
 msgstr "Solo usamos sus datos para organizar este evento."
 
@@ -1229,10 +1923,6 @@ msgid "Hide full shifts"
 msgstr "Ocultar turnos completos"
 
 #: volunteers/templates/volunteers/_widget.html
-msgid "Your details"
-msgstr "Sus datos"
-
-#: volunteers/templates/volunteers/_widget.html
 msgid "We use these to confirm your shifts and to reach you on the day."
 msgstr "Los usamos para confirmar sus turnos y comunicarnos con usted ese día."
 
@@ -1287,18 +1977,9 @@ msgstr "En este momento no hay turnos de voluntariado abiertos."
 msgid "Email <a href=\"mailto:%(email)s\">%(email)s</a> and we’ll let you know when the next event is posted."
 msgstr "Escriba a <a href=\"mailto:%(email)s\">%(email)s</a> y le avisaremos cuando publiquemos el próximo evento."
 
-#: volunteers/templates/volunteers/closed.html
-#: volunteers/templates/volunteers/confirmed.html
-msgid "Back to the home page"
-msgstr "Volver a la página de inicio"
-
 #: volunteers/templates/volunteers/confirmed.html
 msgid "You’re signed up"
 msgstr "Inscripción confirmada"
-
-#: volunteers/templates/volunteers/confirmed.html
-msgid "Thank you"
-msgstr "Gracias"
 
 #: volunteers/templates/volunteers/confirmed.html
 msgid "Sign up another volunteer"
@@ -1308,11 +1989,6 @@ msgstr "Inscribir a otra persona"
 #: volunteers/templates/volunteers/page.html
 msgid "Volunteer with us"
 msgstr "Únase a nuestro voluntariado"
-
-#: volunteers/templates/volunteers/email/confirmation.txt
-#, python-format
-msgid "Hi %(name)s,"
-msgstr "Hola, %(name)s:"
 
 #: volunteers/templates/volunteers/email/confirmation.txt
 #, python-format

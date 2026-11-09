@@ -1,4 +1,6 @@
 Django>=5.2.19,<5.3
+# Takes donations through Stripe (the donations app).
+stripe>=16.1,<17
 # Runs the site on the live server (Linux only; not needed to run it on your computer).
 gunicorn>=26.2,<27
 # Serves CSS, JavaScript and images on the live site.
