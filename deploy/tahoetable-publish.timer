@@ -1,0 +1,11 @@
+# Checks GitHub for a new version of the website every minute.
+[Unit]
+Description=Check GitHub for a new version of the Tahoe Neighborhood Table website
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

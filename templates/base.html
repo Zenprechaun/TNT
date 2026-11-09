@@ -1,0 +1,22 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{% block title %}Tahoe Neighborhood Table{% endblock %}</title>
+<meta name="description" content="Tahoe Neighborhood Table. Nourishing our community. Building hope. Outreach to those in need of food, warmth and housing.">
+<link rel="icon" type="image/svg+xml" href="{% static 'site/img/favicon.svg' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap">
+<link rel="stylesheet" href="{% static 'site/css/site.css' %}">
+<link rel="stylesheet" href="{% static 'site/css/accounts.css' %}">
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+{% block body %}{% endblock %}
+{% block login_dialog %}{% if not user.is_authenticated %}{% include "accounts/_login_dialog.html" %}{% endif %}{% endblock %}
+<script src="{% static 'site/js/accounts.js' %}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

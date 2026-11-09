@@ -1,0 +1,91 @@
+{% extends "accounts/dashboard_base.html" %}
+{% block title %}Admin's Dashboard · Tahoe Neighborhood Table{% endblock %}
+{% block dash %}
+<header class="dash-intro">
+  <div>
+    <p class="dash-eyebrow">Admin's Dashboard</p>
+    <h1 class="dash-title">Welcome, {{ user.first_name|default:user.get_username }}</h1>
+    <p class="dash-sub">See who can sign in, and choose the roles each person has.</p>
+  </div>
+  <div class="dash-actions">
+    <a class="btn btn--primary" href="{% url 'admin:auth_user_add' %}">Add a person</a>
+    <a class="btn" href="{% url 'admin:index' %}">Open the full admin site</a>
+  </div>
+</header>
+
+<section class="stats" aria-label="People at a glance">
+  {% for label, value in stats %}
+    <div class="stat"><b>{{ value }}</b><span>{{ label }}</span></div>
+  {% endfor %}
+</section>
+
+<section class="people-section" aria-labelledby="people-title">
+  <div class="people-head">
+    <h2 id="people-title">People and roles</h2>
+    <form class="search" method="get" role="search">
+      <label class="vh" for="people-search">Search people</label>
+      <input id="people-search" name="q" type="search" value="{{ query }}" placeholder="Search by name, username or email">
+      <button class="btn btn--small" type="submit">Search</button>
+      {% if query %}<a href="{% url 'accounts:admin_dashboard' %}">Clear</a>{% endif %}
+    </form>
+  </div>
+
+  <div class="table-wrap">
+    <table class="people">
+      <thead>
+        <tr>
+          <th scope="col">Person</th>
+          <th scope="col">Roles</th>
+          <th scope="col">Last signed in</th>
+          <th scope="col">Joined</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          {% with person=row.person %}
+          <tr id="person-{{ person.pk }}">
+            <td>
+              <div class="person">
+                <b>{{ person.get_full_name|default:person.get_username }}{% if row.is_self %}<span class="you">You</span>{% endif %}</b>
+                <span>{{ person.get_username }}{% if person.email %} · {{ person.email }}{% endif %}</span>
+              </div>
+            </td>
+            <td>
+              <form class="roles-form" method="post" action="{% url 'accounts:update_roles' person.pk %}">
+                {% csrf_token %}
+                {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+                {% if page.number > 1 %}<input type="hidden" name="page" value="{{ page.number }}">{% endif %}
+                <fieldset>
+                  <legend class="vh">Roles for {{ person.get_username }}</legend>
+                  {% for role in roles %}
+                    {% if row.is_self and role.slug == "admin" %}
+                      <input type="hidden" name="roles" value="{{ role.pk }}">
+                      <label class="role-check is-locked" title="You can't remove your own Admin role"><input type="checkbox" checked disabled> {{ role.name }}</label>
+                    {% else %}
+                      <label class="role-check"><input type="checkbox" name="roles" value="{{ role.pk }}"{% if role.pk in row.role_ids %} checked{% endif %}> {{ role.name }}</label>
+                    {% endif %}
+                  {% endfor %}
+                </fieldset>
+                <button class="btn btn--small" type="submit">Save</button>
+              </form>
+            </td>
+            <td class="num">{% if person.last_login %}{{ person.last_login|date:"M j, Y, g:i a" }}{% else %}Never{% endif %}</td>
+            <td class="num">{{ person.date_joined|date:"M j, Y" }}</td>
+          </tr>
+          {% endwith %}
+        {% empty %}
+          <tr><td class="empty" colspan="4">No one matches “{{ query }}”.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page.paginator.num_pages > 1 %}
+    <nav class="pager" aria-label="Pages of people">
+      {% if page.has_previous %}<a href="{% querystring page=page.previous_page_number %}">Previous</a>{% endif %}
+      <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+      {% if page.has_next %}<a href="{% querystring page=page.next_page_number %}">Next</a>{% endif %}
+    </nav>
+  {% endif %}
+</section>
+{% endblock %}

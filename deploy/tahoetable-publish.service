@@ -1,0 +1,11 @@
+# Publishes new versions of the website from GitHub (see deploy/publish.sh).
+# tahoetable-publish.timer starts it every minute. setup_publishing.sh installs both.
+[Unit]
+Description=Publish new versions of the Tahoe Neighborhood Table website from GitHub
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/tahoetable-publish
+TimeoutStartSec=20min

@@ -1,0 +1,47 @@
+{% extends "accounts/dashboard_base.html" %}
+{% block title %}User's Dashboard · Tahoe Neighborhood Table{% endblock %}
+{% block dash %}
+<header class="dash-intro">
+  <div>
+    <p class="dash-eyebrow">User's Dashboard</p>
+    <h1 class="dash-title">Welcome, {{ user.first_name|default:user.get_username }}</h1>
+    <p class="dash-sub">Thanks for being part of Tahoe Neighborhood Table.</p>
+  </div>
+</header>
+
+<div class="cards">
+  <section class="card" aria-labelledby="account-title">
+    <h2 id="account-title">Your account</h2>
+    <dl class="facts">
+      <dt>Name</dt>
+      <dd>{{ user.get_full_name|default:"Not added yet" }}</dd>
+      <dt>Username</dt>
+      <dd>{{ user.get_username }}</dd>
+      <dt>Email</dt>
+      <dd>{{ user.email|default:"Not added yet" }}</dd>
+      <dt>Roles</dt>
+      <dd>
+        <span class="chips">
+          {% for role in roles %}
+            <span class="chip{% if role.slug == 'admin' %} chip--admin{% endif %}">{{ role.name }}</span>
+          {% empty %}
+            <span class="chip">No roles yet</span>
+          {% endfor %}
+        </span>
+      </dd>
+      <dt>Member since</dt>
+      <dd>{{ user.date_joined|date:"F j, Y" }}</dd>
+    </dl>
+  </section>
+
+  <section class="card" aria-labelledby="involved-title">
+    <h2 id="involved-title">Together, we can make a difference</h2>
+    <p>Help your neighbors with food, warmth and housing.</p>
+    <div class="card__acts">
+      <a class="btn btn--primary" href="mailto:{{ site_email }}?subject=Donating%20to%20Tahoe%20Neighborhood%20Table">Donate</a>
+      <a class="btn" href="mailto:{{ site_email }}?subject=Volunteering%20with%20Tahoe%20Neighborhood%20Table">Volunteer</a>
+    </div>
+    <p class="card__note">To change your name, email or password, email <span class="nowrap">{{ site_email }}</span>.</p>
+  </section>
+</div>
+{% endblock %}

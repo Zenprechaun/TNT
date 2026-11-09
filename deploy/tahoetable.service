@@ -1,0 +1,23 @@
+# Runs the Tahoe Neighborhood Table website in the background and restarts it if it stops.
+# setup_server.sh installs this as /etc/systemd/system/tahoetable.service.
+[Unit]
+Description=Tahoe Neighborhood Table website (Gunicorn)
+After=network.target
+
+[Service]
+User=tahoetable
+Group=tahoetable
+WorkingDirectory=/srv/tahoetable/app
+EnvironmentFile=/srv/tahoetable/.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/srv/tahoetable/venv/bin/gunicorn --config /srv/tahoetable/app/deploy/gunicorn.conf.py tahoetable.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+Django>=5.2.19,<5.3
+# Runs the site on the live server (Linux only; not needed to run it on your computer).
+gunicorn>=26.2,<27
+# Serves CSS, JavaScript and images on the live site.
+whitenoise>=6.12,<7

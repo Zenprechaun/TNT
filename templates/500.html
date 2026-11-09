@@ -1,0 +1,23 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Something went wrong · Tahoe Neighborhood Table</title>
+<link rel="stylesheet" href="{% static 'site/css/site.css' %}">
+<link rel="stylesheet" href="{% static 'site/css/accounts.css' %}">
+</head>
+<body>
+{# Shown when the site hits an error. It avoids the database, which may be the problem. #}
+<main class="auth-page">
+  <div class="auth-card">
+    <div class="login__panel">
+      <img class="login__emblem" src="{% static 'site/img/emblem.webp' %}" alt="" width="760" height="910">
+      <h1 class="login__title">Something went wrong</h1>
+      <p class="login__lede">The website hit a problem. Try again in a few minutes. If it keeps happening, email info@tahoeneighborhoodtable.com.</p>
+      <a class="login-form__submit" href="/">Go to the home page</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+staticfiles/
+.env
+# Holds accounts and password hashes, so it stays out of version control.
+db.sqlite3
+db.sqlite3-*
+publish-status.json
+# Written on the server by automatic publishing (deploy/publish.sh).
+REVISION

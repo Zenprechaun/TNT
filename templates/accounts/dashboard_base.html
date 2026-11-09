@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<div class="dash">
+  <header class="dash-head">
+    <div class="dash-head__in">
+      <a class="dash-brand" href="{% url 'pages:home' %}">
+        <img src="{% static 'site/img/emblem.webp' %}" alt="" width="760" height="910">
+        <span>Tahoe Neighborhood Table</span>
+      </a>
+      <nav class="dash-nav" aria-label="Account">
+        {% if is_admin_user %}
+          <a class="dash-nav__link" href="{% url 'accounts:admin_dashboard' %}"{% if dash == "admin" %} aria-current="page"{% endif %}>Admin's Dashboard</a>
+          <a class="dash-nav__link" href="{% url 'accounts:user_dashboard' %}"{% if dash == "user" %} aria-current="page"{% endif %}>User's Dashboard</a>
+        {% endif %}
+        <a class="dash-nav__link" href="{% url 'pages:home' %}">View site</a>
+        <form method="post" action="{% url 'accounts:logout' %}">
+          {% csrf_token %}
+          <button class="dash-nav__btn" type="submit">Log out</button>
+        </form>
+      </nav>
+    </div>
+  </header>
+  <main class="dash-main">
+    {% if messages %}
+      <div class="notices" role="status">
+        {% for message in messages %}<p class="notice notice--{{ message.tags }}">{{ message }}</p>{% endfor %}
+      </div>
+    {% endif %}
+    {% block dash %}{% endblock %}
+  </main>
+</div>
+{% endblock %}
