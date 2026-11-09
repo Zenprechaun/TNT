@@ -24,6 +24,8 @@ if [[ ! -d "$ROOT/app" || ! -f "$ROOT/.env" ]]; then
   echo "The website isn't set up on this server yet. Run deploy/setup_server.sh first." >&2
   exit 1
 fi
+# The site's account runs some steps below, so work from a folder it can open.
+cd "$ROOT"
 
 say "Backing up the database"
 as_app "$ROOT/backup_db.sh"

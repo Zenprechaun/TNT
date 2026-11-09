@@ -31,6 +31,7 @@ if [[ $EUID -ne 0 ]]; then
   echo "Run this as root." >&2
   exit 1
 fi
+cd /
 
 # One publish at a time.
 exec 9>"$CONF/publish.lock"

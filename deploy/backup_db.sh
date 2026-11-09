@@ -7,6 +7,9 @@ ROOT="/srv/tahoetable"
 DB="$ROOT/data/db.sqlite3"
 TARGET="$ROOT/backups/db-$(date +%Y-%m-%d-%H%M%S).sqlite3"
 
+# Work from a folder this account can open, whatever folder it was started from.
+cd "$ROOT"
+
 if [[ ! -f "$DB" ]]; then
   echo "There's no database to back up yet."
   exit 0
