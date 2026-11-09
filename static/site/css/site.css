@@ -272,3 +272,20 @@ svg{display:block}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
   .need__toggle[aria-pressed="true"] .need__photo img{transform:none}
 }
+
+/* ---------- inner pages  ----------
+   A shorter masthead that links home, used on the volunteer pages. */
+.masthead--compact{padding-top:max(16px,calc(var(--u)*24));padding-bottom:calc(var(--su)*104)}
+.masthead--compact .masthead__inner{grid-template-columns:calc(var(--u)*150) minmax(0,1fr);column-gap:calc(var(--u)*16);align-items:center;color:inherit;text-decoration:none}
+.masthead--compact .masthead__words{padding-top:0}
+.masthead--compact .wordmark{width:calc(var(--u)*360)}
+.masthead--compact .tagline{margin-top:calc(var(--u)*10);font-size:max(15px,calc(var(--u)*19))}
+.masthead--compact .pine{width:calc(var(--pu)*104);height:calc(var(--pu)*420);bottom:calc(var(--pu)*-150)}
+.masthead__home:hover .wordmark{opacity:.9}
+@media (max-width:620px){
+  .masthead--compact{padding-top:16px;padding-bottom:calc(var(--su)*118)}
+  .masthead--compact .masthead__inner{display:grid;grid-template-columns:76px minmax(0,1fr);column-gap:12px;padding-left:var(--gutter-l)}
+  .masthead--compact .emblem{width:76px;margin:0}
+  .masthead--compact .wordmark{width:100%;max-width:300px;margin:0}
+  .masthead--compact .tagline{margin:6px 0 0;font-size:15px;padding-right:calc(var(--pu)*60)}
+}

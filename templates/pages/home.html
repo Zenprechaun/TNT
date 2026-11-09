@@ -6,26 +6,13 @@
 <meta property="og:title" content="Tahoe Neighborhood Table">
 <meta property="og:description" content="Nourishing our community. Building hope. Outreach to those in need of food, warmth and housing.">
 <meta property="og:url" content="https://tahoeneighborhoodtable.com/">
+<link rel="stylesheet" href="{% static 'volunteers/volunteer.css' %}">
 {% endblock %}
 {% block body %}
 <div class="page">
 {% include "accounts/_account_controls.html" with variant="home" %}
 <div class="scene" id="scene">
-  <header class="masthead">
-    <img class="ridge" src="{% static 'site/img/ridge.webp' %}" alt="" width="3640" height="212">
-    <div class="pine"><img src="{% static 'site/img/pine.webp' %}" alt="" width="253" height="1023"></div>
-    <div class="masthead__inner">
-      <img class="emblem" src="{% static 'site/img/emblem.webp' %}" alt="Tahoe Neighborhood Table emblem: a round table set with soup, bread, salad and wildflowers, with pines, a lake and a snow-capped mountain behind it." width="760" height="910">
-      <div class="masthead__words">
-        <h1 class="wordmark">
-          <span class="vh">Tahoe Neighborhood Table</span>
-          {% include "pages/svg/wordmark.html" %}
-          <span class="heartline" aria-hidden="true"><i></i><svg id="hero-heart" viewBox="0 0 54 48"><path fill-rule="evenodd" d="M27.38 43.00L26.25 42.48L21.44 38.62L17.00 34.81L14.12 32.11L10.08 27.62L7.38 23.84L6.18 21.62L5.17 18.88L4.86 17.00L4.78 13.62L5.14 11.00L6.25 8.42L7.27 6.88L9.25 4.94L10.39 4.12L12.25 3.13L14.50 2.58L16.25 2.43L18.00 2.56L20.50 3.12L22.50 4.07L23.88 4.94L25.46 6.25L26.75 7.62L27.38 7.93L27.80 7.75L30.64 5.00L32.00 4.10L33.75 3.25L35.12 2.86L37.25 2.54L38.75 2.51L40.25 2.68L42.64 3.38L45.50 5.24L47.41 7.25L48.75 9.55L49.65 12.88L49.80 15.00L49.66 16.88L48.62 20.83L47.75 22.67L46.65 24.50L44.75 27.19L42.75 29.66L38.88 33.63L32.04 39.62L28.38 42.56Z"/></svg><i></i></span>
-        </h1>
-        <p class="tagline"><span>Nourishing our community.</span><span>Building hope.</span></p>
-      </div>
-    </div>
-  </header>
+  {% include "pages/_masthead.html" %}
 
   <section class="needs" aria-labelledby="needs-title">
     <div class="needs__inner">
@@ -81,36 +68,7 @@
   </div>
 </section>
 
-<footer class="band">
-  {% include "pages/svg/footer_art.html" %}
-  <div class="band__inner">
-    <svg class="band__heart" id="band-heart" viewBox="0 0 54 48" aria-hidden="true"><path fill-rule="evenodd" d="M27.38 43.00L26.25 42.48L21.44 38.62L17.00 34.81L14.12 32.11L10.08 27.62L7.38 23.84L6.18 21.62L5.17 18.88L4.86 17.00L4.78 13.62L5.14 11.00L6.25 8.42L7.27 6.88L9.25 4.94L10.39 4.12L12.25 3.13L14.50 2.58L16.25 2.43L18.00 2.56L20.50 3.12L22.50 4.07L23.88 4.94L25.46 6.25L26.75 7.62L27.38 7.93L27.80 7.75L30.64 5.00L32.00 4.10L33.75 3.25L35.12 2.86L37.25 2.54L38.75 2.51L40.25 2.68L42.64 3.38L45.50 5.24L47.41 7.25L48.75 9.55L49.65 12.88L49.80 15.00L49.66 16.88L48.62 20.83L47.75 22.67L46.65 24.50L44.75 27.19L42.75 29.66L38.88 33.63L32.04 39.62L28.38 42.56Z"/></svg>
-    <div class="band__copy">
-      <h2 class="band__title">Together, we can make a difference.</h2>
-      <div class="band__acts">
-        <a class="act act--give" href="mailto:{{ site_email }}?subject=Donating%20to%20Tahoe%20Neighborhood%20Table">Donate</a>
-        <a class="act" href="mailto:{{ site_email }}?subject=Volunteering%20with%20Tahoe%20Neighborhood%20Table">Volunteer</a>
-        <button class="act" id="share-toggle" type="button" aria-expanded="false" aria-controls="share-panel">Share</button>
-      </div>
-      <div class="share" id="share-panel" hidden>
-        <label for="share-text">Copy this and send it to a neighbor</label>
-        <textarea id="share-text" readonly rows="4"></textarea>
-        <div class="share__row">
-          <button class="act" id="share-copy" type="button">Copy message</button>
-          <span class="share__status" id="share-status" role="status"></span>
-        </div>
-      </div>
-      <div class="band__contact">
-        <a class="band__email" id="contact-email" href="mailto:{{ site_email }}">{{ site_email }}</a>
-        <button class="band__email-copy" id="email-copy" type="button" aria-label="Copy email address">Copy</button>
-        <span class="vh" id="email-status" role="status"></span>
-      </div>
-    </div>
-    <div class="band__sign">
-      {% include "pages/svg/signoff.html" %}
-    </div>
-  </div>
-</footer>
+{% include "pages/_band.html" %}
 
 <dialog class="player" id="player" aria-labelledby="player-title">
   <div class="player__panel">
@@ -124,6 +82,9 @@
     </div>
   </div>
 </dialog>
+
+{% include "volunteers/dialog.html" %}
 </div>
 {% endblock %}
-{% block scripts %}<script src="{% static 'site/js/site.js' %}" defer></script>{% endblock %}
+{% block scripts %}<script src="{% static 'site/js/site.js' %}" defer></script>
+<script src="{% static 'volunteers/volunteer.js' %}" defer></script>{% endblock %}

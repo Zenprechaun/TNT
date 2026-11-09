@@ -1,0 +1,9 @@
+{% extends "volunteers/page.html" %}
+{% load static %}
+{% block title %}Volunteer{% if vol %}: {{ vol.event.name }}{% endif %} | Tahoe Neighborhood Table{% endblock %}
+
+{% block content %}
+  {% include "volunteers/_widget.html" with mode="page" hd="h2" hs="h3" %}
+{% endblock %}
+
+{% block page_scripts %}<script src="{% static 'volunteers/volunteer.js' %}" defer></script>{% endblock %}

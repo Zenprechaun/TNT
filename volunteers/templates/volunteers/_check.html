@@ -1,0 +1,5 @@
+<div class="vol-checkrow">
+  {{ field }}
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  <p class="vol-error" id="vol-{{ field.name }}-error"{% if not field.errors %} hidden{% endif %}>{{ field.errors.0 }}</p>
+</div>

@@ -1,0 +1,14 @@
+{% autoescape off %}Hi {{ signup.first_name }},
+
+Thanks for volunteering at {{ event.name }}. You're signed up for:
+{% for shift in shifts %}
+  - {{ shift.long_label }}{% endfor %}
+{% if event.location %}
+Location: {{ event.location }}{% endif %}{% if event.check_in %}
+When you arrive: {{ event.check_in }}{% endif %}
+
+Need to change a shift? Reply to this email or write to {{ contact_email }}.
+
+Tahoe Neighborhood Table
+Our neighbors. Our community. Our table.
+{% endautoescape %}

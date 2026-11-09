@@ -7,9 +7,12 @@ from django.shortcuts import render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_GET
 
+from volunteers.views import signup_context
+
 
 def home(request):
-    return render(request, "pages/home.html")
+    """The home page. It also carries the volunteer sign-up pop-up for the next open event."""
+    return render(request, "pages/home.html", signup_context(request=request))
 
 
 # The fields of the publish status that /healthz passes on. deploy/publish.sh writes them.

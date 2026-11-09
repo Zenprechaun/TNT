@@ -1,0 +1,51 @@
+{% load static %}{% comment %}
+  The confirmation. With dynamic=True it's an empty frame the pop-up fills in after a sign-up;
+  otherwise it shows the given signup and shifts.
+{% endcomment %}
+<div class="vol-done">
+  <div class="vol-badge" aria-hidden="true">
+    <span class="vol-badge__hole"></span>
+    <span class="vol-badge__band">Volunteer</span>
+    <span class="vol-badge__name" data-vol-badge-name>{% if not dynamic %}{{ signup.first_name }}{% endif %}</span>
+    <span class="vol-badge__event">{{ event.name }}</span>
+    <svg class="vol-badge__heart" viewBox="0 0 54 48">{% include "pages/svg/heart_path.html" %}</svg>
+  </div>
+  <div class="vol-done__main">
+    <{{ hd|default:"h2" }} class="vol-step-title" id="vol-done-title" tabindex="-1"><span class="vol-num" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span data-vol-done-title>{% if not dynamic %}{% if shifts|length == 1 %}Your shift is{% else %}Your {{ shifts|length }} shifts are{% endif %} confirmed, {{ signup.first_name }}.{% endif %}</span></{{ hd|default:"h2" }}>
+    <p class="vol-lede" data-vol-done-lede>{% if not dynamic %}{% if send_confirmation %}A copy is on its way to {{ signup.email }}. {% endif %}Add your shifts to your calendar so you have the times handy.{% endif %}</p>
+    <p class="vol-note" data-vol-preview-note hidden>This is a preview, so nothing was saved. Once sign-ups are open, each sign-up goes into the admin under Volunteers.</p>
+    <ol class="vol-tickets" data-vol-tickets>
+      {% if not dynamic %}{% for item in shifts %}{% with s=item.shift %}
+      <li class="vol-ticket">
+        <span class="vol-ticket__text">
+          <span class="vol-ticket__day">{{ s.date|date:"l, F j" }}</span>
+          <span class="vol-ticket__time">{{ s.time_range }}</span>
+          <span class="vol-ticket__role"><span class="vol-dot" style="--role: {{ s.role.color }}" aria-hidden="true"></span>{{ s.role.name }}{% if s.where %}, {{ s.where }}{% endif %}</span>
+        </span>
+        <a class="vol-ticket__cal" href="{{ item.gcal }}" target="_blank" rel="noopener">Add to Google Calendar</a>
+      </li>
+      {% endwith %}{% endfor %}{% endif %}
+    </ol>
+    <p class="vol-done__ics"><a class="vol-btn vol-btn--quiet" data-vol-ics href="{% if not dynamic %}{% url 'volunteers:calendar' event.slug signup.token %}{% else %}#{% endif %}">Add to Apple or Outlook calendar</a></p>
+    {% if event.check_in or event.location or contact_email %}
+    <div class="vol-arrive">
+      <{{ hs|default:"h3" }} class="vol-arrive__title">When you arrive</{{ hs|default:"h3" }}>
+      {% if event.check_in %}<p>{{ event.check_in }}</p>{% endif %}
+      {% if event.location %}<p>Location: {{ event.location }}</p>{% endif %}
+      {% if contact_email %}<p>Need to change a shift? Email <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% if dynamic %}
+  <template data-vol-ticket-template>
+    <li class="vol-ticket">
+      <span class="vol-ticket__text">
+        <span class="vol-ticket__day" data-day></span>
+        <span class="vol-ticket__time" data-time></span>
+        <span class="vol-ticket__role"><span class="vol-dot" data-dot aria-hidden="true"></span><span data-role></span></span>
+      </span>
+      <a class="vol-ticket__cal" data-gcal href="#" target="_blank" rel="noopener">Add to Google Calendar</a>
+    </li>
+  </template>
+  {% endif %}
+</div>

@@ -1,0 +1,15 @@
+{% extends "volunteers/page.html" %}
+{% block title %}You’re signed up | Tahoe Neighborhood Table{% endblock %}
+{% block ribbon %}Thank you{% endblock %}
+
+{% block content %}
+  <div class="vol vol--static" data-mode="page">
+    <div class="vol__body">
+      {% include "volunteers/_done.html" with hd="h2" hs="h3" %}
+    </div>
+    <div class="vol__foot">
+      <a class="vol-btn vol-btn--quiet" href="{% url 'volunteers:signup' event.slug %}">Sign up another volunteer</a>
+      <a class="vol-btn vol-btn--navy" href="{% url 'pages:home' %}">Back to the home page</a>
+    </div>
+  </div>
+{% endblock %}

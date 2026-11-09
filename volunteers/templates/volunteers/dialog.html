@@ -1,0 +1,15 @@
+{% comment %}The Volunteer pop-up on the home page. The footer's Volunteer button opens it.{% endcomment %}
+<dialog class="vol-dialog{% if not vol %} vol-dialog--empty{% endif %}" id="volunteer" aria-labelledby="vol-dialog-title">
+  <div class="vol-dialog__bar">
+    <h2 class="vol-dialog__title" id="vol-dialog-title"><svg class="vol-dialog__heart" viewBox="0 0 54 48" aria-hidden="true">{% include "pages/svg/heart_path.html" %}</svg>Volunteer with us</h2>
+    <button class="vol-dialog__close" type="button" data-vol-dismiss aria-label="Close"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg></button>
+  </div>
+  {% if vol %}
+    {% include "volunteers/_widget.html" with mode="dialog" hd="h3" hs="h4" %}
+  {% else %}
+    <div class="vol-closed">
+      <p class="vol-closed__lead">There are no volunteer shifts open right now.</p>
+      <p>Email <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we’ll let you know when the next event is posted.</p>
+    </div>
+  {% endif %}
+</dialog>

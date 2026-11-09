@@ -12,6 +12,7 @@
         {% if is_admin_user %}
           <a class="dash-nav__link" href="{% url 'accounts:admin_dashboard' %}"{% if dash == "admin" %} aria-current="page"{% endif %}>Admin's Dashboard</a>
           <a class="dash-nav__link" href="{% url 'accounts:user_dashboard' %}"{% if dash == "user" %} aria-current="page"{% endif %}>User's Dashboard</a>
+          <a class="dash-nav__link" href="{% url 'admin:volunteers_event_changelist' %}">Volunteers</a>
         {% endif %}
         <a class="dash-nav__link" href="{% url 'pages:home' %}">View site</a>
         <form method="post" action="{% url 'accounts:logout' %}">

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
+    "volunteers.apps.VolunteersConfig",
 ]
 
 MIDDLEWARE = [
@@ -124,6 +125,28 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Used for the Donate, Volunteer and contact links across the site.
 SITE_EMAIL = "info@tahoeneighborhoodtable.com"
+
+# Email. Until EMAIL_HOST is set in /srv/tahoetable/.env, the site doesn't send email:
+# messages are written to the server log instead (journalctl -u tahoetable).
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+    EMAIL_USE_SSL = env_flag("EMAIL_USE_SSL", "false")
+    EMAIL_USE_TLS = env_flag("EMAIL_USE_TLS", "false" if EMAIL_USE_SSL else "true")
+    EMAIL_TIMEOUT = 15
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", f"Tahoe Neighborhood Table <{SITE_EMAIL}>")
+
+# Volunteer sign-ups (the volunteers app).
+VOLUNTEER_CONTACT_EMAIL = SITE_EMAIL
+# Email volunteers a copy of their shifts. Off until the site can send email.
+VOLUNTEER_SEND_CONFIRMATION = env_flag("VOLUNTEER_SEND_CONFIRMATION", "true" if EMAIL_HOST else "false")
+# Organizers to tell about each new sign-up, separated by commas. Leave empty for nobody.
+VOLUNTEER_NOTIFY_EMAILS = env_list("VOLUNTEER_NOTIFY_EMAILS")
 
 # The version of the code that's running. On the live server, automatic publishing
 # (deploy/publish.sh) writes the Git commit into the REVISION file. /healthz reports it.

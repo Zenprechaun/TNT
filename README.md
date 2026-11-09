@@ -9,6 +9,7 @@ The Tahoe Neighborhood Table website, built with Python and Django 5.2, Django's
 - **User's Dashboard** (`/dashboard/user/`): the person's account details and roles.
 - **Admin's Dashboard** (`/dashboard/admin/`): counts of people, plus a searchable list of everyone, where admins change roles.
 - **Full admin site** (`/admin/`): Django's built-in admin, open to anyone with the Admin role. Use **Add a person** there to create accounts.
+- **Volunteer sign-up**: the footer's **Volunteer** button opens a pop-up where people pick shifts and sign up. The same sign-up is a full page at `/volunteer/`. See "Volunteer events" below.
 - **Health check** (`/healthz`): shows whether the site and its database work, which version of the code is running, and the result of the latest publish.
 
 Without JavaScript, **Log in** opens a full login page (`/accounts/login/`) instead of the popup.
@@ -23,6 +24,23 @@ Every account has a profile, and each profile has one or more roles. Two roles a
 | User  | The User's Dashboard |
 
 New accounts start with the User role. Giving someone the Admin role also opens the full admin site to them, and taking it away closes it. Admins can't remove their own Admin role, so the site always keeps at least one admin. More roles can be added in the admin site under **People and roles → Roles**, and checked in code with the `role_required` decorator in `accounts/decorators.py`.
+
+## Volunteer events
+
+Admins manage everything in the admin site under **Volunteers** (the Admin's Dashboard links to it):
+
+- **Events**: add an event, then its shifts in the table at the bottom (role, date, start, end, volunteers needed). The pop-up shows the open event with the soonest shift. Tick **Sign-ups open** to let volunteers sign up, and untick it to close the event.
+- **Roles**: the kinds of jobs (Kitchen crew, Serving line…) and their marker colors.
+- **Shifts**: how many people each shift has. Open a shift to see its roster, or select shifts and choose **Download the roster** for a spreadsheet.
+- **Volunteer sign-ups**: everyone who signed up, searchable. To take someone off a shift, tick **Cancelled**; the spot opens up again.
+
+While an event's sign-ups are closed, only admins see it: the Volunteer button shows them an **Admin preview** they can click through, and nothing sent from a preview is saved. Everyone else sees "There are no volunteer shifts open right now."
+
+The server checks every sign-up: shifts can't be overbooked, nobody can pick overlapping shifts or the same shift twice, and shifts that have started can't be chosen.
+
+The site starts with a sample **Tahoe Community Thanksgiving** event, with sign-ups closed. Edit its details and shifts before opening it, or delete it.
+
+**Email:** until the server has email settings (see `deploy/env.example`), the site doesn't send email, and the confirmation doesn't promise one. With them, volunteers get a copy of their shifts, and the addresses in `VOLUNTEER_NOTIFY_EMAILS` hear about each sign-up.
 
 ## The first account
 
@@ -55,6 +73,7 @@ To check that everything works:
 | `tahoetable/settings.py` | Settings, including `SITE_EMAIL`, the address used for Donate, Volunteer and contact links |
 | `accounts/` | Roles, profiles, sign-in, the dashboards, the admin site setup and the tests |
 | `pages/` | The home page and the health check |
+| `volunteers/` | Volunteer events, shifts and sign-ups: the pop-up, the `/volunteer/` pages, the admin screens, emails and calendar files |
 | `templates/` | Page templates. The home page is `pages/home.html`, and its large drawings are in `pages/svg/` |
 | `static/site/` | Styles, scripts and images |
 

@@ -1,0 +1,6 @@
+<div class="vol-field">
+  <label class="{% if small %}vol-sublabel{% else %}vol-label{% endif %}" for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required and not small %} <span class="vol-opt">(optional)</span>{% endif %}</label>
+  {% if field.field.hint %}<p class="vol-hint" id="vol-{{ field.name }}-hint">{{ field.field.hint }}</p>{% endif %}
+  {% if field.field.widget.input_type == "select" %}<div class="vol-select">{{ field }}</div>{% else %}{{ field }}{% endif %}
+  <p class="vol-error" id="vol-{{ field.name }}-error"{% if not field.errors %} hidden{% endif %}>{{ field.errors.0 }}</p>
+</div>

@@ -1,0 +1,13 @@
+{% autoescape off %}{{ signup.full_name }} signed up to volunteer at {{ event.name }}.
+
+Email: {{ signup.email }}
+Phone: {{ signup.phone }}{% if signup.shirt_size %}
+T-shirt: {{ signup.get_shirt_size_display }}{% endif %}{% if signup.emergency_name or signup.emergency_phone %}
+Emergency contact: {{ signup.emergency_name }} {{ signup.emergency_phone }}{% endif %}{% if signup.notes %}
+Notes: {{ signup.notes }}{% endif %}
+
+Shifts:{% for shift in shifts %}
+  - {{ shift.long_label }}{% endfor %}
+
+See every sign-up in the site admin under Volunteers.
+{% endautoescape %}

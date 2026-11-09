@@ -1,0 +1,12 @@
+{% extends "volunteers/page.html" %}
+{% block title %}Volunteer | Tahoe Neighborhood Table{% endblock %}
+
+{% block content %}
+  <div class="vol vol--static" data-mode="page">
+    <div class="vol__body vol-closed">
+      <p class="vol-closed__lead">{% if event %}Sign-ups for {{ event.name }} are closed.{% else %}There are no volunteer shifts open right now.{% endif %}</p>
+      <p>Email <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we’ll let you know when the next event is posted.</p>
+    </div>
+    <div class="vol__foot"><a class="vol-btn vol-btn--navy" href="{% url 'pages:home' %}">Back to the home page</a></div>
+  </div>
+{% endblock %}

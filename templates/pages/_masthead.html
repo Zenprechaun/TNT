@@ -1,0 +1,17 @@
+{% load static %}{% comment %}
+  The lakeside masthead. Inner pages pass compact=True for a shorter header that links home.
+{% endcomment %}<header class="masthead{% if compact %} masthead--compact{% endif %}">
+    <img class="ridge" src="{% static 'site/img/ridge.webp' %}" alt="" width="3640" height="212">
+    <div class="pine"><img src="{% static 'site/img/pine.webp' %}" alt="" width="253" height="1023"></div>
+    {% if compact %}<a class="masthead__inner masthead__home" href="{% url 'pages:home' %}">{% else %}<div class="masthead__inner">{% endif %}
+      <img class="emblem" src="{% static 'site/img/emblem.webp' %}" alt="{% if not compact %}Tahoe Neighborhood Table emblem: a round table set with soup, bread, salad and wildflowers, with pines, a lake and a snow-capped mountain behind it.{% endif %}" width="760" height="910">
+      <div class="masthead__words">
+        {% if compact %}<p class="wordmark">{% else %}<h1 class="wordmark">{% endif %}
+          <span class="vh">Tahoe Neighborhood Table{% if compact %}, home page{% endif %}</span>
+          {% include "pages/svg/wordmark.html" %}
+          <span class="heartline" aria-hidden="true"><i></i><svg {% if not compact %}id="hero-heart" {% endif %}viewBox="0 0 54 48">{% include "pages/svg/heart_path.html" %}</svg><i></i></span>
+        {% if compact %}</p>{% else %}</h1>{% endif %}
+        <p class="tagline"><span>Nourishing our community.</span><span>Building hope.</span></p>
+      </div>
+    {% if compact %}</a>{% else %}</div>{% endif %}
+  </header>
