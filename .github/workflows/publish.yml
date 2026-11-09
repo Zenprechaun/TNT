@@ -1,0 +1,54 @@
+# Tests every change to main and, when the tests pass, publishes it to the live website.
+#
+# Publishing works like this: this workflow moves the "live" branch to the tested commit.
+# The server checks that branch every minute and puts new versions live
+# (deploy/publish.sh). The last step waits until https://tahoeneighborhoodtable.com/healthz
+# reports the new commit, so this run shows whether the change actually went live.
+name: Test and publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One publish at a time, in order.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  SITE_URL: https://tahoeneighborhoodtable.com
+
+jobs:
+  test:
+    name: Run the tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install the Python packages
+        run: pip install -r requirements.txt
+      - name: Check the project
+        run: python manage.py check
+      - name: Check that every model change has a migration
+        run: python manage.py makemigrations --check --dry-run
+      - name: Run the tests
+        run: python manage.py test
+
+  publish:
+    name: Publish to the live website
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Move the live branch to this commit
+        run: git push --force origin "HEAD:refs/heads/live"
+      - name: Wait for the website to run this commit
+        run: python3 .github/scripts/wait_for_live.py "$SITE_URL/healthz" "$GITHUB_SHA" 600
