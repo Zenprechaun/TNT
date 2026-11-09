@@ -6,8 +6,10 @@ from django.db import models
 from django.db.models import Count, Q
 from django.http import HttpResponse
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import formats, timezone
 from django.utils.html import format_html
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 from .models import Assignment, Event, Role, Shift, Signup
 
@@ -23,87 +25,105 @@ def csv_download(filename, header, rows):
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     response.write("﻿")  # lets Excel read accented names correctly
     writer = csv.writer(response)
-    writer.writerow(header)
+    writer.writerow([str(h) for h in header])
     for row in rows:
         writer.writerow([_cell(v) for v in row])
     return response
 
 
-ROSTER_HEADER = ["Shift", "First name", "Last name", "Email", "Phone", "T-shirt", "Emergency contact",
-                 "Emergency phone", "Notes", "Signed up"]
+ROSTER_HEADER = [_("Shift"), _("First name"), _("Last name"), _("Email"), _("Phone"), _("T-shirt"),
+                 _("Emergency contact"), _("Emergency phone"), _("Notes"), _("Language"), _("Signed up")]
 
 
 def roster_rows(assignments):
     for a in assignments:
         s = a.signup
         yield [a.shift.long_label, s.first_name, s.last_name, s.email, s.phone, s.get_shirt_size_display(),
-               s.emergency_name, s.emergency_phone, s.notes, timezone.localtime(s.created_at).strftime("%Y-%m-%d %H:%M")]
+               s.emergency_name, s.emergency_phone, s.notes, s.get_language_display(),
+               timezone.localtime(s.created_at).strftime("%Y-%m-%d %H:%M")]
+
+
+def filled_text(taken, total):
+    return gettext("%(taken)s of %(total)s") % {"taken": taken, "total": total}
+
+
+SIDE_BY_SIDE = _("Each English box has a Spanish one beside it. Visitors who switch the site to Spanish "
+                 "see the Spanish text, or the English text where the Spanish box is empty.")
 
 
 @admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
-    list_display = ["name", "swatch", "order"]
-    list_editable = ["order"]
+    list_display = ["name", "name_es", "swatch", "order"]
+    list_editable = ["name_es", "order"]
 
-    @admin.display(description="Color")
+    @admin.display(description=_("Color"))
     def swatch(self, obj):
         return format_html(
             '<span style="display:inline-block;width:14px;height:14px;border-radius:3px;'
             'vertical-align:middle;background:{}"></span> {}', obj.color, obj.color)
 
 
-class ShiftInline(admin.TabularInline):
+class ShiftInline(admin.StackedInline):
     model = Shift
     extra = 1
-    fields = ["role", "date", "start", "end", "capacity", "where", "details", "tags", "filled"]
+    fieldsets = [(None, {"fields": [
+        ("role", "date", "start", "end", "capacity", "filled"),
+        ("where", "where_es"),
+        ("details", "details_es"),
+        ("tags", "tags_es"),
+    ]})]
     readonly_fields = ["filled"]
-    formfield_overrides = {models.TextField: {"widget": forms.Textarea(attrs={"rows": 2, "cols": 32})}}
+    formfield_overrides = {models.TextField: {"widget": forms.Textarea(attrs={"rows": 2, "cols": 40})}}
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("role").with_taken()
 
-    @admin.display(description="Signed up")
+    @admin.display(description=_("Spots filled"))
     def filled(self, obj):
-        return f"{obj.taken} of {obj.capacity}" if obj.pk else "–"
+        return filled_text(obj.taken, obj.capacity) if obj.pk else "–"
 
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ["name", "dates", "is_open", "filled", "sign_up_page"]
     list_filter = ["is_open"]
-    search_fields = ["name"]
+    search_fields = ["name", "name_es"]
     prepopulated_fields = {"slug": ["name"]}
     inlines = [ShiftInline]
     fieldsets = [
-        (None, {"fields": ["name", "slug", "is_open", "intro"]}),
-        ("Where and when", {"fields": ["location", "location_url", "check_in", "good_to_know"]}),
-        ("Sign-up form", {"fields": ["ask_shirt_size", "ask_emergency_contact", "age_statement", "agreement_statement"]}),
+        (None, {"fields": [("name", "name_es"), "slug", "is_open", ("intro", "intro_es")],
+                "description": SIDE_BY_SIDE}),
+        (_("Where and when"), {"fields": [("location", "location_es"), "location_url", ("check_in", "check_in_es"),
+                                          ("good_to_know", "good_to_know_es")]}),
+        (_("Sign-up form"), {"fields": ["ask_shirt_size", "ask_emergency_contact", ("age_statement", "age_statement_es"),
+                                        ("agreement_statement", "agreement_statement_es")]}),
     ]
+    formfield_overrides = {models.TextField: {"widget": forms.Textarea(attrs={"rows": 4, "cols": 40})}}
 
-    @admin.display(description="Dates")
+    @admin.display(description=_("Dates"))
     def dates(self, obj):
-        return obj.date_range_text() or "No shifts yet"
+        return obj.date_range_text() or gettext("No shifts yet")
 
-    @admin.display(description="Spots filled")
+    @admin.display(description=_("Spots filled"))
     def filled(self, obj):
         shifts = obj.shifts.with_taken()
         taken = sum(min(s.taken, s.capacity) for s in shifts)
         total = sum(s.capacity for s in shifts)
-        return f"{taken} of {total}"
+        return filled_text(taken, total)
 
-    @admin.display(description="Sign-up page")
+    @admin.display(description=_("Sign-up page"))
     def sign_up_page(self, obj):
-        return format_html('<a href="{}" target="_blank" rel="noopener">Open</a>',
-                           reverse("volunteers:signup", args=[obj.slug]))
+        return format_html('<a href="{}" target="_blank" rel="noopener">{}</a>',
+                           reverse("volunteers:signup", args=[obj.slug]), gettext("Open"))
 
 
 class RosterInline(admin.TabularInline):
     model = Assignment
     extra = 0
-    fields = ["volunteer", "email", "phone", "signed_up", "cancelled"]
-    readonly_fields = ["volunteer", "email", "phone", "signed_up"]
-    verbose_name = "volunteer"
-    verbose_name_plural = "Roster"
+    fields = ["volunteer", "email", "phone", "language", "signed_up", "cancelled"]
+    readonly_fields = ["volunteer", "email", "phone", "language", "signed_up"]
+    verbose_name = _("volunteer")
+    verbose_name_plural = _("Roster")
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("signup")
@@ -111,22 +131,26 @@ class RosterInline(admin.TabularInline):
     def has_add_permission(self, request, obj=None):
         return False
 
-    @admin.display(description="Volunteer")
+    @admin.display(description=_("Volunteer"))
     def volunteer(self, obj):
         return format_html('<a href="{}">{}</a>',
                            reverse("admin:volunteers_signup_change", args=[obj.signup_id]), obj.signup.full_name)
 
-    @admin.display(description="Email")
+    @admin.display(description=_("Email"))
     def email(self, obj):
         return obj.signup.email
 
-    @admin.display(description="Phone")
+    @admin.display(description=_("Phone"))
     def phone(self, obj):
         return obj.signup.phone
 
-    @admin.display(description="Signed up")
+    @admin.display(description=_("Language"))
+    def language(self, obj):
+        return obj.signup.get_language_display()
+
+    @admin.display(description=_("Signed up"))
     def signed_up(self, obj):
-        return timezone.localtime(obj.created_at).strftime("%b %d, %I:%M %p")
+        return formats.date_format(timezone.localtime(obj.created_at), "SHORT_DATETIME_FORMAT")
 
 
 @admin.register(Shift)
@@ -134,17 +158,22 @@ class ShiftAdmin(admin.ModelAdmin):
     list_display = ["__str__", "event", "date", "start", "end", "filled"]
     list_filter = ["event", "role", "date"]
     list_select_related = ["role", "event"]
+    fieldsets = [
+        (None, {"fields": ["event", ("role", "date", "start", "end", "capacity")]}),
+        (_("What they’ll do"), {"fields": [("where", "where_es"), ("details", "details_es"), ("tags", "tags_es")],
+                                "description": SIDE_BY_SIDE}),
+    ]
     inlines = [RosterInline]
     actions = ["download_roster"]
 
     def get_queryset(self, request):
         return super().get_queryset(request).with_taken()
 
-    @admin.display(description="Signed up")
+    @admin.display(description=_("Spots filled"))
     def filled(self, obj):
-        return f"{obj.taken} of {obj.capacity}"
+        return filled_text(obj.taken, obj.capacity)
 
-    @admin.action(description="Download the roster for the selected shifts (CSV)")
+    @admin.action(description=_("Download the roster for the selected shifts (CSV)"))
     def download_roster(self, request, queryset):
         assignments = (Assignment.objects.filter(shift__in=queryset, cancelled=False)
                        .select_related("signup", "shift__role", "shift__event")
@@ -156,8 +185,8 @@ class SignupShiftsInline(admin.TabularInline):
     model = Assignment
     extra = 0
     fields = ["shift", "cancelled"]
-    verbose_name = "shift"
-    verbose_name_plural = "Shifts"
+    verbose_name = _("shift")
+    verbose_name_plural = _("Shifts")
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("shift__role")
@@ -165,12 +194,12 @@ class SignupShiftsInline(admin.TabularInline):
 
 @admin.register(Signup)
 class SignupAdmin(admin.ModelAdmin):
-    list_display = ["full_name", "email", "phone", "event", "shift_count", "created_at"]
-    list_filter = ["event", "created_at"]
+    list_display = ["full_name", "email", "phone", "event", "shift_count", "language", "created_at"]
+    list_filter = ["event", "language", "created_at"]
     search_fields = ["first_name", "last_name", "email", "phone"]
-    readonly_fields = ["created_at", "age_confirmed", "agreed"]
+    readonly_fields = ["created_at", "age_confirmed", "agreed", "language"]
     fields = ["event", "first_name", "last_name", "email", "phone", "shirt_size", "emergency_name",
-              "emergency_phone", "notes", "age_confirmed", "agreed", "created_at"]
+              "emergency_phone", "notes", "age_confirmed", "agreed", "language", "created_at"]
     inlines = [SignupShiftsInline]
     actions = ["download_csv"]
 
@@ -178,15 +207,15 @@ class SignupAdmin(admin.ModelAdmin):
         return super().get_queryset(request).select_related("event").annotate(
             n_shifts=Count("assignments", filter=Q(assignments__cancelled=False)))
 
-    @admin.display(description="Name", ordering="last_name")
+    @admin.display(description=_("Name"), ordering="last_name")
     def full_name(self, obj):
         return obj.full_name
 
-    @admin.display(description="Shifts", ordering="n_shifts")
+    @admin.display(description=_("Shifts"), ordering="n_shifts")
     def shift_count(self, obj):
         return obj.n_shifts
 
-    @admin.action(description="Download the selected sign-ups with their shifts (CSV)")
+    @admin.action(description=_("Download the selected sign-ups with their shifts (CSV)"))
     def download_csv(self, request, queryset):
         assignments = (Assignment.objects.filter(signup__in=queryset, cancelled=False)
                        .select_related("signup", "shift__role", "shift__event")

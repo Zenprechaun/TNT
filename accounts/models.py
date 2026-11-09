@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Role(models.Model):
@@ -13,7 +14,7 @@ class Role(models.Model):
 
     name = models.CharField(max_length=60, unique=True)
     slug = models.SlugField(
-        max_length=60, unique=True, help_text="Short name used in the code, such as admin or user."
+        max_length=60, unique=True, help_text=_("Short name used in the code, such as admin or user.")
     )
     description = models.CharField(max_length=200, blank=True)
 
@@ -22,6 +23,13 @@ class Role(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def display_name(self):
+        """The role's name in the visitor's language. Admin and User are translated; other roles show as named."""
+        built_in = {self.ADMIN: ("Admin", _("Admin")), self.USER: ("User", _("User"))}
+        original, translated = built_in.get(self.slug, (None, None))
+        return translated if self.name == original else self.name
 
     @property
     def is_built_in(self):
@@ -37,7 +45,7 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Profile for {self.user.get_username()}"
+        return _("Profile for %(username)s") % {"username": self.user.get_username()}
 
     def has_role(self, slug):
         return self.roles.filter(slug=slug).exists()

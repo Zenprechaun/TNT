@@ -1,6 +1,8 @@
 /* Tahoe Neighborhood Table: the login popup.
    "Log in" opens the popup. Without JavaScript, the same link opens the full login page. */
 (function () {
+  // Translations come from /jsi18n/ (Django's JavaScript catalog), loaded before this script.
+  var gettext = window.gettext || function (text) { return text; };
   var dialog = document.getElementById('login-dialog');
 
   if (dialog && typeof dialog.showModal === 'function') {
@@ -42,7 +44,7 @@
       event.preventDefault();
       error.hidden = true;
       submit.disabled = true;
-      submit.textContent = 'Logging in…';
+      submit.textContent = gettext('Logging in…');
       fetch(form.action, {
         method: 'POST',
         body: new FormData(form),
@@ -50,10 +52,10 @@
         credentials: 'same-origin'
       }).then(function (response) {
         if (response.status === 403) {
-          return { ok: false, message: 'This form has expired. Reload the page and try again.' };
+          return { ok: false, message: gettext('This form has expired. Reload the page and try again.') };
         }
         if (response.status === 429) {  // the live server limits repeated login attempts
-          return { ok: false, message: 'Too many tries. Wait a minute, then try again.' };
+          return { ok: false, message: gettext('Too many tries. Wait a minute, then try again.') };
         }
         return response.json().catch(function () { return { ok: false }; });
       }).then(function (data) {
@@ -61,9 +63,9 @@
           window.location.assign(data.redirect);
           return;
         }
-        showError((data && data.message) || 'Something went wrong. Try again.');
+        showError((data && data.message) || gettext('Something went wrong. Try again.'));
       }).catch(function () {
-        showError("Couldn't reach the website. Check your connection and try again.");
+        showError(gettext("Couldn't reach the website. Check your connection and try again."));
       });
     });
   });

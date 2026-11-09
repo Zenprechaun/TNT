@@ -13,6 +13,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme, urlencode
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
@@ -25,7 +27,7 @@ from .roles import dashboard_url_for, get_profile
 
 User = get_user_model()
 
-MISSING_DETAILS = "Enter your email or username and your password."
+MISSING_DETAILS = gettext_lazy("Enter your email or username and your password.")
 
 
 def _wants_json(request):
@@ -110,10 +112,10 @@ def admin_dashboard(request):
 
     since = timezone.now() - timedelta(days=30)
     stats = [
-        ("People", User.objects.count()),
-        ("Admins", User.objects.filter(profile__roles__slug=Role.ADMIN).distinct().count()),
-        ("Joined in the last 30 days", User.objects.filter(date_joined__gte=since).count()),
-        ("Signed in during the last 30 days", User.objects.filter(last_login__gte=since).count()),
+        (_("People"), User.objects.count()),
+        (_("Admins"), User.objects.filter(profile__roles__slug=Role.ADMIN).distinct().count()),
+        (_("Joined in the last 30 days"), User.objects.filter(date_joined__gte=since).count()),
+        (_("Signed in during the last 30 days"), User.objects.filter(last_login__gte=since).count()),
     ]
     return render(
         request,
@@ -132,15 +134,16 @@ def update_roles(request, user_id):
     form = RolesForm(request.POST)
 
     if not form.is_valid():
-        messages.error(request, f"Roles for {name} weren't changed. Choose at least one role.")
+        messages.error(request, _("Roles for %(name)s weren't changed. Choose at least one role.") % {"name": name})
     else:
         roles = list(form.cleaned_data["roles"])
         removes_own_admin = person.pk == request.user.pk and all(role.slug != Role.ADMIN for role in roles)
         if removes_own_admin:
-            messages.error(request, "You can't remove your own Admin role. Another admin can do that for you.")
+            messages.error(request, _("You can't remove your own Admin role. Another admin can do that for you."))
         else:
             profile.roles.set(roles)
-            messages.success(request, f"Saved roles for {name}: {', '.join(role.name for role in roles)}.")
+            role_names = ", ".join(str(role.display_name) for role in roles)
+            messages.success(request, _("Saved roles for %(name)s: %(roles)s.") % {"name": name, "roles": role_names})
 
     params = {key: request.POST[key] for key in ("q", "page") if request.POST.get(key)}
     url = reverse("accounts:admin_dashboard")

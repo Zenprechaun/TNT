@@ -2,11 +2,13 @@
    Same behavior as before. Each part now checks that its elements exist, so the
    script also runs on inner pages (like the volunteer page) that only have the footer. */
 (function(){
+  // Translations come from /jsi18n/ (Django's JavaScript catalog), loaded before this script.
+  var gettext=window.gettext||function(text){return text;};
   var SITE='https://tahoeneighborhoodtable.com';
   var LINES={
-    food:'We believe everyone deserves a seat at the table.',
-    warmth:'We believe everyone deserves a warm place to be.',
-    housing:'We believe everyone deserves a place to call home.'
+    food:gettext('We believe everyone deserves a seat at the table.'),
+    warmth:gettext('We believe everyone deserves a warm place to be.'),
+    housing:gettext('We believe everyone deserves a place to call home.')
   };
   var root=document.documentElement;
   var grid=document.getElementById('need-grid');
@@ -19,8 +21,8 @@
   var active=null;
 
   function message(){
-    var lead=active?LINES[active]:'Nourishing our community. Building hope.';
-    return lead+' Join Tahoe Neighborhood Table: '+SITE;
+    var lead=active?LINES[active]:gettext('Nourishing our community. Building hope.');
+    return lead+' '+gettext('Join Tahoe Neighborhood Table:')+' '+SITE;
   }
   function beat(id){
     var el=document.getElementById(id); if(!el) return;
@@ -114,12 +116,12 @@
     });
     var selectFallback=function(){
       shareText.focus();shareText.select();
-      shareStatus.textContent='Press Ctrl+C or ⌘C to copy the selected text.';
+      shareStatus.textContent=gettext('Press Ctrl+C or ⌘C to copy the selected text.');
     };
     document.getElementById('share-copy').addEventListener('click',function(){
       var text=shareText.value;
       if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).then(function(){shareStatus.textContent='Copied. Paste it anywhere.';},selectFallback);
+        navigator.clipboard.writeText(text).then(function(){shareStatus.textContent=gettext('Copied. Paste it anywhere.');},selectFallback);
       }else{selectFallback();}
     });
   }
@@ -133,16 +135,16 @@
     emailCopy.addEventListener('click',function(){
       function done(){
         emailStatus.className='vh';
-        emailStatus.textContent='Email address copied.';
-        emailCopy.textContent='Copied';
+        emailStatus.textContent=gettext('Email address copied.');
+        emailCopy.textContent=gettext('Copied');
         clearTimeout(emailTimer);
-        emailTimer=setTimeout(function(){emailCopy.textContent='Copy';emailStatus.textContent='';},2200);
+        emailTimer=setTimeout(function(){emailCopy.textContent=gettext('Copy');emailStatus.textContent='';},2200);
       }
       function fail(){
         var range=document.createRange(),sel=getSelection();
         range.selectNodeContents(emailLink);sel.removeAllRanges();sel.addRange(range);
         emailStatus.className='band__email-status';
-        emailStatus.textContent='Press Ctrl+C or ⌘C to copy the selected address.';
+        emailStatus.textContent=gettext('Press Ctrl+C or ⌘C to copy the selected address.');
       }
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(emailLink.textContent).then(done,fail);}
       else{fail();}

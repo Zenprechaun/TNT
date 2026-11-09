@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}No access · Tahoe Neighborhood Table{% endblock %}
+{% load static i18n %}
+{% block title %}{% translate "No access" %} · Tahoe Neighborhood Table{% endblock %}
 {% block login_dialog %}{% endblock %}
 {% block body %}
 <main class="auth-page">
+  <div class="auth-lang">{% include "_language_switch.html" %}</div>
   <div class="auth-card">
     <div class="login__panel">
       <img class="login__emblem" src="{% static 'site/img/emblem.webp' %}" alt="" width="760" height="910">
-      <h1 class="login__title">This page needs a different role</h1>
-      <p class="login__lede">Your account doesn't have the role this page needs. If you think it should, ask an admin.</p>
-      <a class="login-form__submit" href="{% url 'accounts:dashboard' %}">Go to your dashboard</a>
+      <h1 class="login__title">{% translate "This page needs a different role" %}</h1>
+      <p class="login__lede">{% translate "Your account doesn’t have the role this page needs. If you think it should, ask an admin." %}</p>
+      <a class="login-form__submit" href="{% url 'accounts:dashboard' %}">{% translate "Go to your dashboard" %}</a>
     </div>
   </div>
-  <a class="auth-back" href="{% url 'pages:home' %}">Back to the website</a>
+  <a class="auth-back" href="{% url 'pages:home' %}">{% translate "Back to the website" %}</a>
 </main>
 {% endblock %}

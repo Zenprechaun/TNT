@@ -1,31 +1,31 @@
-<div class="vol-sheet" data-vol-sheet>
+{% load i18n %}<div class="vol-sheet" data-vol-sheet>
 {% for day in vol.days %}
   <section class="vol-day" aria-labelledby="vol-day-{{ forloop.counter }}">
     <{{ hs }} class="vol-day__title" id="vol-day-{{ forloop.counter }}">{{ day.label }}</{{ hs }}>
     <ul class="vol-shifts">
     {% for row in day.rows %}{% with s=row.shift %}
       <li class="vol-shift{% if row.started or row.full and not row.selected %} is-off{% endif %}{% if row.selected %} is-picked{% endif %}"
-          data-id="{{ s.pk }}" data-role="{{ s.role_id }}" data-role-name="{{ s.role.name }}" data-color="{{ s.role.color }}"
+          data-id="{{ s.pk }}" data-role="{{ s.role_id }}" data-role-name="{{ s.role.local.name }}" data-color="{{ s.role.color }}"
           data-from="{{ row.from_min }}" data-to="{{ row.to_min }}" data-minutes="{{ s.minutes }}"
           data-capacity="{{ s.capacity }}" data-taken="{{ row.taken }}" data-started="{{ row.started|yesno:'1,0' }}"
-          data-day="{{ day.label }}" data-short-day="{{ s.date|date:'D, M j' }}" data-time="{{ s.time_range }}"
-          data-start-time="{{ s.start|time:'g:i A' }}" data-where="{{ s.where }}" data-gcal="{{ row.gcal }}">
+          data-day="{{ day.label }}" data-short-day="{{ s.short_day_text }}" data-time="{{ s.time_range }}"
+          data-start-time="{{ s.start_text }}" data-where="{{ s.local.where }}" data-gcal="{{ row.gcal }}">
         <label class="vol-hit" for="vol-shift-{{ s.pk }}">
           <span class="vol-time" id="vol-time-{{ s.pk }}">
             <span class="vol-sr">{{ day.label }}, </span>
-            <span class="vol-time__start">{{ s.start|time:"g:i A" }}</span>
-            <span class="vol-time__end">to {{ s.end|time:"g:i A" }}</span>
+            <span class="vol-time__start">{{ s.start_text }}</span>
+            <span class="vol-time__end">{% blocktranslate trimmed with end=s.end_text %}to {{ end }}{% endblocktranslate %}</span>
             <span class="vol-time__dur">{{ s.duration_text }}</span>
           </span>
           <span class="vol-what">
-            <span class="vol-role" id="vol-role-{{ s.pk }}"><span class="vol-dot" style="--role: {{ s.role.color }}" aria-hidden="true"></span>{{ s.role.name }}</span>
-            {% if s.where %}<span class="vol-where">{{ s.where }}</span>{% endif %}
-            {% if s.details %}<span class="vol-desc">{{ s.details }}</span>{% endif %}
+            <span class="vol-role" id="vol-role-{{ s.pk }}"><span class="vol-dot" style="--role: {{ s.role.color }}" aria-hidden="true"></span>{{ s.role.local.name }}</span>
+            {% if s.local.where %}<span class="vol-where">{{ s.local.where }}</span>{% endif %}
+            {% if s.local.details %}<span class="vol-desc">{{ s.local.details }}</span>{% endif %}
             {% if s.tag_list %}<span class="vol-tags">{% for tag in s.tag_list %}<span class="vol-tag">{{ tag }}</span>{% endfor %}</span>{% endif %}
           </span>
           <span class="vol-spots">
             <span class="vol-slots" aria-hidden="true">{% if row.slots %}{% for i in row.slots %}<span class="vol-slot{% if i < row.taken %} is-taken{% endif %}"></span>{% endfor %}{% else %}<span class="vol-meter"><span class="vol-meter__taken" style="width: {{ row.taken_pct }}%"></span></span>{% endif %}</span>
-            <span class="vol-left" id="vol-left-{{ s.pk }}">{% if row.started %}Already started{% elif row.full %}Full{% else %}{{ row.left }} of {{ s.capacity }} spot{{ s.capacity|pluralize }} left{% endif %}</span>
+            <span class="vol-left" id="vol-left-{{ s.pk }}">{% if row.started %}{% translate "Already started" %}{% elif row.full %}{% translate "Full" %}{% else %}{% blocktranslate trimmed count total=s.capacity with left=row.left %}{{ left }} of {{ total }} spot left{% plural %}{{ left }} of {{ total }} spots left{% endblocktranslate %}{% endif %}</span>
             <span class="vol-why" id="vol-why-{{ s.pk }}" hidden></span>
           </span>
           <span class="vol-check">
@@ -39,7 +39,7 @@
     </ul>
   </section>
 {% empty %}
-  <p class="vol-empty">No shifts are posted yet. Check back soon.</p>
+  <p class="vol-empty">{% translate "No shifts are posted yet. Check back soon." %}</p>
 {% endfor %}
-  <p class="vol-empty" data-vol-empty hidden>No shifts to show. Pick another role, or show full shifts too.</p>
+  <p class="vol-empty" data-vol-empty hidden>{% translate "No shifts to show. Pick another role, or show full shifts too." %}</p>
 </div>

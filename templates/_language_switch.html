@@ -1,0 +1,11 @@
+{% load i18n %}{% get_current_language as current %}{% comment %}
+  The English/Spanish switch. It posts to Django's set_language view, which remembers the
+  choice in a cookie and returns to the same page in the other language.
+  Pass dark=True on navy backgrounds.
+{% endcomment %}<form class="lang-switch{% if dark %} lang-switch--dark{% endif %}" action="{% url 'set_language' %}" method="post">
+  {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <span class="lang-switch__group" role="group" aria-label="{% translate 'Language' %}">
+    <button class="lang-switch__btn" type="submit" name="language" value="en" lang="en" title="English" aria-pressed="{% if current == 'es' %}false{% else %}true{% endif %}"><span aria-hidden="true">EN</span><span class="vh">English</span></button>
+    <button class="lang-switch__btn" type="submit" name="language" value="es" lang="es" title="Español" aria-pressed="{% if current == 'es' %}true{% else %}false{% endif %}"><span aria-hidden="true">ES</span><span class="vh">Español</span></button>
+  </span>
+</form>

@@ -1,12 +1,12 @@
-{% load static %}
+{% load static i18n %}
 <dialog class="login" id="login-dialog" aria-labelledby="login-title">
   <div class="login__panel">
-    <button class="login__close" type="button" data-login-close aria-label="Close">
+    <button class="login__close" type="button" data-login-close aria-label="{% translate "Close" %}">
       <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg>
     </button>
     <img class="login__emblem" src="{% static 'site/img/emblem.webp' %}" alt="" width="760" height="910">
-    <h2 class="login__title" id="login-title">Log in</h2>
-    <p class="login__lede">Welcome back to Tahoe Neighborhood Table.</p>
+    <h2 class="login__title" id="login-title">{% translate "Log in" %}</h2>
+    <p class="login__lede">{% translate "Welcome back to Tahoe Neighborhood Table." %}</p>
     {% include "accounts/_login_form.html" with prefix="popup" %}
   </div>
 </dialog>

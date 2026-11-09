@@ -6,6 +6,8 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Count
 from django.template.loader import render_to_string
+from django.utils import translation
+from django.utils.translation import gettext
 
 from .models import Assignment, Shift
 
@@ -65,22 +67,27 @@ def send_emails(signup_id):
         "contact_email": settings.VOLUNTEER_CONTACT_EMAIL,
     }
     if settings.VOLUNTEER_SEND_CONFIRMATION:
+        # The volunteer's email is in the language they signed up in.
         try:
-            send_mail(
-                f"You’re signed up: {signup.event.name}",
-                render_to_string("volunteers/email/confirmation.txt", context),
-                settings.DEFAULT_FROM_EMAIL,
-                [signup.email],
-            )
+            with translation.override(signup.language):
+                send_mail(
+                    gettext("You’re signed up: %(event)s") % {"event": signup.event.local.name},
+                    render_to_string("volunteers/email/confirmation.txt", context),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [signup.email],
+                )
         except Exception:
             log.exception("Couldn't send the confirmation email for sign-up %s", signup.pk)
     if settings.VOLUNTEER_NOTIFY_EMAILS:
+        # Organizers get theirs in the site's main language.
         try:
-            send_mail(
-                f"New volunteer: {signup.full_name} ({signup.event.name})",
-                render_to_string("volunteers/email/organizer.txt", context),
-                settings.DEFAULT_FROM_EMAIL,
-                settings.VOLUNTEER_NOTIFY_EMAILS,
-            )
+            with translation.override(settings.LANGUAGE_CODE):
+                send_mail(
+                    gettext("New volunteer: %(name)s (%(event)s)") % {
+                        "name": signup.full_name, "event": signup.event.local.name},
+                    render_to_string("volunteers/email/organizer.txt", context),
+                    settings.DEFAULT_FROM_EMAIL,
+                    settings.VOLUNTEER_NOTIFY_EMAILS,
+                )
         except Exception:
             log.exception("Couldn't send the organizer email for sign-up %s", signup.pk)

@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext, ngettext
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_GET, require_http_methods
 
@@ -98,13 +99,15 @@ def unavailable_problem(exc):
     parts = []
     if exc.full:
         names = "; ".join(shift_name(s) for s in exc.full)
-        parts.append(f"{names} filled up while you were signing up.")
+        parts.append(gettext("%(shifts)s filled up while you were signing up.") % {"shifts": names})
     if exc.already:
         names = "; ".join(shift_name(s) for s in exc.already)
-        parts.append(f"You’re already signed up for {names} with this email.")
+        parts.append(gettext("You’re already signed up for %(shifts)s with this email.") % {"shifts": names})
     count = len(exc.full) + len(exc.already)
-    parts.append(f"We took {'it' if count == 1 else 'them'} off this sign-up. Check your shifts and confirm again.")
-    title = "A shift is no longer available" if count == 1 else "Some shifts are no longer available"
+    parts.append(ngettext(
+        "We took it off this sign-up. Check your shifts and confirm again.",
+        "We took them off this sign-up. Check your shifts and confirm again.", count))
+    title = ngettext("A shift is no longer available", "Some shifts are no longer available", count)
     return {"title": title, "text": " ".join(parts)}
 
 
@@ -119,8 +122,8 @@ def confirmation_payload(signup):
             "id": s.pk,
             "day": long_day(s.date),
             "time": s.time_range,
-            "role": s.role.name,
-            "where": s.where,
+            "role": s.role.local.name,
+            "where": s.local.where,
             "color": s.role.color,
             "gcal": calendar.google_link(s),
         } for s in shifts],
@@ -148,8 +151,8 @@ def signup(request, slug):
         if request.method == "GET" and can_preview(request):
             return render(request, "volunteers/signup_page.html", signup_context(event, request=request))
         if wants_json:
-            return JsonResponse({"ok": False, "error": "closed", "title": "Sign-ups are closed",
-                                 "message": "Sign-ups for this event are closed."}, status=409)
+            return JsonResponse({"ok": False, "error": "closed", "title": gettext("Sign-ups are closed"),
+                                 "message": gettext("Sign-ups for this event are closed.")}, status=409)
         return render(request, "volunteers/closed.html",
                       {"event": event, "contact_email": settings.VOLUNTEER_CONTACT_EMAIL})
 

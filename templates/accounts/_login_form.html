@@ -1,19 +1,19 @@
-<form class="login-form" method="post" action="{% url 'accounts:login' %}" data-login-form>
+{% load i18n %}<form class="login-form" method="post" action="{% url 'accounts:login' %}" data-login-form>
   {% csrf_token %}
   {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
   <p class="login-form__error" role="alert" data-login-error{% if not error %} hidden{% endif %}>{{ error }}</p>
   <div class="field">
-    <label for="{{ prefix }}-username">Email or username</label>
+    <label for="{{ prefix }}-username">{% translate "Email or username" %}</label>
     <input id="{{ prefix }}-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="254" required value="{{ form.username.value|default_if_none:'' }}">
   </div>
   <div class="field">
-    <label for="{{ prefix }}-password">Password</label>
+    <label for="{{ prefix }}-password">{% translate "Password" %}</label>
     <input id="{{ prefix }}-password" name="password" type="password" autocomplete="current-password" required>
   </div>
   <label class="check" for="{{ prefix }}-remember">
     <input id="{{ prefix }}-remember" name="remember" type="checkbox" value="1"{% if form.remember.value %} checked{% endif %}>
-    Keep me signed in
+    {% translate "Keep me signed in" %}
   </label>
-  <button class="login-form__submit" type="submit" data-login-submit>Log in</button>
-  <p class="login-form__help">Trouble logging in? Email <span class="nowrap">{{ site_email }}</span>.</p>
+  <button class="login-form__submit" type="submit" data-login-submit>{% translate "Log in" %}</button>
+  <p class="login-form__help">{% blocktranslate trimmed with email=site_email %}Trouble logging in? Email <span class="nowrap">{{ email }}</span>.{% endblocktranslate %}</p>
 </form>

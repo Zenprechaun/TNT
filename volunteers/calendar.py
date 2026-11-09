@@ -4,6 +4,7 @@ from urllib.parse import urlencode
 
 from django.conf import settings
 from django.utils import timezone
+from django.utils.translation import gettext
 
 
 def stamp(dt):
@@ -11,15 +12,17 @@ def stamp(dt):
 
 
 def title(shift):
-    return f"Volunteer: {shift.role.name}, {shift.event.name}"
+    return gettext("Volunteer: %(role)s, %(event)s") % {"role": shift.role.local.name, "event": shift.event.local.name}
 
 
 def details(shift):
+    role, where = shift.role.local.name, shift.local.where
     parts = [
-        f"{shift.role.name}, {shift.where}" if shift.where else shift.role.name,
-        shift.details,
-        shift.event.check_in,
-        f"Questions: {settings.VOLUNTEER_CONTACT_EMAIL}" if settings.VOLUNTEER_CONTACT_EMAIL else "",
+        f"{role}, {where}" if where else role,
+        shift.local.details,
+        shift.event.local.check_in,
+        gettext("Questions: %(email)s") % {"email": settings.VOLUNTEER_CONTACT_EMAIL}
+        if settings.VOLUNTEER_CONTACT_EMAIL else "",
     ]
     return "\n\n".join(p for p in parts if p)
 
@@ -30,7 +33,7 @@ def google_link(shift):
         "text": title(shift),
         "dates": f"{stamp(shift.starts_at)}/{stamp(shift.ends_at)}",
         "details": details(shift),
-        "location": shift.event.location,
+        "location": shift.event.local.location,
     })
     return f"https://calendar.google.com/calendar/render?{query}"
 
@@ -67,8 +70,8 @@ def ics(signup, shifts):
             f"DTEND:{stamp(shift.ends_at)}",
             f"SUMMARY:{_escape(title(shift))}",
         ]
-        if shift.event.location:
-            lines.append(f"LOCATION:{_escape(shift.event.location)}")
+        if shift.event.local.location:
+            lines.append(f"LOCATION:{_escape(shift.event.local.location)}")
         lines += [f"DESCRIPTION:{_escape(details(shift))}", "END:VEVENT"]
     lines.append("END:VCALENDAR")
     return "\r\n".join(_fold(line) for line in lines) + "\r\n"

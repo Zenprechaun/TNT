@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}Log in · Tahoe Neighborhood Table{% endblock %}
+{% load static i18n %}
+{% block title %}{% translate "Log in" %} · Tahoe Neighborhood Table{% endblock %}
 {% block login_dialog %}{% endblock %}
 {% block body %}
 <main class="auth-page">
+  <div class="auth-lang">{% include "_language_switch.html" %}</div>
   <div class="auth-card">
     <div class="login__panel">
-      <a href="{% url 'pages:home' %}"><img class="login__emblem" src="{% static 'site/img/emblem.webp' %}" alt="Tahoe Neighborhood Table home" width="760" height="910"></a>
-      <h1 class="login__title">Log in</h1>
-      <p class="login__lede">Welcome back to Tahoe Neighborhood Table.</p>
+      <a href="{% url 'pages:home' %}"><img class="login__emblem" src="{% static 'site/img/emblem.webp' %}" alt="{% translate "Tahoe Neighborhood Table home" %}" width="760" height="910"></a>
+      <h1 class="login__title">{% translate "Log in" %}</h1>
+      <p class="login__lede">{% translate "Welcome back to Tahoe Neighborhood Table." %}</p>
       {% include "accounts/_login_form.html" with prefix="page" %}
     </div>
   </div>
-  <a class="auth-back" href="{% url 'pages:home' %}">Back to the website</a>
+  <a class="auth-back" href="{% url 'pages:home' %}">{% translate "Back to the website" %}</a>
 </main>
 {% endblock %}

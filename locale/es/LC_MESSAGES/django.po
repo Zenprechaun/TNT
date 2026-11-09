@@ -1,0 +1,1369 @@
+# Spanish text for the Tahoe Neighborhood Table website.
+# Keep this file up to date with: python manage.py translations update
+msgid ""
+msgstr ""
+"Project-Id-Version: Tahoe Neighborhood Table\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: accounts/admin.py
+#: accounts/views.py
+msgid "People"
+msgstr "Personas"
+
+#: accounts/admin.py
+#: templates/accounts/dashboard_admin.html
+#: templates/accounts/dashboard_user.html
+msgid "Roles"
+msgstr "Roles"
+
+#: accounts/admin.py
+msgid "Personal info"
+msgstr "Información personal"
+
+#: accounts/admin.py
+msgid "Status"
+msgstr "Estado"
+
+#: accounts/admin.py
+msgid "Important dates"
+msgstr "Fechas importantes"
+
+#: accounts/apps.py
+#: templates/accounts/dashboard_admin.html
+msgid "People and roles"
+msgstr "Personas y roles"
+
+#: accounts/forms.py
+#: templates/accounts/_login_form.html
+msgid "Keep me signed in"
+msgstr "Mantener la sesión iniciada"
+
+#: accounts/forms.py
+msgid "That email, username or password isn't right. Check them and try again."
+msgstr "El correo electrónico, el nombre de usuario o la contraseña no son correctos. Revíselos e inténtelo de nuevo."
+
+#: accounts/forms.py
+msgid "This account is turned off. Ask an admin to turn it back on."
+msgstr "Esta cuenta está desactivada. Pídale a un administrador que la vuelva a activar."
+
+#: accounts/forms.py
+#: templates/accounts/_login_form.html
+msgid "Email or username"
+msgstr "Correo electrónico o nombre de usuario"
+
+#: accounts/forms.py
+msgid "Choose at least one role."
+msgstr "Elija al menos un rol."
+
+#: accounts/models.py
+msgid "Short name used in the code, such as admin or user."
+msgstr "Nombre corto que se usa en el código, como admin o user."
+
+#: accounts/models.py
+msgid "Admin"
+msgstr "Administrador"
+
+#: accounts/models.py
+msgid "User"
+msgstr "Usuario"
+
+#: accounts/models.py
+#, python-format
+msgid "Profile for %(username)s"
+msgstr "Perfil de %(username)s"
+
+#: accounts/views.py
+msgid "Enter your email or username and your password."
+msgstr "Escriba su correo electrónico o nombre de usuario y su contraseña."
+
+#: accounts/views.py
+msgid "Admins"
+msgstr "Administradores"
+
+#: accounts/views.py
+msgid "Joined in the last 30 days"
+msgstr "Se unieron en los últimos 30 días"
+
+#: accounts/views.py
+msgid "Signed in during the last 30 days"
+msgstr "Iniciaron sesión en los últimos 30 días"
+
+#: accounts/views.py
+#, python-format
+msgid "Roles for %(name)s weren't changed. Choose at least one role."
+msgstr "No se cambiaron los roles de %(name)s. Elija al menos un rol."
+
+#: accounts/views.py
+msgid "You can't remove your own Admin role. Another admin can do that for you."
+msgstr "No puede quitarse su propio rol de Administrador. Otro administrador puede hacerlo por usted."
+
+#: accounts/views.py
+#, python-format
+msgid "Saved roles for %(name)s: %(roles)s."
+msgstr "Se guardaron los roles de %(name)s: %(roles)s."
+
+#: tahoetable/urls.py
+msgid "Tahoe Neighborhood Table admin"
+msgstr "Administración de Tahoe Neighborhood Table"
+
+#: tahoetable/urls.py
+msgid "Site administration"
+msgstr "Administración del sitio"
+
+#: templates/403.html
+msgid "No access"
+msgstr "Sin acceso"
+
+#: templates/403.html
+msgid "This page needs a different role"
+msgstr "Esta página requiere otro rol"
+
+#: templates/403.html
+msgid "Your account doesn’t have the role this page needs. If you think it should, ask an admin."
+msgstr "Su cuenta no tiene el rol que requiere esta página. Si cree que debería tenerlo, pregúntele a un administrador."
+
+#: templates/403.html
+msgid "Go to your dashboard"
+msgstr "Ir a su panel"
+
+#: templates/403.html
+#: templates/accounts/login.html
+msgid "Back to the website"
+msgstr "Volver al sitio web"
+
+#: templates/404.html
+msgid "Page not found"
+msgstr "Página no encontrada"
+
+#: templates/404.html
+msgid "We couldn’t find that page"
+msgstr "No encontramos esa página"
+
+#: templates/404.html
+msgid "The link may be out of date, or the address may have a typo."
+msgstr "Es posible que el enlace sea antiguo o que la dirección tenga un error."
+
+#: templates/404.html
+#: templates/500.html
+msgid "Go to the home page"
+msgstr "Ir a la página de inicio"
+
+#: templates/500.html
+msgid "Something went wrong"
+msgstr "Algo salió mal"
+
+#: templates/500.html
+msgid "The website hit a problem. Try again in a few minutes. If it keeps happening, email info@tahoeneighborhoodtable.com."
+msgstr "El sitio web tuvo un problema. Inténtelo de nuevo en unos minutos. Si sigue ocurriendo, escriba a info@tahoeneighborhoodtable.com."
+
+#: templates/_language_switch.html
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Language"
+msgstr "Idioma"
+
+#: templates/accounts/_account_controls.html
+#: templates/accounts/dashboard_base.html
+msgid "Account"
+msgstr "Cuenta"
+
+#: templates/accounts/_account_controls.html
+#, python-format
+msgid "Hi, %(name)s"
+msgstr "Hola, %(name)s"
+
+#: templates/accounts/_account_controls.html
+msgid "Dashboard"
+msgstr "Panel"
+
+#: templates/accounts/_account_controls.html
+#: templates/accounts/dashboard_base.html
+msgid "Log out"
+msgstr "Cerrar sesión"
+
+#: templates/accounts/_account_controls.html
+#: templates/accounts/_login_dialog.html
+#: templates/accounts/_login_form.html
+#: templates/accounts/login.html
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+#: templates/accounts/_login_dialog.html
+#: volunteers/templates/volunteers/_widget.html
+#: volunteers/templates/volunteers/dialog.html
+msgid "Close"
+msgstr "Cerrar"
+
+#: templates/accounts/_login_dialog.html
+#: templates/accounts/login.html
+msgid "Welcome back to Tahoe Neighborhood Table."
+msgstr "Le damos la bienvenida de nuevo a Tahoe Neighborhood Table."
+
+#: templates/accounts/_login_form.html
+msgid "Password"
+msgstr "Contraseña"
+
+#: templates/accounts/_login_form.html
+#, python-format
+msgid "Trouble logging in? Email <span class=\"nowrap\">%(email)s</span>."
+msgstr "¿Problemas para iniciar sesión? Escriba a <span class=\"nowrap\">%(email)s</span>."
+
+#: templates/accounts/dashboard_admin.html
+#: templates/accounts/dashboard_base.html
+msgid "Admin's Dashboard"
+msgstr "Panel de administración"
+
+#: templates/accounts/dashboard_admin.html
+#: templates/accounts/dashboard_user.html
+#, python-format
+msgid "Welcome, %(name)s"
+msgstr "Hola, %(name)s"
+
+#: templates/accounts/dashboard_admin.html
+msgid "See who can sign in, and choose the roles each person has."
+msgstr "Vea quién puede iniciar sesión y elija los roles de cada persona."
+
+#: templates/accounts/dashboard_admin.html
+msgid "Add a person"
+msgstr "Agregar una persona"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Open the full admin site"
+msgstr "Abrir el sitio de administración completo"
+
+#: templates/accounts/dashboard_admin.html
+msgid "People at a glance"
+msgstr "Personas de un vistazo"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Search people"
+msgstr "Buscar personas"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Search by name, username or email"
+msgstr "Buscar por nombre, usuario o correo electrónico"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Search"
+msgstr "Buscar"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Clear"
+msgstr "Borrar"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Person"
+msgstr "Persona"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Last signed in"
+msgstr "Último inicio de sesión"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Joined"
+msgstr "Se unió"
+
+#: templates/accounts/dashboard_admin.html
+msgid "You"
+msgstr "Usted"
+
+#: templates/accounts/dashboard_admin.html
+#, python-format
+msgid "Roles for %(username)s"
+msgstr "Roles de %(username)s"
+
+#: templates/accounts/dashboard_admin.html
+msgid "You can't remove your own Admin role"
+msgstr "No puede quitarse su propio rol de Administrador"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Never"
+msgstr "Nunca"
+
+#: templates/accounts/dashboard_admin.html
+#, python-format
+msgid "No one matches “%(query)s”."
+msgstr "Nadie coincide con “%(query)s”."
+
+#: templates/accounts/dashboard_admin.html
+msgid "Pages of people"
+msgstr "Páginas de personas"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Previous"
+msgstr "Anterior"
+
+#: templates/accounts/dashboard_admin.html
+#, python-format
+msgid "Page %(number)s of %(total)s"
+msgstr "Página %(number)s de %(total)s"
+
+#: templates/accounts/dashboard_admin.html
+msgid "Next"
+msgstr "Siguiente"
+
+#: templates/accounts/dashboard_base.html
+#: templates/accounts/dashboard_user.html
+msgid "User's Dashboard"
+msgstr "Panel de usuario"
+
+#: templates/accounts/dashboard_base.html
+#: volunteers/apps.py
+msgid "Volunteers"
+msgstr "Voluntariado"
+
+#: templates/accounts/dashboard_base.html
+msgid "View site"
+msgstr "Ver el sitio"
+
+#: templates/accounts/dashboard_user.html
+msgid "Thanks for being part of Tahoe Neighborhood Table."
+msgstr "Gracias por ser parte de Tahoe Neighborhood Table."
+
+#: templates/accounts/dashboard_user.html
+msgid "Your account"
+msgstr "Su cuenta"
+
+#: templates/accounts/dashboard_user.html
+msgid "Not added yet"
+msgstr "Aún no se ha agregado"
+
+#: templates/accounts/dashboard_user.html
+#: volunteers/admin.py
+#: volunteers/forms.py
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/accounts/dashboard_user.html
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: templates/accounts/dashboard_user.html
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: templates/accounts/dashboard_user.html
+msgid "No roles yet"
+msgstr "Aún no tiene roles"
+
+#: templates/accounts/dashboard_user.html
+msgid "Member since"
+msgstr "Miembro desde"
+
+#: templates/accounts/dashboard_user.html
+msgid "Together, we can make a difference"
+msgstr "Juntos podemos marcar la diferencia"
+
+#: templates/accounts/dashboard_user.html
+msgid "Help your neighbors with food, warmth and housing."
+msgstr "Ayude a sus vecinos con comida, abrigo y vivienda."
+
+#: templates/accounts/dashboard_user.html
+#: templates/pages/_band.html
+msgid "Donating to Tahoe Neighborhood Table"
+msgstr "Donación a Tahoe Neighborhood Table"
+
+#: templates/accounts/dashboard_user.html
+#: templates/pages/_band.html
+msgid "Donate"
+msgstr "Donar"
+
+#: templates/accounts/dashboard_user.html
+#: templates/pages/_band.html
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/closed.html
+#: volunteers/templates/volunteers/signup_page.html
+msgid "Volunteer"
+msgstr "Voluntariado"
+
+#: templates/accounts/dashboard_user.html
+#, python-format
+msgid "To change your name, email or password, email <span class=\"nowrap\">%(email)s</span>."
+msgstr "Para cambiar su nombre, correo electrónico o contraseña, escriba a <span class=\"nowrap\">%(email)s</span>."
+
+#: templates/accounts/login.html
+msgid "Tahoe Neighborhood Table home"
+msgstr "Inicio de Tahoe Neighborhood Table"
+
+#: templates/base.html
+msgid "Tahoe Neighborhood Table. Nourishing our community. Building hope. Outreach to those in need of food, warmth and housing."
+msgstr "Tahoe Neighborhood Table. Alimentando a nuestra comunidad. Construyendo esperanza. Apoyo para quienes necesitan comida, abrigo y vivienda."
+
+#: templates/pages/_band.html
+msgid "Together, we can make a difference."
+msgstr "Juntos podemos marcar la diferencia."
+
+#: templates/pages/_band.html
+msgid "Share"
+msgstr "Compartir"
+
+#: templates/pages/_band.html
+msgid "Copy this and send it to a neighbor"
+msgstr "Copie esto y envíeselo a un vecino"
+
+#: templates/pages/_band.html
+msgid "Copy message"
+msgstr "Copiar mensaje"
+
+#: templates/pages/_band.html
+msgid "Copy email address"
+msgstr "Copiar el correo electrónico"
+
+#: templates/pages/_band.html
+msgid "Copy"
+msgstr "Copiar"
+
+#: templates/pages/_band.html
+#: volunteers/templates/volunteers/email/confirmation.txt
+msgid "Our neighbors."
+msgstr "Nuestros vecinos."
+
+#: templates/pages/_band.html
+#: volunteers/templates/volunteers/email/confirmation.txt
+msgid "Our community."
+msgstr "Nuestra comunidad."
+
+#: templates/pages/_band.html
+#: volunteers/templates/volunteers/email/confirmation.txt
+msgid "Our table."
+msgstr "Nuestra mesa."
+
+#: templates/pages/_masthead.html
+msgid "Tahoe Neighborhood Table emblem: a round table set with soup, bread, salad and wildflowers, with pines, a lake and a snow-capped mountain behind it."
+msgstr "Emblema de Tahoe Neighborhood Table: una mesa redonda servida con sopa, pan, ensalada y flores silvestres, con pinos, un lago y una montaña nevada detrás."
+
+#: templates/pages/_masthead.html
+msgid "Tahoe Neighborhood Table, home page"
+msgstr "Tahoe Neighborhood Table, página de inicio"
+
+#: templates/pages/_masthead.html
+msgid "Nourishing our community."
+msgstr "Alimentando a nuestra comunidad."
+
+#: templates/pages/_masthead.html
+msgid "Building hope."
+msgstr "Construyendo esperanza."
+
+#: templates/pages/home.html
+msgid "Nourishing our community. Building hope. Outreach to those in need of food, warmth and housing."
+msgstr "Alimentando a nuestra comunidad. Construyendo esperanza. Apoyo para quienes necesitan comida, abrigo y vivienda."
+
+#: templates/pages/home.html
+msgid "Outreach to those in need of"
+msgstr "Apoyo para quienes necesitan"
+
+#: templates/pages/home.html
+msgid "Food: everyone deserves a seat at the table. Plays the Tahoe Community Thanksgiving video."
+msgstr "Comida: todos merecen un asiento en la mesa. Reproduce el video del Día de Acción de Gracias Comunitario de Tahoe."
+
+#: templates/pages/home.html
+msgid "Food"
+msgstr "Comida"
+
+#: templates/pages/home.html
+msgid "Two pairs of hands passing a warm bowl of soup"
+msgstr "Dos pares de manos que se pasan un tazón de sopa caliente"
+
+#: templates/pages/home.html
+msgid "Everyone deserves"
+msgstr "Todos merecen"
+
+#: templates/pages/home.html
+msgid "a seat at the table"
+msgstr "un asiento en la mesa"
+
+#: templates/pages/home.html
+msgid "Warmth: everyone deserves a warm place to be"
+msgstr "Abrigo: todos merecen un lugar cálido donde estar"
+
+#: templates/pages/home.html
+msgid "Warmth"
+msgstr "Abrigo"
+
+#: templates/pages/home.html
+msgid "A folded stack of knit blankets with a blue beanie and a striped scarf"
+msgstr "Una pila de cobijas tejidas y dobladas, con un gorro azul y una bufanda a rayas"
+
+#: templates/pages/home.html
+msgid "a warm place to be"
+msgstr "un lugar cálido donde estar"
+
+#: templates/pages/home.html
+msgid "Housing: everyone deserves a place to call home"
+msgstr "Vivienda: todos merecen un lugar al que llamar hogar"
+
+#: templates/pages/home.html
+msgid "Housing"
+msgstr "Vivienda"
+
+#: templates/pages/home.html
+msgid "Cupped hands holding a small cutout of a house"
+msgstr "Manos ahuecadas que sostienen una casita de papel recortada"
+
+#: templates/pages/home.html
+msgid "a place to call home"
+msgstr "un lugar al que llamar hogar"
+
+#: templates/pages/home.html
+msgid "What we believe"
+msgstr "Lo que creemos"
+
+#: templates/pages/home.html
+#, python-format
+msgid "We believe everyone deserves <span class=\"nb\">%(seat)s,</span><br class=\"belief__br\"> <span class=\"nb\">%(warm)s,</span> and <span class=\"nb\">%(home)s.</span>"
+msgstr "Creemos que todos merecen <span class=\"nb\">%(seat)s,</span><br class=\"belief__br\"> <span class=\"nb\">%(warm)s</span> y <span class=\"nb\">%(home)s.</span>"
+
+#: templates/pages/home.html
+msgid "Tahoe Community Thanksgiving"
+msgstr "Día de Acción de Gracias Comunitario de Tahoe"
+
+#: templates/pages/home.html
+msgid "Close video"
+msgstr "Cerrar video"
+
+#: templates/pages/home.html
+msgid "This video can’t play here."
+msgstr "Este video no se puede reproducir aquí."
+
+#: templates/pages/home.html
+msgid "Watch it on Dropbox"
+msgstr "Véalo en Dropbox"
+
+#: templates/pages/svg/signoff.html
+msgid "Our neighbors. Our community. Our table."
+msgstr "Nuestros vecinos. Nuestra comunidad. Nuestra mesa."
+
+#: volunteers/admin.py
+msgid "Shift"
+msgstr "Turno"
+
+#: volunteers/admin.py
+msgid "First name"
+msgstr "Nombre"
+
+#: volunteers/admin.py
+msgid "Last name"
+msgstr "Apellido"
+
+#: volunteers/admin.py
+#: volunteers/forms.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Phone"
+msgstr "Teléfono"
+
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "T-shirt"
+msgstr "Camiseta"
+
+#: volunteers/admin.py
+#: volunteers/models.py
+#: volunteers/templates/volunteers/_fields.html
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Emergency contact"
+msgstr "Contacto de emergencia"
+
+#: volunteers/admin.py
+msgid "Emergency phone"
+msgstr "Teléfono de emergencia"
+
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Notes"
+msgstr "Notas"
+
+#: volunteers/admin.py
+msgid "Signed up"
+msgstr "Fecha de inscripción"
+
+#: volunteers/admin.py
+#, python-format
+msgid "%(taken)s of %(total)s"
+msgstr "%(taken)s de %(total)s"
+
+#: volunteers/admin.py
+msgid "Each English box has a Spanish one beside it. Visitors who switch the site to Spanish see the Spanish text, or the English text where the Spanish box is empty."
+msgstr "Cada campo en inglés tiene al lado uno en español. Quienes cambien el sitio a español verán el texto en español, o el texto en inglés donde el campo en español esté vacío."
+
+#: volunteers/admin.py
+msgid "Color"
+msgstr "Color"
+
+#: volunteers/admin.py
+msgid "Spots filled"
+msgstr "Lugares ocupados"
+
+#: volunteers/admin.py
+msgid "Where and when"
+msgstr "Dónde y cuándo"
+
+#: volunteers/admin.py
+msgid "Sign-up form"
+msgstr "Formulario de inscripción"
+
+#: volunteers/admin.py
+msgid "Dates"
+msgstr "Fechas"
+
+#: volunteers/admin.py
+msgid "No shifts yet"
+msgstr "Aún no hay turnos"
+
+#: volunteers/admin.py
+msgid "Sign-up page"
+msgstr "Página de inscripción"
+
+#: volunteers/admin.py
+msgid "Open"
+msgstr "Abrir"
+
+#: volunteers/admin.py
+#: volunteers/models.py
+msgid "volunteer"
+msgstr "voluntario"
+
+#: volunteers/admin.py
+msgid "Roster"
+msgstr "Lista de voluntarios"
+
+#: volunteers/admin.py
+#: volunteers/models.py
+msgid "What they’ll do"
+msgstr "Qué harán"
+
+#: volunteers/admin.py
+msgid "Download the roster for the selected shifts (CSV)"
+msgstr "Descargar la lista de voluntarios de los turnos seleccionados (CSV)"
+
+#: volunteers/admin.py
+#: volunteers/models.py
+msgid "shift"
+msgstr "turno"
+
+#: volunteers/admin.py
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "Shifts"
+msgstr "Turnos"
+
+#: volunteers/admin.py
+msgid "Download the selected sign-ups with their shifts (CSV)"
+msgstr "Descargar las inscripciones seleccionadas con sus turnos (CSV)"
+
+#: volunteers/calendar.py
+#, python-format
+msgid "Volunteer: %(role)s, %(event)s"
+msgstr "Voluntariado: %(role)s, %(event)s"
+
+#: volunteers/calendar.py
+#, python-format
+msgid "Questions: %(email)s"
+msgstr "Preguntas: %(email)s"
+
+#: volunteers/forms.py
+#: volunteers/models.py
+#, python-format
+msgid "%(role)s, %(day)s at %(time)s"
+msgstr "%(role)s, %(day)s, %(time)s"
+
+#: volunteers/forms.py
+msgid "We’ll contact you here about your shifts."
+msgstr "Le escribiremos aquí sobre sus turnos."
+
+#: volunteers/forms.py
+msgid "Only for day-of updates, like a change of start time."
+msgstr "Solo para avisos del mismo día, como un cambio en la hora de inicio."
+
+#: volunteers/forms.py
+msgid "Accessibility needs, lifting limits, or who you’re volunteering with. Coming as a group? Ask each person to sign up so we can plan."
+msgstr "Necesidades de accesibilidad, límites para cargar peso o con quién viene a ayudar. ¿Viene en grupo? Pida a cada persona que se inscriba para que podamos organizarnos."
+
+#: volunteers/forms.py
+msgid "Choose at least one shift."
+msgstr "Elija al menos un turno."
+
+#: volunteers/forms.py
+msgid "One of those shifts isn’t available any more. Pick again."
+msgstr "Uno de esos turnos ya no está disponible. Elija de nuevo."
+
+#: volunteers/forms.py
+msgid "Anything we should know?"
+msgstr "¿Algo que debamos saber?"
+
+#: volunteers/forms.py
+msgid "Enter your first name."
+msgstr "Escriba su nombre."
+
+#: volunteers/forms.py
+msgid "Enter your last name."
+msgstr "Escriba su apellido."
+
+#: volunteers/forms.py
+msgid "Enter your email address."
+msgstr "Escriba su correo electrónico."
+
+#: volunteers/forms.py
+msgid "Enter an email address like name@example.com."
+msgstr "Escriba un correo electrónico como nombre@ejemplo.com."
+
+#: volunteers/forms.py
+msgid "Enter a phone number we can reach you on during the event."
+msgstr "Escriba un número de teléfono donde podamos localizarle durante el evento."
+
+#: volunteers/forms.py
+msgid "Choose a size"
+msgstr "Elija una talla"
+
+#: volunteers/forms.py
+msgid "Confirm that you meet the age requirement."
+msgstr "Confirme que cumple el requisito de edad."
+
+#: volunteers/forms.py
+msgid "Tick the box to agree to the volunteer guidelines."
+msgstr "Marque la casilla para aceptar las pautas para voluntarios."
+
+#: volunteers/forms.py
+msgid "Enter a phone number with its area code."
+msgstr "Escriba un número de teléfono con su código de área."
+
+#: volunteers/forms.py
+msgid "Leave this field empty."
+msgstr "Deje este campo vacío."
+
+#: volunteers/forms.py
+#, python-format
+msgid "%(shift)s has already started. Pick another shift."
+msgstr "%(shift)s ya empezó. Elija otro turno."
+
+#: volunteers/forms.py
+#, python-format
+msgid "%(first)s and %(second)s overlap. Keep one of them."
+msgstr "%(first)s y %(second)s se superponen. Quédese con uno de los dos."
+
+#: volunteers/models.py
+msgctxt "time format"
+msgid "g:i A"
+msgstr "g:i a"
+
+#: volunteers/models.py
+msgctxt "date format"
+msgid "l, F j"
+msgstr "l j \\d\\e F"
+
+#: volunteers/models.py
+msgctxt "date format"
+msgid "D, M j"
+msgstr "D j b"
+
+#: volunteers/models.py
+msgid "name"
+msgstr "nombre"
+
+#: volunteers/models.py
+msgid "name in Spanish"
+msgstr "nombre en español"
+
+#: volunteers/models.py
+msgid "color"
+msgstr "color"
+
+#: volunteers/models.py
+msgid "Use a color code like #5f633f."
+msgstr "Use un código de color como #5f633f."
+
+#: volunteers/models.py
+msgid "Color of the role’s marker, like #5f633f (olive), #425b76 (slate) or #a75531 (terracotta)."
+msgstr "Color del marcador de la tarea, como #5f633f (oliva), #425b76 (pizarra) o #a75531 (terracota)."
+
+#: volunteers/models.py
+msgid "order"
+msgstr "orden"
+
+#: volunteers/models.py
+msgid "Lower numbers are listed first."
+msgstr "Los números más bajos aparecen primero."
+
+#: volunteers/models.py
+msgid "role"
+msgstr "tarea"
+
+#: volunteers/models.py
+msgid "roles"
+msgstr "tareas"
+
+#: volunteers/models.py
+msgid "Shown when the site is in Spanish. Leave it empty to show the English text."
+msgstr "Se muestra cuando el sitio está en español. Déjelo vacío para mostrar el texto en inglés."
+
+#: volunteers/models.py
+msgid "slug"
+msgstr "identificador"
+
+#: volunteers/models.py
+msgid "The last part of the sign-up link, after /volunteer/"
+msgstr "La última parte del enlace de inscripción, después de /volunteer/"
+
+#: volunteers/models.py
+msgid "intro"
+msgstr "introducción"
+
+#: volunteers/models.py
+msgid "A short welcome shown at the top of the sign-up."
+msgstr "Una breve bienvenida que aparece al principio de la inscripción."
+
+#: volunteers/models.py
+msgid "intro in Spanish"
+msgstr "introducción en español"
+
+#: volunteers/models.py
+msgid "location"
+msgstr "lugar"
+
+#: volunteers/models.py
+msgid "location in Spanish"
+msgstr "lugar en español"
+
+#: volunteers/models.py
+msgid "Map link"
+msgstr "Enlace al mapa"
+
+#: volunteers/models.py
+msgid "When volunteers arrive"
+msgstr "Cuando lleguen los voluntarios"
+
+#: volunteers/models.py
+msgid "Shown after someone signs up and in their confirmation email."
+msgstr "Se muestra después de que alguien se inscribe y en su correo de confirmación."
+
+#: volunteers/models.py
+msgid "When volunteers arrive, in Spanish"
+msgstr "Cuando lleguen los voluntarios, en español"
+
+#: volunteers/models.py
+msgid "good to know"
+msgstr "para tener en cuenta"
+
+#: volunteers/models.py
+msgid "One note per line, for example what to wear."
+msgstr "Una nota por línea, por ejemplo qué ropa usar."
+
+#: volunteers/models.py
+msgid "good to know, in Spanish"
+msgstr "para tener en cuenta, en español"
+
+#: volunteers/models.py
+msgid "One note per line, in the same order as the English. Leave it empty to show the English notes."
+msgstr "Una nota por línea, en el mismo orden que en inglés. Déjelo vacío para mostrar las notas en inglés."
+
+#: volunteers/models.py
+msgid "Sign-ups open"
+msgstr "Inscripciones abiertas"
+
+#: volunteers/models.py
+msgid "Untick to stop new sign-ups."
+msgstr "Desmarque esta casilla para detener las inscripciones nuevas."
+
+#: volunteers/models.py
+msgid "Ask for T-shirt size"
+msgstr "Pedir la talla de camiseta"
+
+#: volunteers/models.py
+msgid "Ask for an emergency contact"
+msgstr "Pedir un contacto de emergencia"
+
+#: volunteers/models.py
+msgid "Age statement"
+msgstr "Declaración de edad"
+
+#: volunteers/models.py
+msgid "Volunteers must tick this. Leave it blank to skip it in both languages."
+msgstr "Los voluntarios deben marcar esta casilla. Deje este campo en blanco para omitirla en ambos idiomas."
+
+#: volunteers/models.py
+msgid "Age statement in Spanish"
+msgstr "Declaración de edad en español"
+
+#: volunteers/models.py
+msgid "Agreement"
+msgstr "Compromiso"
+
+#: volunteers/models.py
+msgid "Agreement in Spanish"
+msgstr "Compromiso en español"
+
+#: volunteers/models.py
+msgid "created"
+msgstr "creado"
+
+#: volunteers/models.py
+msgid "event"
+msgstr "evento"
+
+#: volunteers/models.py
+msgid "events"
+msgstr "eventos"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(day)s, %(year)s"
+msgstr "%(day)s de %(year)s"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(first)s and %(last)s, %(year)s"
+msgstr "%(first)s y %(last)s de %(year)s"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(first)s to %(last)s, %(year)s"
+msgstr "del %(first)s al %(last)s de %(year)s"
+
+#: volunteers/models.py
+msgid "date"
+msgstr "fecha"
+
+#: volunteers/models.py
+msgid "start"
+msgstr "inicio"
+
+#: volunteers/models.py
+msgid "end"
+msgstr "fin"
+
+#: volunteers/models.py
+msgid "If the shift runs past midnight, it ends on the next day."
+msgstr "Si el turno pasa de la medianoche, termina al día siguiente."
+
+#: volunteers/models.py
+msgid "Volunteers needed"
+msgstr "Voluntarios necesarios"
+
+#: volunteers/models.py
+msgid "Where on site"
+msgstr "Ubicación en el lugar"
+
+#: volunteers/models.py
+msgid "Where on site, in Spanish"
+msgstr "Ubicación en el lugar, en español"
+
+#: volunteers/models.py
+msgid "What they’ll do, in Spanish"
+msgstr "Qué harán, en español"
+
+#: volunteers/models.py
+msgid "tags"
+msgstr "etiquetas"
+
+#: volunteers/models.py
+msgid "Short notes separated by commas, for example: Lifting up to 30 lb, Outdoors"
+msgstr "Notas cortas separadas por comas, por ejemplo: Levantar hasta 30 lb, Al aire libre"
+
+#: volunteers/models.py
+msgid "tags in Spanish"
+msgstr "etiquetas en español"
+
+#: volunteers/models.py
+msgid "The same notes in Spanish, separated by commas."
+msgstr "Las mismas notas en español, separadas por comas."
+
+#: volunteers/models.py
+msgid "shifts"
+msgstr "turnos"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(hours)s hour"
+msgid_plural "%(hours)s hours"
+msgstr[0] "%(hours)s hora"
+msgstr[1] "%(hours)s horas"
+
+#. Translators: an hour and a half or more, like "2.5 hours".
+#: volunteers/models.py
+#, python-format
+msgid "%(hours)s.5 hours"
+msgid_plural "%(hours)s.5 hours"
+msgstr[0] "%(hours)s hora y media"
+msgstr[1] "%(hours)s horas y media"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(hours)s hr %(minutes)s min"
+msgstr "%(hours)s h %(minutes)s min"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(minutes)s min"
+msgstr "%(minutes)s min"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(start)s to %(end)s"
+msgstr "%(start)s a %(end)s"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(day)s, %(time)s: %(role)s"
+msgstr "%(day)s, %(time)s: %(role)s"
+
+#: volunteers/models.py
+msgid "No shirt, thanks"
+msgstr "Sin camiseta, gracias"
+
+#: volunteers/models.py
+msgid "first name"
+msgstr "nombre"
+
+#: volunteers/models.py
+msgid "last name"
+msgstr "apellido"
+
+#: volunteers/models.py
+msgid "email"
+msgstr "correo electrónico"
+
+#: volunteers/models.py
+msgid "Mobile phone"
+msgstr "Teléfono celular"
+
+#: volunteers/models.py
+msgid "T-shirt size"
+msgstr "Talla de camiseta"
+
+#: volunteers/models.py
+msgid "Emergency contact phone"
+msgstr "Teléfono del contacto de emergencia"
+
+#: volunteers/models.py
+msgid "Anything we should know"
+msgstr "Algo que debamos saber"
+
+#: volunteers/models.py
+msgid "age confirmed"
+msgstr "edad confirmada"
+
+#: volunteers/models.py
+msgid "Agreed to guidelines"
+msgstr "Aceptó las pautas"
+
+#: volunteers/models.py
+msgid "language"
+msgstr "idioma"
+
+#: volunteers/models.py
+msgid "The language they signed up in. Their confirmation email is in it too."
+msgstr "El idioma en que se inscribió. Su correo de confirmación también está en ese idioma."
+
+#: volunteers/models.py
+msgid "signed up"
+msgstr "fecha de inscripción"
+
+#: volunteers/models.py
+msgid "volunteer sign-up"
+msgstr "inscripción de voluntariado"
+
+#: volunteers/models.py
+msgid "volunteer sign-ups"
+msgstr "inscripciones de voluntariado"
+
+#: volunteers/models.py
+msgid "cancelled"
+msgstr "cancelado"
+
+#: volunteers/models.py
+msgid "Tick to free up this spot."
+msgstr "Márquelo para liberar este lugar."
+
+#: volunteers/models.py
+msgid "shift assignment"
+msgstr "asignación de turno"
+
+#: volunteers/models.py
+msgid "shift assignments"
+msgstr "asignaciones de turnos"
+
+#: volunteers/models.py
+#, python-format
+msgid "%(volunteer)s on %(shift)s"
+msgstr "%(volunteer)s en %(shift)s"
+
+#: volunteers/services.py
+#, python-format
+msgid "You’re signed up: %(event)s"
+msgstr "Inscripción confirmada: %(event)s"
+
+#: volunteers/services.py
+#, python-format
+msgid "New volunteer: %(name)s (%(event)s)"
+msgstr "Nueva inscripción: %(name)s (%(event)s)"
+
+#: volunteers/templates/volunteers/_done.html
+msgctxt "name badge"
+msgid "Volunteer"
+msgstr "Voluntariado"
+
+#: volunteers/templates/volunteers/_done.html
+#, python-format
+msgid "Your shift is confirmed, %(name)s."
+msgid_plural "Your %(count)s shifts are confirmed, %(name)s."
+msgstr[0] "Su turno está confirmado, %(name)s."
+msgstr[1] "Sus %(count)s turnos están confirmados, %(name)s."
+
+#: volunteers/templates/volunteers/_done.html
+#, python-format
+msgid "A copy is on its way to %(email)s."
+msgstr "Le enviamos una copia a %(email)s."
+
+#: volunteers/templates/volunteers/_done.html
+msgid "Add your shifts to your calendar so you have the times handy."
+msgstr "Agregue sus turnos a su calendario para tener los horarios a mano."
+
+#: volunteers/templates/volunteers/_done.html
+msgid "This is a preview, so nothing was saved. Once sign-ups are open, each sign-up goes into the admin under Volunteers."
+msgstr "Esto es una vista previa, así que no se guardó nada. Cuando las inscripciones estén abiertas, cada inscripción aparecerá en el panel de administración, en Voluntariado."
+
+#: volunteers/templates/volunteers/_done.html
+msgid "Add to Google Calendar"
+msgstr "Agregar a Google Calendar"
+
+#: volunteers/templates/volunteers/_done.html
+msgid "Add to Apple or Outlook calendar"
+msgstr "Agregar al calendario de Apple u Outlook"
+
+#: volunteers/templates/volunteers/_done.html
+msgid "When you arrive"
+msgstr "Al llegar"
+
+#: volunteers/templates/volunteers/_done.html
+#: volunteers/templates/volunteers/email/confirmation.txt
+#, python-format
+msgid "Location: %(location)s"
+msgstr "Lugar: %(location)s"
+
+#: volunteers/templates/volunteers/_done.html
+#, python-format
+msgid "Need to change a shift? Email <a href=\"mailto:%(email)s\">%(email)s</a>."
+msgstr "¿Necesita cambiar un turno? Escriba a <a href=\"mailto:%(email)s\">%(email)s</a>."
+
+#: volunteers/templates/volunteers/_field.html
+#: volunteers/templates/volunteers/_fields.html
+msgid "(optional)"
+msgstr "(opcional)"
+
+#: volunteers/templates/volunteers/_fields.html
+msgid "Leave this field empty"
+msgstr "Deje este campo vacío"
+
+#: volunteers/templates/volunteers/_fields.html
+msgid "We only use your details to organize this event."
+msgstr "Solo usamos sus datos para organizar este evento."
+
+#: volunteers/templates/volunteers/_shifts.html
+#, python-format
+msgid "to %(end)s"
+msgstr "a %(end)s"
+
+#: volunteers/templates/volunteers/_shifts.html
+msgid "Already started"
+msgstr "Ya empezó"
+
+#: volunteers/templates/volunteers/_shifts.html
+msgid "Full"
+msgstr "Completo"
+
+#: volunteers/templates/volunteers/_shifts.html
+#, python-format
+msgid "%(left)s of %(total)s spot left"
+msgid_plural "%(left)s of %(total)s spots left"
+msgstr[0] "%(left)s de %(total)s lugar libre"
+msgstr[1] "%(left)s de %(total)s lugares libres"
+
+#: volunteers/templates/volunteers/_shifts.html
+msgid "No shifts are posted yet. Check back soon."
+msgstr "Todavía no hay turnos publicados. Vuelva pronto."
+
+#: volunteers/templates/volunteers/_shifts.html
+msgid "No shifts to show. Pick another role, or show full shifts too."
+msgstr "No hay turnos que mostrar. Elija otra tarea o muestre también los turnos completos."
+
+#: volunteers/templates/volunteers/_widget.html
+#, python-format
+msgid "<strong>Admin preview.</strong> Sign-ups for this event are closed, so only admins see it, and nothing sent from here is saved. To let volunteers sign up, tick <strong>Sign-ups open</strong> on the event in the <a href=\"%(url)s\">admin</a>."
+msgstr "<strong>Vista previa para administradores.</strong> Las inscripciones para este evento están cerradas, así que solo lo ven los administradores y no se guarda nada de lo que se envíe desde aquí. Para que los voluntarios puedan inscribirse, marque <strong>Inscripciones abiertas</strong> en el evento, en el <a href=\"%(url)s\">panel de administración</a>."
+
+#: volunteers/templates/volunteers/_widget.html
+#, python-format
+msgid "of %(total)s volunteer spots are open."
+msgstr "de %(total)s lugares para voluntarios están disponibles."
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Good to know"
+msgstr "Para tener en cuenta"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Choose your shifts"
+msgstr "Elija sus turnos"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Pick as many as you like. Shifts that overlap one you’ve picked are blocked, so you can’t double-book yourself."
+msgstr "Elija todos los que quiera. Los turnos que se superponen con uno que ya eligió quedan bloqueados, para que no se inscriba dos veces a la misma hora."
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Show shifts for"
+msgstr "Mostrar turnos de"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "All roles"
+msgstr "Todas las tareas"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Hide full shifts"
+msgstr "Ocultar turnos completos"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Your details"
+msgstr "Sus datos"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "We use these to confirm your shifts and to reach you on the day."
+msgstr "Los usamos para confirmar sus turnos y comunicarnos con usted ese día."
+
+#: volunteers/templates/volunteers/_widget.html
+#, python-format
+msgid "Fix %(count)s thing to finish signing up"
+msgid_plural "Fix %(count)s things to finish signing up"
+msgstr[0] "Corrija %(count)s dato para terminar su inscripción"
+msgstr[1] "Corrija %(count)s datos para terminar su inscripción"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Your shifts"
+msgstr "Sus turnos"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Change shifts"
+msgstr "Cambiar turnos"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Choose your shifts, add your details, then confirm."
+msgstr "Elija sus turnos, agregue sus datos y confirme."
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Back"
+msgstr "Atrás"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Continue"
+msgstr "Continuar"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Confirm my shifts"
+msgstr "Confirmar mis turnos"
+
+#: volunteers/templates/volunteers/_widget.html
+msgid "Sign up someone else"
+msgstr "Inscribir a otra persona"
+
+#: volunteers/templates/volunteers/closed.html
+#, python-format
+msgid "Sign-ups for %(event)s are closed."
+msgstr "Las inscripciones para el evento %(event)s están cerradas."
+
+#: volunteers/templates/volunteers/closed.html
+#: volunteers/templates/volunteers/dialog.html
+msgid "There are no volunteer shifts open right now."
+msgstr "En este momento no hay turnos de voluntariado abiertos."
+
+#: volunteers/templates/volunteers/closed.html
+#: volunteers/templates/volunteers/dialog.html
+#, python-format
+msgid "Email <a href=\"mailto:%(email)s\">%(email)s</a> and we’ll let you know when the next event is posted."
+msgstr "Escriba a <a href=\"mailto:%(email)s\">%(email)s</a> y le avisaremos cuando publiquemos el próximo evento."
+
+#: volunteers/templates/volunteers/closed.html
+#: volunteers/templates/volunteers/confirmed.html
+msgid "Back to the home page"
+msgstr "Volver a la página de inicio"
+
+#: volunteers/templates/volunteers/confirmed.html
+msgid "You’re signed up"
+msgstr "Inscripción confirmada"
+
+#: volunteers/templates/volunteers/confirmed.html
+msgid "Thank you"
+msgstr "Gracias"
+
+#: volunteers/templates/volunteers/confirmed.html
+msgid "Sign up another volunteer"
+msgstr "Inscribir a otra persona"
+
+#: volunteers/templates/volunteers/dialog.html
+#: volunteers/templates/volunteers/page.html
+msgid "Volunteer with us"
+msgstr "Únase a nuestro voluntariado"
+
+#: volunteers/templates/volunteers/email/confirmation.txt
+#, python-format
+msgid "Hi %(name)s,"
+msgstr "Hola, %(name)s:"
+
+#: volunteers/templates/volunteers/email/confirmation.txt
+#, python-format
+msgid "Thanks for volunteering at %(event)s. You’re signed up for:"
+msgstr "Gracias por ayudar en el evento %(event)s. Estos son sus turnos:"
+
+#: volunteers/templates/volunteers/email/confirmation.txt
+#, python-format
+msgid "When you arrive: %(check_in)s"
+msgstr "Al llegar: %(check_in)s"
+
+#: volunteers/templates/volunteers/email/confirmation.txt
+#, python-format
+msgid "Need to change a shift? Reply to this email or write to %(email)s."
+msgstr "¿Necesita cambiar un turno? Responda a este correo o escriba a %(email)s."
+
+#: volunteers/templates/volunteers/email/organizer.txt
+#, python-format
+msgid "%(name)s signed up to volunteer at %(event)s."
+msgstr "%(name)s se inscribió en el voluntariado del evento %(event)s."
+
+#: volunteers/templates/volunteers/email/organizer.txt
+msgid "See every sign-up in the site admin under Volunteers."
+msgstr "Vea todas las inscripciones en el panel de administración del sitio, en Voluntariado."
+
+#: volunteers/views.py
+#, python-format
+msgid "%(shifts)s filled up while you were signing up."
+msgstr "Mientras se inscribía, ya no quedó lugar en %(shifts)s."
+
+#: volunteers/views.py
+#, python-format
+msgid "You’re already signed up for %(shifts)s with this email."
+msgstr "Ya hay una inscripción con este correo para %(shifts)s."
+
+#: volunteers/views.py
+msgid "We took it off this sign-up. Check your shifts and confirm again."
+msgid_plural "We took them off this sign-up. Check your shifts and confirm again."
+msgstr[0] "Lo quitamos de esta inscripción. Revise sus turnos y vuelva a confirmar."
+msgstr[1] "Los quitamos de esta inscripción. Revise sus turnos y vuelva a confirmar."
+
+#: volunteers/views.py
+msgid "A shift is no longer available"
+msgid_plural "Some shifts are no longer available"
+msgstr[0] "Un turno ya no está disponible"
+msgstr[1] "Algunos turnos ya no están disponibles"
+
+#: volunteers/views.py
+msgid "Sign-ups are closed"
+msgstr "Las inscripciones están cerradas"
+
+#: volunteers/views.py
+msgid "Sign-ups for this event are closed."
+msgstr "Las inscripciones para este evento están cerradas."

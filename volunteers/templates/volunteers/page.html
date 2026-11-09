@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}{% comment %}
+{% load static i18n %}{% comment %}
   Layout for the volunteer pages (/volunteer/…): a compact masthead that links home, a ribbon
   with the page title, the content, and the site's closing band.
 {% endcomment %}
@@ -9,7 +9,7 @@
 {% include "accounts/_account_controls.html" with variant="home" %}
 <div class="scene">
   {% include "pages/_masthead.html" with compact=True %}
-  <div class="needs"><div class="needs__inner"><h1 class="ribbon">{% block ribbon %}Volunteer with us{% endblock %}</h1></div></div>
+  <div class="needs"><div class="needs__inner"><h1 class="ribbon">{% block ribbon %}{% translate "Volunteer with us" %}{% endblock %}</h1></div></div>
 </div>
 <main class="vol-page">
 {% block content %}{% endblock %}

@@ -1,4 +1,4 @@
-<div class="vol-fields">
+{% load i18n %}<div class="vol-fields">
   <div class="vol-row2">
     {% include "volunteers/_field.html" with field=form.first_name %}
     {% include "volunteers/_field.html" with field=form.last_name %}
@@ -8,7 +8,7 @@
   {% if form.shirt_size %}{% include "volunteers/_field.html" with field=form.shirt_size %}{% endif %}
   {% if form.emergency_name %}
   <fieldset class="vol-fieldset">
-    <legend class="vol-label">Emergency contact <span class="vol-opt">(optional)</span></legend>
+    <legend class="vol-label">{% translate "Emergency contact" %} <span class="vol-opt">{% translate "(optional)" %}</span></legend>
     <div class="vol-row2">
       {% include "volunteers/_field.html" with field=form.emergency_name small=True %}
       {% include "volunteers/_field.html" with field=form.emergency_phone small=True %}
@@ -23,8 +23,8 @@
   </div>
   {% endif %}
   <div class="vol-trap" aria-hidden="true">
-    <label for="vol-website">Leave this field empty</label>
+    <label for="vol-website">{% translate "Leave this field empty" %}</label>
     <input type="text" name="website" id="vol-website" tabindex="-1" autocomplete="off">
   </div>
-  <p class="vol-fine">We only use your details to organize this event.</p>
+  <p class="vol-fine">{% translate "We only use your details to organize this event." %}</p>
 </div>

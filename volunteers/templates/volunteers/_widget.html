@@ -2,7 +2,7 @@
   The volunteer sign-up, used in the home page pop-up (mode="dialog") and on /volunteer/ (mode="page").
   hd and hs are the heading levels for this place on the page.
   Without JavaScript every step shows at once and the form posts normally.
-{% endcomment %}{% with event=vol.event form=vol.form %}
+{% endcomment %}{% load i18n %}{% with event=vol.event form=vol.form %}
 <div class="vol" data-vol{% if vol.preview %} data-preview{% endif %} data-mode="{{ mode }}" data-spots-url="{% url 'volunteers:spots' event.slug %}"
      data-start="{% if form.is_bound and not vol.problem and not form.shifts.errors %}details{% else %}pick{% endif %}"
      data-emailed="{{ vol.send_confirmation|yesno:'1,0' }}">
@@ -12,49 +12,49 @@
 
       <section class="vol__step" data-step="pick" aria-labelledby="vol-pick-title">
         {% if vol.preview %}
-        <p class="vol-note vol-note--preview"><strong>Admin preview.</strong> Sign-ups for this event are closed, so only admins see it, and nothing sent from here is saved. To let volunteers sign up, tick <strong>Sign-ups open</strong> on the event in the <a href="{% url 'admin:volunteers_event_change' event.pk %}">admin</a>.</p>
+        {% url 'admin:volunteers_event_change' event.pk as event_admin_url %}<p class="vol-note vol-note--preview">{% blocktranslate trimmed with url=event_admin_url %}<strong>Admin preview.</strong> Sign-ups for this event are closed, so only admins see it, and nothing sent from here is saved. To let volunteers sign up, tick <strong>Sign-ups open</strong> on the event in the <a href="{{ url }}">admin</a>.{% endblocktranslate %}</p>
         {% endif %}
         <div class="vol-event">
-          <{{ hd }} class="vol-event__name">{{ event.name }}</{{ hd }}>
+          <{{ hd }} class="vol-event__name">{{ event.local.name }}</{{ hd }}>
           <ul class="vol-facts">
             {% if event.date_range_text %}<li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>{{ event.date_range_text }}</span></li>{% endif %}
-            {% if event.location %}<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.4"/></svg><span>{% if event.location_url %}<a href="{{ event.location_url }}" target="_blank" rel="noopener">{{ event.location }}</a>{% else %}{{ event.location }}{% endif %}</span></li>{% endif %}
+            {% if event.location %}<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.4"/></svg><span>{% if event.location_url %}<a href="{{ event.location_url }}" target="_blank" rel="noopener">{{ event.local.location }}</a>{% else %}{{ event.local.location }}{% endif %}</span></li>{% endif %}
           </ul>
-          {% if event.intro %}<p class="vol-event__intro">{{ event.intro }}</p>{% endif %}
-          <p class="vol-open" data-vol-open><strong>{{ vol.open_spots }}</strong> of {{ vol.total_spots }} volunteer spots are open.</p>
+          {% if event.local.intro %}<p class="vol-event__intro">{{ event.local.intro }}</p>{% endif %}
+          <p class="vol-open" data-vol-open><strong>{{ vol.open_spots }}</strong> {% blocktranslate trimmed with total=vol.total_spots %}of {{ total }} volunteer spots are open.{% endblocktranslate %}</p>
           {% if event.notes %}
           <div class="vol-know">
-            <{{ hs }} class="vol-know__title">Good to know</{{ hs }}>
+            <{{ hs }} class="vol-know__title">{% translate "Good to know" %}</{{ hs }}>
             <ul>{% for note in event.notes %}<li>{{ note }}</li>{% endfor %}</ul>
           </div>
           {% endif %}
         </div>
 
-        <{{ hd }} class="vol-step-title" id="vol-pick-title" tabindex="-1"><span class="vol-num" aria-hidden="true">1</span>Choose your shifts</{{ hd }}>
-        <p class="vol-lede">Pick as many as you like. Shifts that overlap one you’ve picked are blocked, so you can’t double-book yourself.</p>
+        <{{ hd }} class="vol-step-title" id="vol-pick-title" tabindex="-1"><span class="vol-num" aria-hidden="true">1</span>{% translate "Choose your shifts" %}</{{ hd }}>
+        <p class="vol-lede">{% translate "Pick as many as you like. Shifts that overlap one you’ve picked are blocked, so you can’t double-book yourself." %}</p>
         {% if vol.problem %}
         <div class="vol-alert" role="alert"><p class="vol-alert__title">{{ vol.problem.title }}</p><p>{{ vol.problem.text }}</p></div>
         {% endif %}
         <p class="vol-error" id="vol-shifts-error"{% if not form.shifts.errors %} hidden{% endif %}>{{ form.shifts.errors.0 }}</p>
         <div class="vol-tools" data-vol-tools hidden>
           {% if vol.roles|length > 1 %}
-          <div class="vol-chips" role="group" aria-label="Show shifts for">
-            <button type="button" class="vol-chip" data-role="" aria-pressed="true">All roles</button>
-            {% for role in vol.roles %}<button type="button" class="vol-chip" data-role="{{ role.pk }}" aria-pressed="false"><span class="vol-dot" style="--role: {{ role.color }}" aria-hidden="true"></span>{{ role.name }}</button>{% endfor %}
+          <div class="vol-chips" role="group" aria-label="{% translate "Show shifts for" %}">
+            <button type="button" class="vol-chip" data-role="" aria-pressed="true">{% translate "All roles" %}</button>
+            {% for role in vol.roles %}<button type="button" class="vol-chip" data-role="{{ role.pk }}" aria-pressed="false"><span class="vol-dot" style="--role: {{ role.color }}" aria-hidden="true"></span>{{ role.local.name }}</button>{% endfor %}
           </div>
           {% endif %}
-          <label class="vol-toggle"><input type="checkbox" data-vol-hide-full> Hide full shifts</label>
+          <label class="vol-toggle"><input type="checkbox" data-vol-hide-full> {% translate "Hide full shifts" %}</label>
         </div>
         <p class="vol-note" data-vol-note role="status" hidden></p>
         {% include "volunteers/_shifts.html" %}
       </section>
 
       <section class="vol__step" data-step="details" aria-labelledby="vol-details-title">
-        <{{ hd }} class="vol-step-title" id="vol-details-title" tabindex="-1"><span class="vol-num" aria-hidden="true">2</span>Your details</{{ hd }}>
-        <p class="vol-lede">We use these to confirm your shifts and to reach you on the day.</p>
+        <{{ hd }} class="vol-step-title" id="vol-details-title" tabindex="-1"><span class="vol-num" aria-hidden="true">2</span>{% translate "Your details" %}</{{ hd }}>
+        <p class="vol-lede">{% translate "We use these to confirm your shifts and to reach you on the day." %}</p>
         {% if form.is_bound and form.errors and not vol.problem %}
         <div class="vol-alert" data-vol-alert role="alert" tabindex="-1">
-          <p class="vol-alert__title">Fix {{ form.errors|length }} thing{{ form.errors|length|pluralize }} to finish signing up</p>
+          <p class="vol-alert__title">{% blocktranslate trimmed count count=form.errors|length %}Fix {{ count }} thing to finish signing up{% plural %}Fix {{ count }} things to finish signing up{% endblocktranslate %}</p>
           <ul>{% for name, errors in form.errors.items %}<li><a href="#{% if name == 'shifts' %}vol-pick-title{% elif name == '__all__' %}vol-details-title{% else %}vol-{{ name }}{% endif %}" data-focus="{% if name == 'shifts' %}vol-pick-title{% else %}vol-{{ name }}{% endif %}">{{ errors.0 }}</a></li>{% endfor %}</ul>
         </div>
         {% else %}
@@ -62,8 +62,8 @@
         {% endif %}
         <div class="vol-mine" data-vol-mine hidden>
           <div class="vol-mine__head">
-            <p class="vol-mine__title">Your shifts</p>
-            <button type="button" class="vol-linkbtn" data-vol-change>Change shifts</button>
+            <p class="vol-mine__title">{% translate "Your shifts" %}</p>
+            <button type="button" class="vol-linkbtn" data-vol-change>{% translate "Change shifts" %}</button>
           </div>
           <ul class="vol-mine__list" data-vol-mine-list></ul>
         </div>
@@ -76,13 +76,13 @@
     </div>
 
     <div class="vol__foot">
-      <p class="vol-sum" data-vol-sum>Choose your shifts, add your details, then confirm.</p>
+      <p class="vol-sum" data-vol-sum>{% translate "Choose your shifts, add your details, then confirm." %}</p>
       <div class="vol__actions">
-        <button type="button" class="vol-btn vol-btn--quiet" data-vol-back hidden>Back</button>
-        <button type="button" class="vol-btn" data-vol-next hidden>Continue</button>
-        <button type="submit" class="vol-btn" data-vol-submit><span class="vol-spin" aria-hidden="true"></span><span data-vol-submit-text>Confirm my shifts</span></button>
-        <button type="button" class="vol-btn vol-btn--quiet" data-vol-again hidden>Sign up someone else</button>
-        {% if mode == "dialog" %}<button type="button" class="vol-btn vol-btn--navy" data-vol-close hidden>Close</button>{% endif %}
+        <button type="button" class="vol-btn vol-btn--quiet" data-vol-back hidden>{% translate "Back" %}</button>
+        <button type="button" class="vol-btn" data-vol-next hidden>{% translate "Continue" %}</button>
+        <button type="submit" class="vol-btn" data-vol-submit><span class="vol-spin" aria-hidden="true"></span><span data-vol-submit-text>{% translate "Confirm my shifts" %}</span></button>
+        <button type="button" class="vol-btn vol-btn--quiet" data-vol-again hidden>{% translate "Sign up someone else" %}</button>
+        {% if mode == "dialog" %}<button type="button" class="vol-btn vol-btn--navy" data-vol-close hidden>{% translate "Close" %}</button>{% endif %}
       </div>
     </div>
   </form>

@@ -1,13 +1,14 @@
-{% autoescape off %}{{ signup.full_name }} signed up to volunteer at {{ event.name }}.
+{% load i18n %}{% autoescape off %}{% blocktranslate trimmed with name=signup.full_name event=event.local.name %}{{ name }} signed up to volunteer at {{ event }}.{% endblocktranslate %}
 
-Email: {{ signup.email }}
-Phone: {{ signup.phone }}{% if signup.shirt_size %}
-T-shirt: {{ signup.get_shirt_size_display }}{% endif %}{% if signup.emergency_name or signup.emergency_phone %}
-Emergency contact: {{ signup.emergency_name }} {{ signup.emergency_phone }}{% endif %}{% if signup.notes %}
-Notes: {{ signup.notes }}{% endif %}
+{% translate "Email" %}: {{ signup.email }}
+{% translate "Phone" %}: {{ signup.phone }}
+{% translate "Language" %}: {{ signup.get_language_display }}{% if signup.shirt_size %}
+{% translate "T-shirt" %}: {{ signup.get_shirt_size_display }}{% endif %}{% if signup.emergency_name or signup.emergency_phone %}
+{% translate "Emergency contact" %}: {{ signup.emergency_name }} {{ signup.emergency_phone }}{% endif %}{% if signup.notes %}
+{% translate "Notes" %}: {{ signup.notes }}{% endif %}
 
-Shifts:{% for shift in shifts %}
+{% translate "Shifts" %}:{% for shift in shifts %}
   - {{ shift.long_label }}{% endfor %}
 
-See every sign-up in the site admin under Volunteers.
+{% translate "See every sign-up in the site admin under Volunteers." %}
 {% endautoescape %}

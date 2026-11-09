@@ -1,6 +1,6 @@
 {% extends "volunteers/page.html" %}
-{% load static %}
-{% block title %}Volunteer{% if vol %}: {{ vol.event.name }}{% endif %} | Tahoe Neighborhood Table{% endblock %}
+{% load static i18n %}
+{% block title %}{% translate "Volunteer" %}{% if vol %}: {{ vol.event.local.name }}{% endif %} | Tahoe Neighborhood Table{% endblock %}
 
 {% block content %}
   {% include "volunteers/_widget.html" with mode="page" hd="h2" hs="h3" %}

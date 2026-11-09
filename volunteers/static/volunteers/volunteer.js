@@ -7,10 +7,14 @@
 
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  const plural = (n, one, many) => `${n} ${n === 1 ? one : (many || one + 's')}`;
+  // Translations come from /jsi18n/ (Django's JavaScript catalog), loaded before this script.
+  const gettext = window.gettext || ((text) => text);
+  const ngettext = window.ngettext || ((one, many, n) => (n === 1 ? one : many));
+  const fmt = (text, values) => text.replace(/%\((\w+)\)s|%s/g, (m, key) => String(key ? values[key] : values.shift()));
+  const shiftsText = (n) => fmt(ngettext('%s shift', '%s shifts', n), [n]);
   const hoursText = (mins) => {
     const h = mins / 60;
-    return Number.isInteger(h) ? plural(h, 'hour') : `${Math.round(h * 10) / 10} hours`;
+    return Number.isInteger(h) ? fmt(ngettext('%s hour', '%s hours', h), [h]) : fmt(gettext('%s hours'), [Math.round(h * 10) / 10]);
   };
 
   /* ---------- the pop-up ---------- */
@@ -86,7 +90,7 @@
 
     const picked = () => rows.filter((r) => r.input.checked).sort((a, b) => a.from - b.from);
     const isFull = (r) => r.taken >= r.capacity;
-    const shortName = (r) => `${r.roleName}, ${r.shortDay} at ${r.startTime}`;
+    const shortName = (r) => fmt(gettext('%(role)s, %(day)s at %(time)s'), { role: r.roleName, day: r.shortDay, time: r.startTime });
 
     function announce(msg) {
       live.textContent = '';
@@ -134,10 +138,10 @@
         r.li.classList.toggle('is-off', off);
         r.input.disabled = off;
         paintSlots(r, on);
-        r.left.textContent = r.started ? 'Already started'
-          : full ? 'Full'
-          : `${Math.max(0, r.capacity - r.taken)} of ${r.capacity} spot${r.capacity === 1 ? '' : 's'} left`;
-        const reason = clash ? `Overlaps your ${clash.startTime} ${clash.roleName} shift` : '';
+        r.left.textContent = r.started ? gettext('Already started')
+          : full ? gettext('Full')
+          : fmt(ngettext('%(left)s of %(total)s spot left', '%(left)s of %(total)s spots left', r.capacity), { left: Math.max(0, r.capacity - r.taken), total: r.capacity });
+        const reason = clash ? fmt(gettext('Overlaps your %(time)s %(role)s shift'), { time: clash.startTime, role: clash.roleName }) : '';
         r.why.textContent = reason;
         r.why.hidden = !reason;
       });
@@ -166,16 +170,16 @@
       openLine.textContent = '';
       const strong = document.createElement('strong');
       strong.textContent = String(open);
-      openLine.append(strong, ` of ${total} volunteer spots are open.`);
+      openLine.append(strong, ' ' + fmt(gettext('of %s volunteer spots are open.'), [total]));
     }
 
-    const submitLabel = (n) => (n === 1 ? 'Confirm my shift' : n ? `Confirm my ${n} shifts` : 'Confirm my shifts');
+    const submitLabel = (n) => (n ? fmt(ngettext('Confirm my shift', 'Confirm my %s shifts', n), [n]) : gettext('Confirm my shifts'));
 
     function renderSummary() {
       const list = picked();
       const mins = list.reduce((n, r) => n + r.minutes, 0);
       sum.textContent = state.step === 'done' ? ''
-        : list.length ? `${plural(list.length, 'shift')}, ${hoursText(mins)}` : 'No shifts chosen yet';
+        : list.length ? `${shiftsText(list.length)}, ${hoursText(mins)}` : gettext('No shifts chosen yet');
       mineList.textContent = '';
       list.forEach((r) => {
         const li = document.createElement('li');
@@ -195,7 +199,7 @@
         remove.type = 'button';
         remove.className = 'vol-remove';
         remove.dataset.remove = r.id;
-        remove.setAttribute('aria-label', `Remove ${shortName(r)}`);
+        remove.setAttribute('aria-label', fmt(gettext('Remove %s'), [shortName(r)]));
         remove.innerHTML = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg>';
         li.append(text, remove);
         mineList.appendChild(li);
@@ -248,18 +252,18 @@
 
     /* Form checks, matching the server's */
     const checks = [
-      { name: 'first_name', test: (v) => !!v.trim(), msg: () => 'Enter your first name.' },
-      { name: 'last_name', test: (v) => !!v.trim(), msg: () => 'Enter your last name.' },
+      { name: 'first_name', test: (v) => !!v.trim(), msg: () => gettext('Enter your first name.') },
+      { name: 'last_name', test: (v) => !!v.trim(), msg: () => gettext('Enter your last name.') },
       {
         name: 'email', test: (v) => EMAIL_RE.test(v.trim()),
-        msg: (v) => (v.trim() ? 'Enter an email address like name@example.com.' : 'Enter your email address.'),
+        msg: (v) => (v.trim() ? gettext('Enter an email address like name@example.com.') : gettext('Enter your email address.')),
       },
       {
         name: 'phone', test: (v) => v.replace(/\D/g, '').length >= 7,
-        msg: (v) => (v.trim() ? 'Enter a phone number with its area code.' : 'Enter a phone number we can reach you on during the event.'),
+        msg: (v) => (v.trim() ? gettext('Enter a phone number with its area code.') : gettext('Enter a phone number we can reach you on during the event.')),
       },
-      { name: 'age_confirmed', box: true, msg: () => 'Confirm that you meet the age requirement.' },
-      { name: 'agreed', box: true, msg: () => 'Tick the box to agree to the volunteer guidelines.' },
+      { name: 'age_confirmed', box: true, msg: () => gettext('Confirm that you meet the age requirement.') },
+      { name: 'agreed', box: true, msg: () => gettext('Tick the box to agree to the volunteer guidelines.') },
     ].filter((c) => form.elements[c.name]);
 
     function setFieldError(name, msg) {
@@ -288,7 +292,7 @@
       alertBox.textContent = '';
       const title = document.createElement('p');
       title.className = 'vol-alert__title';
-      title.textContent = list.length === 1 ? 'Fix 1 thing to finish signing up' : `Fix ${list.length} things to finish signing up`;
+      title.textContent = fmt(ngettext('Fix %s thing to finish signing up', 'Fix %s things to finish signing up', list.length), [list.length]);
       const ul = document.createElement('ul');
       list.forEach((p) => {
         const li = document.createElement('li');
@@ -336,7 +340,7 @@
       btn.back.disabled = on;
       btn.submit.classList.toggle('is-busy', on);
       btn.submit.setAttribute('aria-busy', String(on));
-      submitText.textContent = on ? 'Confirming your shifts…' : submitLabel(picked().length);
+      submitText.textContent = on ? gettext('Confirming your shifts…') : submitLabel(picked().length);
     }
 
     /* Spot counts */
@@ -349,7 +353,7 @@
         const gone = picked().filter(isFull);
         if (gone.length) {
           gone.forEach((r) => { r.input.checked = false; });
-          showNote(`${gone.map(shortName).join('; ')} just filled up, so we took ${gone.length === 1 ? 'it' : 'them'} off your schedule.`);
+          showNote(fmt(ngettext('%(shifts)s just filled up, so we took it off your schedule.', '%(shifts)s just filled up, so we took them off your schedule.', gone.length), { shifts: gone.map(shortName).join('; ') }));
         }
       }
       refresh();
@@ -373,8 +377,8 @@
         const full = list.filter(isFull);
         if (full.length) {
           resolve({
-            ok: false, error: 'unavailable', title: 'A shift is no longer available',
-            message: `${full.map(shortName).join('; ')} filled up while you were signing up.`, remove: full.map((r) => +r.id),
+            ok: false, error: 'unavailable', title: gettext('A shift is no longer available'),
+            message: fmt(gettext('%s filled up while you were signing up.'), [full.map(shortName).join('; ')]), remove: full.map((r) => +r.id),
           });
           return;
         }
@@ -393,7 +397,7 @@
     function applyServerErrors(errors) {
       const problems = [];
       Object.keys(errors || {}).forEach((name) => {
-        const msg = (errors[name] || [])[0] || 'Check this field.';
+        const msg = (errors[name] || [])[0] || gettext('Check this field.');
         if (name === 'shifts') return;
         if (name === 'website') return;
         if (name === '__all__') { problems.push({ id: 'vol-details-title', msg }); return; }
@@ -411,9 +415,9 @@
     function showDone(conf) {
       const n = conf.count || conf.shifts.length;
       $('[data-vol-badge-name]').textContent = conf.firstName;
-      $('[data-vol-done-title]').textContent = `${n === 1 ? 'Your shift is' : `Your ${n} shifts are`} confirmed, ${conf.firstName}.`;
-      $('[data-vol-done-lede]').textContent = (conf.emailed && !preview ? `A copy is on its way to ${conf.email}. ` : '')
-        + 'Add your shifts to your calendar so you have the times handy.';
+      $('[data-vol-done-title]').textContent = fmt(ngettext('Your shift is confirmed, %(name)s.', 'Your %(count)s shifts are confirmed, %(name)s.', n), { count: n, name: conf.firstName });
+      $('[data-vol-done-lede]').textContent = (conf.emailed && !preview ? fmt(gettext('A copy is on its way to %s.'), [conf.email]) + ' ' : '')
+        + gettext('Add your shifts to your calendar so you have the times handy.');
       $('[data-vol-preview-note]').hidden = !preview;
       const list = $('[data-vol-tickets]');
       const tpl = $('[data-vol-ticket-template]');
@@ -441,7 +445,7 @@
       refresh();
       renderOpenLine();
       go('done');
-      announce(`Signed up. ${plural(n, 'shift')} confirmed.`);
+      announce(fmt(ngettext('Signed up. %s shift confirmed.', 'Signed up. %s shifts confirmed.', n), [n]));
     }
 
     form.addEventListener('submit', async (e) => {
@@ -452,7 +456,7 @@
       state.tried = true;
       if (!picked().length) {
         go('pick');
-        showShiftError('Choose at least one shift.');
+        showShiftError(gettext('Choose at least one shift.'));
         return;
       }
       const problems = checkFields(true);
@@ -477,11 +481,11 @@
       setBusy(false);
       if (!data) {
         if (res && res.status === 403) {
-          showAlert('Your sign-up didn’t go through', 'This page was open for a long time. Reload it, then pick your shifts again.');
+          showAlert(gettext('Your sign-up didn’t go through'), gettext('This page was open for a long time. Reload it, then pick your shifts again.'));
         } else if (res) {
-          showAlert('Your sign-up didn’t go through', 'Something went wrong on our side. Please try again in a minute.');
+          showAlert(gettext('Your sign-up didn’t go through'), gettext('Something went wrong on our side. Please try again in a minute.'));
         } else {
-          showAlert('We couldn’t send your sign-up', 'Check your internet connection and try again. Your shifts are still selected.');
+          showAlert(gettext('We couldn’t send your sign-up'), gettext('Check your internet connection and try again. Your shifts are still selected.'));
         }
         return;
       }
@@ -500,7 +504,7 @@
         announce(data.message);
         return;
       }
-      showAlert(data.title || 'Your sign-up didn’t go through', data.message || 'Please try again in a minute.');
+      showAlert(data.title || gettext('Your sign-up didn’t go through'), data.message || gettext('Please try again in a minute.'));
     });
 
     /* Wiring */
@@ -511,7 +515,8 @@
       if (!r) return;
       refresh();
       if (input.checked) { clearShiftError(); showNote(''); }
-      announce(`${input.checked ? 'Added' : 'Removed'} ${shortName(r)}. ${plural(picked().length, 'shift')} chosen.`);
+      announce(fmt(input.checked ? gettext('Added %s.') : gettext('Removed %s.'), [shortName(r)]) + ' '
+        + fmt(ngettext('%s shift chosen.', '%s shifts chosen.', picked().length), [picked().length]));
     });
     const chips = root.querySelectorAll('.vol-chip');
     chips.forEach((chip) => chip.addEventListener('click', () => {
@@ -527,7 +532,7 @@
       const r = byId[b.dataset.remove];
       r.input.checked = false;
       refresh();
-      announce(`Removed ${shortName(r)}.`);
+      announce(fmt(gettext('Removed %s.'), [shortName(r)]));
       if (!picked().length) go('pick');
       else (mineList.querySelector('[data-remove]') || $('#vol-details-title')).focus();
     });
@@ -545,7 +550,7 @@
     form.addEventListener('change', (e) => { if (!e.target.closest('[data-vol-sheet]')) recheck(); });
 
     btn.next.addEventListener('click', () => {
-      if (!picked().length) { showShiftError('Choose at least one shift to continue.'); return; }
+      if (!picked().length) { showShiftError(gettext('Choose at least one shift to continue.')); return; }
       clearShiftError();
       go('details');
     });

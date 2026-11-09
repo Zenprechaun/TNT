@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+{% load i18n %}{% comment %}
+  Django's own admin header, plus a link in the top corner to switch the admin between English
+  and Spanish. It uses the same switch as the website, so the choice applies to both.
+{% endcomment %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title }}{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  #user-tools .admin-lang{display:inline}
+  #user-tools .admin-lang button{padding:0;border:0;border-bottom:1px solid rgba(255,255,255,.25);background:none;
+    color:var(--header-link-color);font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+  #user-tools .admin-lang button:hover,#user-tools .admin-lang button:focus{border-bottom:0;margin-bottom:1px}
+</style>
+{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'admin:index' %}">{{ site_header }}</a></div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block userlinks %}
+{% get_current_language as current %}
+<form class="admin-lang" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  {% if current == "es" %}<button type="submit" name="language" value="en" lang="en">English</button>{% else %}<button type="submit" name="language" value="es" lang="es">Español</button>{% endif %}
+</form> /
+{{ block.super }}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

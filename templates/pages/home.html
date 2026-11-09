@@ -1,10 +1,11 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n site_tags %}
 {% block head %}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tahoe Neighborhood Table">
 <meta property="og:title" content="Tahoe Neighborhood Table">
-<meta property="og:description" content="Nourishing our community. Building hope. Outreach to those in need of food, warmth and housing.">
+<meta property="og:description" content="{% translate "Nourishing our community. Building hope. Outreach to those in need of food, warmth and housing." %}">
+<meta property="og:locale" content="{% if LANGUAGE_CODE == 'es' %}es_US{% else %}en_US{% endif %}">
 <meta property="og:url" content="https://tahoeneighborhoodtable.com/">
 <link rel="stylesheet" href="{% static 'volunteers/volunteer.css' %}">
 {% endblock %}
@@ -16,44 +17,44 @@
 
   <section class="needs" aria-labelledby="needs-title">
     <div class="needs__inner">
-      <h2 class="ribbon" id="needs-title">Outreach to those in need of</h2>
+      <h2 class="ribbon" id="needs-title">{% translate "Outreach to those in need of" %}</h2>
       <ul class="need-grid" id="need-grid">
         <li class="need need--food" data-need="food">
-          <button class="need__toggle" id="need-food" type="button" aria-pressed="false" aria-haspopup="dialog" data-need="food" aria-label="Food: everyone deserves a seat at the table. Plays the Tahoe Community Thanksgiving video.">
+          <button class="need__toggle" id="need-food" type="button" aria-pressed="false" aria-haspopup="dialog" data-need="food" aria-label="{% translate "Food: everyone deserves a seat at the table. Plays the Tahoe Community Thanksgiving video." %}">
             <span class="need__tile"><span class="need__tile-in">
               {% include "pages/svg/icon_food.html" %}
-              <span class="need__label">Food</span>
+              <span class="need__label">{% translate "Food" %}</span>
             </span></span>
             <span class="need__photo">
-              <img src="{% static 'site/img/food.webp' %}" alt="Two pairs of hands passing a warm bowl of soup" width="640" height="488">
+              <img src="{% static 'site/img/food.webp' %}" alt="{% translate "Two pairs of hands passing a warm bowl of soup" %}" width="640" height="488">
               <span class="need__mark need__mark--play" aria-hidden="true"><svg class="i-play" viewBox="0 0 14 14"><path d="M4 2.2v9.6l7.6-4.8z"/></svg><svg class="i-x" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8"/></svg></span>
-              <span class="need__say" aria-hidden="true"><small>Everyone deserves</small><b>a seat at the table</b></span>
+              <span class="need__say" aria-hidden="true"><small>{% translate "Everyone deserves" %}</small><b>{% translate "a seat at the table" %}</b></span>
             </span>
           </button>
         </li>
         <li class="need need--warmth" data-need="warmth">
-          <button class="need__toggle" id="need-warmth" type="button" aria-pressed="false" data-need="warmth" aria-label="Warmth: everyone deserves a warm place to be">
+          <button class="need__toggle" id="need-warmth" type="button" aria-pressed="false" data-need="warmth" aria-label="{% translate "Warmth: everyone deserves a warm place to be" %}">
             <span class="need__tile"><span class="need__tile-in">
               {% include "pages/svg/icon_warmth.html" %}
-              <span class="need__label">Warmth</span>
+              <span class="need__label">{% translate "Warmth" %}</span>
             </span></span>
             <span class="need__photo">
-              <img src="{% static 'site/img/warmth.webp' %}" alt="A folded stack of knit blankets with a blue beanie and a striped scarf" width="636" height="480">
+              <img src="{% static 'site/img/warmth.webp' %}" alt="{% translate "A folded stack of knit blankets with a blue beanie and a striped scarf" %}" width="636" height="480">
               <span class="need__mark" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1.5v11M1.5 7h11"/></svg></span>
-              <span class="need__say" aria-hidden="true"><small>Everyone deserves</small><b>a warm place to be</b></span>
+              <span class="need__say" aria-hidden="true"><small>{% translate "Everyone deserves" %}</small><b>{% translate "a warm place to be" %}</b></span>
             </span>
           </button>
         </li>
         <li class="need need--housing" data-need="housing">
-          <button class="need__toggle" id="need-housing" type="button" aria-pressed="false" data-need="housing" aria-label="Housing: everyone deserves a place to call home">
+          <button class="need__toggle" id="need-housing" type="button" aria-pressed="false" data-need="housing" aria-label="{% translate "Housing: everyone deserves a place to call home" %}">
             <span class="need__tile"><span class="need__tile-in">
               {% include "pages/svg/icon_housing.html" %}
-              <span class="need__label">Housing</span>
+              <span class="need__label">{% translate "Housing" %}</span>
             </span></span>
             <span class="need__photo">
-              <img src="{% static 'site/img/housing.webp' %}" alt="Cupped hands holding a small cutout of a house" width="654" height="488">
+              <img src="{% static 'site/img/housing.webp' %}" alt="{% translate "Cupped hands holding a small cutout of a house" %}" width="654" height="488">
               <span class="need__mark" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1.5v11M1.5 7h11"/></svg></span>
-              <span class="need__say" aria-hidden="true"><small>Everyone deserves</small><b>a place to call home</b></span>
+              <span class="need__say" aria-hidden="true"><small>{% translate "Everyone deserves" %}</small><b>{% translate "a place to call home" %}</b></span>
             </span>
           </button>
         </li>
@@ -62,9 +63,12 @@
   </section>
 </div>
 
-<section class="belief" aria-label="What we believe">
+<section class="belief" aria-label="{% translate 'What we believe' %}">
   <div class="belief__inner">
-    <p>We believe everyone deserves <span class="nb"><button class="phrase" type="button" data-need="food" aria-pressed="false">a seat at the table</button>,</span><br class="belief__br"> <span class="nb"><button class="phrase" type="button" data-need="warmth" aria-pressed="false">a warm place to be</button>,</span> and <span class="nb"><button class="phrase" type="button" data-need="housing" aria-pressed="false">a place to call home</button>.</span></p>
+    {% translate "a seat at the table" as seat_text %}{% translate "a warm place to be" as warm_text %}{% translate "a place to call home" as home_text %}
+    {% phrase_button "food" seat_text as seat %}{% phrase_button "warmth" warm_text as warm %}{% phrase_button "housing" home_text as home %}
+    {# The phrases are buttons; each stays on one line with the punctuation after it. #}
+    <p>{% blocktranslate trimmed %}We believe everyone deserves <span class="nb">{{ seat }},</span><br class="belief__br"> <span class="nb">{{ warm }},</span> and <span class="nb">{{ home }}.</span>{% endblocktranslate %}</p>
   </div>
 </section>
 
@@ -73,12 +77,12 @@
 <dialog class="player" id="player" aria-labelledby="player-title">
   <div class="player__panel">
     <div class="player__bar">
-      <h2 class="player__title" id="player-title">Tahoe Community Thanksgiving</h2>
-      <button class="player__close" id="player-close" type="button" aria-label="Close video"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg></button>
+      <h2 class="player__title" id="player-title">{% translate "Tahoe Community Thanksgiving" %}</h2>
+      <button class="player__close" id="player-close" type="button" aria-label="{% translate "Close video" %}"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg></button>
     </div>
     <div class="player__frame">
       <video id="player-video" controls playsinline preload="none"></video>
-      <p class="player__fallback" id="player-fallback" hidden><span>This video can't play here.</span><a href="https://www.dropbox.com/scl/fi/erfuniux4vvwatyydqsp8/TahoeCommunityThanksgiving.mp4?rlkey=poo6yihayjsbvc1b3ux1y4gsx&amp;st=yxu4y9l2&amp;dl=0" target="_blank" rel="noopener">Watch it on Dropbox</a></p>
+      <p class="player__fallback" id="player-fallback" hidden><span>{% translate "This video can’t play here." %}</span><a href="https://www.dropbox.com/scl/fi/erfuniux4vvwatyydqsp8/TahoeCommunityThanksgiving.mp4?rlkey=poo6yihayjsbvc1b3ux1y4gsx&amp;st=yxu4y9l2&amp;dl=0" target="_blank" rel="noopener">{% translate "Watch it on Dropbox" %}</a></p>
     </div>
   </div>
 </dialog>

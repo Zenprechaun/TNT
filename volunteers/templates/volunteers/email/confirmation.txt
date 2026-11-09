@@ -1,14 +1,14 @@
-{% autoescape off %}Hi {{ signup.first_name }},
+{% load i18n %}{% autoescape off %}{% blocktranslate trimmed with name=signup.first_name %}Hi {{ name }},{% endblocktranslate %}
 
-Thanks for volunteering at {{ event.name }}. You're signed up for:
+{% blocktranslate trimmed with event=event.local.name %}Thanks for volunteering at {{ event }}. You’re signed up for:{% endblocktranslate %}
 {% for shift in shifts %}
   - {{ shift.long_label }}{% endfor %}
-{% if event.location %}
-Location: {{ event.location }}{% endif %}{% if event.check_in %}
-When you arrive: {{ event.check_in }}{% endif %}
+{% if event.local.location %}
+{% blocktranslate trimmed with location=event.local.location %}Location: {{ location }}{% endblocktranslate %}{% endif %}{% if event.local.check_in %}
+{% blocktranslate trimmed with check_in=event.local.check_in %}When you arrive: {{ check_in }}{% endblocktranslate %}{% endif %}
 
-Need to change a shift? Reply to this email or write to {{ contact_email }}.
+{% blocktranslate trimmed with email=contact_email %}Need to change a shift? Reply to this email or write to {{ email }}.{% endblocktranslate %}
 
 Tahoe Neighborhood Table
-Our neighbors. Our community. Our table.
+{% translate "Our neighbors." %} {% translate "Our community." %} {% translate "Our table." %}
 {% endautoescape %}

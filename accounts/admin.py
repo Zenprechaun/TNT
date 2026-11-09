@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from .models import Profile, Role
 
@@ -16,7 +17,7 @@ class RoleAdmin(admin.ModelAdmin):
     list_display = ("name", "slug", "description", "people")
     search_fields = ("name", "slug", "description")
 
-    @admin.display(description="People")
+    @admin.display(description=_("People"))
     def people(self, role):
         return role.profiles.count()
 
@@ -36,7 +37,7 @@ class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     fields = ("roles",)
-    verbose_name = verbose_name_plural = "Roles"
+    verbose_name = verbose_name_plural = _("Roles")
     formfield_overrides = {models.ManyToManyField: {"widget": forms.CheckboxSelectMultiple}}
 
 
@@ -53,9 +54,9 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ("last_login", "date_joined")
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        ("Personal info", {"fields": ("first_name", "last_name", "email")}),
-        ("Status", {"fields": ("is_active",)}),
-        ("Important dates", {"fields": ("last_login", "date_joined")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
+        (_("Status"), {"fields": ("is_active",)}),
+        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
 
     def get_queryset(self, request):
@@ -65,7 +66,7 @@ class UserAdmin(BaseUserAdmin):
         # New accounts get a profile automatically, so roles are set once the account is saved.
         return [ProfileInline] if obj else []
 
-    @admin.display(description="Roles")
+    @admin.display(description=_("Roles"))
     def role_list(self, user):
         profile = getattr(user, "profile", None)
-        return ", ".join(role.name for role in profile.roles.all()) if profile else ""
+        return ", ".join(str(role.display_name) for role in profile.roles.all()) if profile else ""

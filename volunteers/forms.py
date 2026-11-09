@@ -1,12 +1,26 @@
 import re
 
 from django import forms
+from django.conf import settings
+from django.utils.translation import get_language, gettext
+from django.utils.translation import gettext_lazy as _
 
 from .models import Shift, Signup, clock, short_day
 
 
 def shift_name(shift):
-    return f"{shift.role.name}, {short_day(shift.date)} at {clock(shift.start)}"
+    return gettext("%(role)s, %(day)s at %(time)s") % {
+        "role": shift.role.local.name, "day": short_day(shift.date), "time": clock(shift.start)}
+
+
+def current_language():
+    """The language of this page, as one of settings.LANGUAGES."""
+    codes = dict(settings.LANGUAGES)
+    language = get_language() or settings.LANGUAGE_CODE
+    for code in (language, language.split("-")[0]):
+        if code in codes:
+            return code
+    return settings.LANGUAGE_CODE
 
 
 class TelInput(forms.TextInput):
@@ -14,10 +28,10 @@ class TelInput(forms.TextInput):
 
 
 HINTS = {
-    "email": "We’ll contact you here about your shifts.",
-    "phone": "Only for day-of updates, like a change of start time.",
-    "notes": "Accessibility needs, lifting limits, or who you’re volunteering with. "
-             "Coming as a group? Ask each person to sign up so we can plan.",
+    "email": _("We’ll contact you here about your shifts."),
+    "phone": _("Only for day-of updates, like a change of start time."),
+    "notes": _("Accessibility needs, lifting limits, or who you’re volunteering with. "
+               "Coming as a group? Ask each person to sign up so we can plan."),
 }
 
 INPUT_ATTRS = {
@@ -40,9 +54,9 @@ class SignupForm(forms.ModelForm):
         queryset=Shift.objects.none(),
         widget=forms.CheckboxSelectMultiple,
         error_messages={
-            "required": "Choose at least one shift.",
-            "invalid_choice": "One of those shifts isn’t available any more. Pick again.",
-            "invalid_pk_value": "One of those shifts isn’t available any more. Pick again.",
+            "required": _("Choose at least one shift."),
+            "invalid_choice": _("One of those shifts isn’t available any more. Pick again."),
+            "invalid_pk_value": _("One of those shifts isn’t available any more. Pick again."),
         },
     )
     # Spam trap. People never see this field; bots fill it in.
@@ -52,12 +66,12 @@ class SignupForm(forms.ModelForm):
         model = Signup
         fields = ["first_name", "last_name", "email", "phone", "shirt_size", "emergency_name", "emergency_phone", "notes"]
         widgets = {"phone": TelInput, "emergency_phone": TelInput}
-        labels = {"notes": "Anything we should know?", "emergency_name": "Name", "emergency_phone": "Phone"}
+        labels = {"notes": _("Anything we should know?"), "emergency_name": _("Name"), "emergency_phone": _("Phone")}
         error_messages = {
-            "first_name": {"required": "Enter your first name."},
-            "last_name": {"required": "Enter your last name."},
-            "email": {"required": "Enter your email address.", "invalid": "Enter an email address like name@example.com."},
-            "phone": {"required": "Enter a phone number we can reach you on during the event."},
+            "first_name": {"required": _("Enter your first name.")},
+            "last_name": {"required": _("Enter your last name.")},
+            "email": {"required": _("Enter your email address."), "invalid": _("Enter an email address like name@example.com.")},
+            "phone": {"required": _("Enter a phone number we can reach you on during the event.")},
         }
 
     def __init__(self, *args, event, **kwargs):
@@ -67,21 +81,22 @@ class SignupForm(forms.ModelForm):
         self.fields["shifts"].queryset = event.shifts.select_related("role")
         self.fields["notes"].widget = forms.Textarea(attrs={"rows": 3, "maxlength": 1000})
         if event.ask_shirt_size:
-            self.fields["shirt_size"].choices = [("", "Choose a size")] + Signup.SHIRT_SIZES
+            self.fields["shirt_size"].choices = [("", _("Choose a size"))] + Signup.SHIRT_SIZES
         else:
             del self.fields["shirt_size"]
         if not event.ask_emergency_contact:
             del self.fields["emergency_name"]
             del self.fields["emergency_phone"]
+        # The English statement decides whether the box is shown; the label follows the page's language.
         if event.age_statement:
             self.fields["age_confirmed"] = forms.BooleanField(
-                label=event.age_statement,
-                error_messages={"required": "Confirm that you meet the age requirement."},
+                label=event.local.age_statement,
+                error_messages={"required": _("Confirm that you meet the age requirement.")},
             )
         if event.agreement_statement:
             self.fields["agreed"] = forms.BooleanField(
-                label=event.agreement_statement,
-                error_messages={"required": "Tick the box to agree to the volunteer guidelines."},
+                label=event.local.agreement_statement,
+                error_messages={"required": _("Tick the box to agree to the volunteer guidelines.")},
             )
         for name, field in self.fields.items():
             if name in ("shifts", "website"):
@@ -111,23 +126,25 @@ class SignupForm(forms.ModelForm):
     def clean_phone(self):
         phone = self.cleaned_data["phone"].strip()
         if len(re.sub(r"\D", "", phone)) < 7:
-            raise forms.ValidationError("Enter a phone number with its area code.")
+            raise forms.ValidationError(_("Enter a phone number with its area code."))
         return phone
 
     def clean_website(self):
         if self.cleaned_data.get("website"):
-            raise forms.ValidationError("Leave this field empty.")
+            raise forms.ValidationError(_("Leave this field empty."))
         return ""
 
     def clean_shifts(self):
         shifts = sorted(self.cleaned_data["shifts"], key=lambda s: s.starts_at)
         started = [s for s in shifts if s.has_started()]
         if started:
-            raise forms.ValidationError(f"{shift_name(started[0])} has already started. Pick another shift.")
+            raise forms.ValidationError(
+                gettext("%(shift)s has already started. Pick another shift.") % {"shift": shift_name(started[0])})
         for first, second in zip(shifts, shifts[1:]):
             if first.overlaps(second):
                 raise forms.ValidationError(
-                    f"{shift_name(first)} and {shift_name(second)} overlap. Keep one of them."
+                    gettext("%(first)s and %(second)s overlap. Keep one of them.") % {
+                        "first": shift_name(first), "second": shift_name(second)}
                 )
         return shifts
 
@@ -136,6 +153,7 @@ class SignupForm(forms.ModelForm):
         signup.event = self.event
         signup.age_confirmed = bool(self.cleaned_data.get("age_confirmed"))
         signup.agreed = bool(self.cleaned_data.get("agreed"))
+        signup.language = current_language()
         if commit:
             signup.save()
         return signup

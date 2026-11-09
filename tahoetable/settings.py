@@ -48,6 +48,9 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # serves CSS, JavaScript and images on the live site
     "django.contrib.sessions.middleware.SessionMiddleware",
+    # Picks English or Spanish for each visitor: their choice from the language switch, or else
+    # their browser's language.
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -65,6 +68,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "django.template.context_processors.i18n",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "pages.context_processors.site",
@@ -103,7 +107,14 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "accounts:dashboard"
 LOGOUT_REDIRECT_URL = "pages:home"
 
-LANGUAGE_CODE = "en-us"
+# The site is in English and Spanish. The switch at the top of each page changes the language.
+# See README.md, "English and Spanish".
+LANGUAGE_CODE = "en"
+LANGUAGES = [("en", "English"), ("es", "Español")]
+LOCALE_PATHS = [BASE_DIR / "locale"]
+FORMAT_MODULE_PATH = ["tahoetable.formats"]
+LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 365  # remember the choice for a year
+LANGUAGE_COOKIE_SAMESITE = "Lax"
 TIME_ZONE = "America/Los_Angeles"
 USE_I18N = True
 USE_TZ = True
@@ -161,6 +172,7 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    LANGUAGE_COOKIE_SECURE = True
     # Once HTTPS works, set DJANGO_HSTS_SECONDS=31536000 so browsers always use it.
     SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_HSTS_SECONDS", "0"))
     # Send warnings and errors to the server log: journalctl -u tahoetable

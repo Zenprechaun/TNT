@@ -289,3 +289,8 @@ svg{display:block}
   .masthead--compact .wordmark{width:100%;max-width:300px;margin:0}
   .masthead--compact .tagline{margin:6px 0 0;font-size:15px;padding-right:calc(var(--pu)*60)}
 }
+
+/* ---------- the sign-off as text (languages other than English) ---------- */
+.band__sign-text{display:grid;gap:.08em;margin:0;color:var(--on-navy);
+  font-family:var(--display);font-style:italic;font-size:max(17px,calc(var(--u)*21));line-height:1.12;letter-spacing:.005em}
+.band__sign-text span{white-space:nowrap}
