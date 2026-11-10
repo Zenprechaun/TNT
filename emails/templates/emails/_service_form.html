@@ -1,0 +1,33 @@
+{% load i18n %}{% with f=e.service_form %}
+<form class="m-form" method="post" action="{% url 'accounts:manage' %}#email-service" data-email-service novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="action" value="connect">
+  {% for problem in f.non_field_errors %}<p class="login-form__error" role="alert">{{ problem }}</p>{% endfor %}
+  <fieldset class="m-services">
+    <legend class="m-label">{{ f.service.label }}</legend>
+    {% for choice in f.service %}
+      <label class="m-service">{{ choice.tag }}<span><b>{{ choice.choice_label }}</b>{% if choice.data.value == "resend" %}<em>{% translate "Recommended" %}</em>{% endif %}</span></label>
+    {% endfor %}
+    {% for error in f.service.errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+  </fieldset>
+  <p class="m-help" data-services="resend">{% translate "Free for up to 3,000 emails a month (100 a day). The username is always resend, so only the API key goes here. It starts with re_." %}</p>
+  <p class="m-help" data-services="brevo">{% translate "Free for up to 300 emails a day. Use the SMTP login and an SMTP key from Brevo’s SMTP & API page." %}</p>
+  <p class="m-help" data-services="google">{% translate "Use the full email address and an app password, from your Google Account’s Security page (2-Step Verification has to be on)." %}</p>
+  <p class="m-help" data-services="other">{% translate "Use the SMTP settings from your email service’s help pages." %}</p>
+
+  {% include "emails/_field.html" with field=f.username services="brevo google other" %}
+  {% include "emails/_field.html" with field=f.password %}
+  <div class="m-row" data-services="other">
+    {% include "emails/_field.html" with field=f.host %}
+    {% include "emails/_field.html" with field=f.port %}
+    {% include "emails/_field.html" with field=f.security %}
+  </div>
+  {% include "emails/_field.html" with field=f.from_name %}
+  {% include "emails/_field.html" with field=f.from_address %}
+  {% translate "Usually the same address. Leave it empty if nobody should get replies." as reply_help %}
+  {% include "emails/_field.html" with field=f.reply_to help=reply_help %}
+  <div class="m-acts">
+    <button class="btn btn--primary" type="submit">{% translate "Save and connect" %}</button>
+  </div>
+</form>
+{% endwith %}

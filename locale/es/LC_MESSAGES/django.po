@@ -26,6 +26,9 @@ msgstr "Información personal"
 
 #: accounts/admin.py
 #: donations/admin.py
+#: donations/templates/donations/_manage.html
+#: emails/templates/emails/_manage.html
+#: templates/accounts/manage.html
 msgid "Status"
 msgstr "Estado"
 
@@ -81,7 +84,10 @@ msgid "Enter your last name."
 msgstr "Escriba su apellido."
 
 #: accounts/forms.py
+#: accounts/manage.py
 #: donations/admin.py
+#: emails/apps.py
+#: emails/templates/emails/_manage.html
 #: templates/accounts/dashboard_user.html
 #: volunteers/admin.py
 #: volunteers/templates/volunteers/email/organizer.txt
@@ -129,6 +135,173 @@ msgstr "Deje este campo vacío."
 msgid "The two passwords don’t match."
 msgstr "Las contraseñas no coinciden."
 
+#: accounts/forms.py
+msgid "New password"
+msgstr "Contraseña nueva"
+
+#: accounts/forms.py
+msgid "New password again"
+msgstr "Repita la contraseña nueva"
+
+#: accounts/manage.py
+#: donations/apps.py
+#: donations/templates/donations/_manage.html
+#: donations/templates/donations/_summary.html
+#: templates/accounts/dashboard_base.html
+msgid "Donations"
+msgstr "Donaciones"
+
+#: accounts/manage.py
+#: donations/templates/donations/_manage.html
+#: emails/manage.py
+#: emails/templates/emails/_manage.html
+msgid "Off"
+msgstr "Desactivado"
+
+#: accounts/manage.py
+msgid "Stripe isn’t connected, so the Donate button opens an email."
+msgstr "Stripe no está conectado, así que el botón Donar abre un correo electrónico."
+
+#: accounts/manage.py
+msgid "Live"
+msgstr "Pagos reales"
+
+#: accounts/manage.py
+#, python-format
+msgid "Taking real donations: %(total)s so far in %(year)s."
+msgstr "Recibe donaciones reales: %(total)s hasta ahora en %(year)s."
+
+#: accounts/manage.py
+msgid "Test mode"
+msgstr "Modo de prueba"
+
+#: accounts/manage.py
+msgid "Test cards only, until the live key is added."
+msgstr "Solo tarjetas de prueba, hasta que se agregue la clave real."
+
+#: accounts/manage.py
+msgid "Payment updates from Stripe aren’t connected: run connect_stripe."
+msgstr "Los avisos de pago de Stripe no están conectados: ejecute connect_stripe."
+
+#: accounts/manage.py
+#, python-format
+msgid "Next: %(event)s, %(dates)s. %(taken)s of %(total)s spots filled."
+msgstr "Próximo: %(event)s, %(dates)s. %(taken)s de %(total)s lugares ocupados."
+
+#: accounts/manage.py
+#: templates/accounts/dashboard_base.html
+#: volunteers/apps.py
+msgid "Volunteers"
+msgstr "Voluntariado"
+
+#: accounts/manage.py
+#: volunteers/models.py
+msgid "Sign-ups open"
+msgstr "Inscripciones abiertas"
+
+#: accounts/manage.py
+msgid "Sign-ups closed"
+msgstr "Inscripciones cerradas"
+
+#: accounts/manage.py
+msgid "No events"
+msgstr "Sin eventos"
+
+#: accounts/manage.py
+msgid "No upcoming volunteer events."
+msgstr "No hay próximos eventos de voluntariado."
+
+#: accounts/manage.py
+#: templates/accounts/_manage_site.html
+msgid "Publishing"
+msgstr "Publicación"
+
+#: accounts/manage.py
+msgid "Failed"
+msgstr "Falló"
+
+#: accounts/manage.py
+msgid "The last update didn’t go live. The site kept the version before it."
+msgstr "La última actualización no se publicó. El sitio siguió con la versión anterior."
+
+#: accounts/manage.py
+msgid "Updating"
+msgstr "Actualizando"
+
+#: accounts/manage.py
+msgid "A new version is going live now."
+msgstr "Se está publicando una versión nueva."
+
+#: accounts/manage.py
+#, python-format
+msgid "Version %(version)s is live."
+msgstr "La versión %(version)s está publicada."
+
+#: accounts/manage.py
+#, python-format
+msgid "Version %(version)s went live %(ago)s ago."
+msgstr "La versión %(version)s se publicó hace %(ago)s."
+
+#: accounts/manage.py
+msgid "Up to date"
+msgstr "Al día"
+
+#: accounts/manage.py
+msgid "Not published"
+msgstr "Sin publicar"
+
+#: accounts/manage.py
+msgid "This copy of the site isn’t published from GitHub."
+msgstr "Esta copia del sitio no se publica desde GitHub."
+
+#: accounts/manage.py
+#: templates/accounts/_manage_site.html
+msgid "Backups"
+msgstr "Copias de seguridad"
+
+#: accounts/manage.py
+msgid "Not here"
+msgstr "Aquí no"
+
+#: accounts/manage.py
+msgid "Backups run on the live server."
+msgstr "Las copias de seguridad se hacen en el servidor del sitio publicado."
+
+#: accounts/manage.py
+#: templates/accounts/_manage_site.html
+msgid "None yet"
+msgstr "Ninguna todavía"
+
+#: accounts/manage.py
+msgid "There are no backups of the database yet."
+msgstr "Todavía no hay copias de seguridad de la base de datos."
+
+#: accounts/manage.py
+#, python-format
+msgid "%(count)s copy kept."
+msgid_plural "%(count)s copies kept."
+msgstr[0] "Se guarda %(count)s copia."
+msgstr[1] "Se guardan %(count)s copias."
+
+#: accounts/manage.py
+#, python-format
+msgid "The newest backup is %(ago)s old, so nightly backups may have stopped."
+msgstr "La copia más reciente tiene %(ago)s, así que puede que las copias nocturnas se hayan detenido."
+
+#: accounts/manage.py
+msgid "Check"
+msgstr "Revisar"
+
+#: accounts/manage.py
+#, python-format
+msgid "Last backup %(ago)s ago."
+msgstr "Última copia hace %(ago)s."
+
+#: accounts/manage.py
+#: emails/templates/emails/_manage.html
+msgid "OK"
+msgstr "Correcto"
+
 #: accounts/models.py
 msgid "Short name used in the code, such as admin or user."
 msgstr "Nombre corto que se usa en el código, como admin o user."
@@ -160,6 +333,14 @@ msgid "Welcome, %(name)s! Your account is ready."
 msgstr "¡Hola, %(name)s! Su cuenta está lista."
 
 #: accounts/views.py
+msgid "Too many reset emails from here. Please try again later."
+msgstr "Se pidieron demasiados correos para restablecer contraseñas desde aquí. Inténtelo de nuevo más tarde."
+
+#: accounts/views.py
+msgid "Your new password is saved, and you’re logged in."
+msgstr "Su contraseña nueva quedó guardada y ya inició sesión."
+
+#: accounts/views.py
 msgid "Admins"
 msgstr "Administradores"
 
@@ -186,6 +367,7 @@ msgid "Saved roles for %(name)s: %(roles)s."
 msgstr "Se guardaron los roles de %(name)s: %(roles)s."
 
 #: donations/admin.py
+#: donations/templates/donations/_manage.html
 #: donations/templates/donations/_your_donations.html
 msgid "Receipt"
 msgstr "Recibo"
@@ -202,6 +384,7 @@ msgid "Name"
 msgstr "Nombre"
 
 #: donations/admin.py
+#: donations/templates/donations/_manage.html
 #: donations/templates/donations/donate.html
 msgid "Amount"
 msgstr "Monto"
@@ -244,6 +427,7 @@ msgid "payments"
 msgstr "pagos"
 
 #: donations/admin.py
+#: donations/templates/donations/_manage.html
 #: donations/templates/donations/receipt.html
 msgid "Donor"
 msgstr "Donante"
@@ -263,12 +447,6 @@ msgstr "Descargar las donaciones seleccionadas (CSV)"
 #: donations/admin.py
 msgid "Each month"
 msgstr "Cada mes"
-
-#: donations/apps.py
-#: donations/templates/donations/_summary.html
-#: templates/accounts/dashboard_base.html
-msgid "Donations"
-msgstr "Donaciones"
 
 #: donations/context_processors.py
 msgid "Donating to Tahoe Neighborhood Table"
@@ -343,6 +521,7 @@ msgid "name"
 msgstr "nombre"
 
 #: donations/models.py
+#: emails/models.py
 #: volunteers/models.py
 msgid "email"
 msgstr "correo electrónico"
@@ -356,6 +535,7 @@ msgid "fee covered each month, in cents"
 msgstr "comisión cubierta cada mes, en centavos"
 
 #: donations/models.py
+#: emails/models.py
 msgid "status"
 msgstr "estado"
 
@@ -368,6 +548,7 @@ msgid "Set when the donor has asked to stop after the current month."
 msgstr "Se completa cuando el donante pidió terminar después del mes en curso."
 
 #: donations/models.py
+#: emails/models.py
 #: volunteers/models.py
 msgid "language"
 msgstr "idioma"
@@ -410,6 +591,7 @@ msgid "One-time"
 msgstr "Una vez"
 
 #: donations/models.py
+#: donations/templates/donations/_manage.html
 msgid "Monthly"
 msgstr "Mensual"
 
@@ -538,13 +720,81 @@ msgstr "Donar %(amount)s al mes"
 msgid "Donate %(amount)s"
 msgstr "Donar %(amount)s"
 
-#: donations/templates/donations/_summary.html
-msgid "Stripe isn’t connected yet, so the site can’t take donations. Until it is, the Donate button opens an email, and you can preview the donation page."
-msgstr "Stripe aún no está conectado, así que el sitio no puede recibir donaciones. Mientras tanto, el botón Donar abre un correo electrónico y usted puede ver una vista previa de la página de donaciones."
+#: donations/templates/donations/_manage.html
+msgid "Stripe isn’t connected yet, so the Donate button opens an email. Admins can preview the donation page."
+msgstr "Stripe aún no está conectado, así que el botón Donar abre un correo electrónico. Los administradores pueden ver una vista previa de la página de donaciones."
 
+#: donations/templates/donations/_manage.html
+msgid "Real donations through Stripe."
+msgstr "Donaciones reales a través de Stripe."
+
+#: donations/templates/donations/_manage.html
 #: donations/templates/donations/_summary.html
 msgid "Test mode: these are Stripe test payments, not real money."
 msgstr "Modo de prueba: son pagos de prueba de Stripe, no dinero real."
+
+#: donations/templates/donations/_manage.html
+#: donations/templates/donations/_summary.html
+msgid "Donation page"
+msgstr "Página de donaciones"
+
+#: donations/templates/donations/_manage.html
+#: donations/templates/donations/_summary.html
+msgid "Preview the donation page"
+msgstr "Vista previa de la página de donaciones"
+
+#: donations/templates/donations/_manage.html
+#: donations/templates/donations/_summary.html
+msgid "All donations"
+msgstr "Todas las donaciones"
+
+#: donations/templates/donations/_manage.html
+#, python-format
+msgid "Download %(year)s (CSV)"
+msgstr "Descargar %(year)s (CSV)"
+
+#: donations/templates/donations/_manage.html
+#, python-format
+msgid "Donated in %(year)s, from %(count)s donation"
+msgid_plural "Donated in %(year)s, from %(count)s donations"
+msgstr[0] "Donado en %(year)s, en %(count)s donación"
+msgstr[1] "Donado en %(year)s, en %(count)s donaciones"
+
+#: donations/templates/donations/_manage.html
+#, python-format
+msgid "Monthly donors, %(amount)s a month in all"
+msgstr "Donantes mensuales, %(amount)s al mes en total"
+
+#: donations/templates/donations/_manage.html
+#: emails/templates/emails/_manage.html
+msgid "Connected"
+msgstr "Conectado"
+
+#: donations/templates/donations/_manage.html
+msgid "Not connected"
+msgstr "Sin conectar"
+
+#: donations/templates/donations/_manage.html
+msgid "Stripe’s payment updates. Run connect_stripe on the server so the site hears about payments, refunds and monthly donations."
+msgstr "Avisos de pago de Stripe. Ejecute connect_stripe en el servidor para que el sitio se entere de los pagos, los reembolsos y las donaciones mensuales."
+
+#: donations/templates/donations/_manage.html
+msgid "Stripe’s payment updates, which tell the site about payments, refunds and monthly donations."
+msgstr "Avisos de pago de Stripe, que le informan al sitio sobre los pagos, los reembolsos y las donaciones mensuales."
+
+#: donations/templates/donations/_manage.html
+#: donations/templates/donations/email/receipt.txt
+#: donations/templates/donations/receipt.html
+msgid "Date"
+msgstr "Fecha"
+
+#: donations/templates/donations/_manage.html
+msgid "No donations yet."
+msgstr "Todavía no hay donaciones."
+
+#: donations/templates/donations/_summary.html
+msgid "Stripe isn’t connected yet, so the site can’t take donations. Until it is, the Donate button opens an email, and you can preview the donation page."
+msgstr "Stripe aún no está conectado, así que el sitio no puede recibir donaciones. Mientras tanto, el botón Donar abre un correo electrónico y usted puede ver una vista previa de la página de donaciones."
 
 #: donations/templates/donations/_summary.html
 #, python-format
@@ -566,18 +816,6 @@ msgstr "Donantes mensuales"
 #, python-format
 msgid "%(amount)s a month"
 msgstr "%(amount)s al mes"
-
-#: donations/templates/donations/_summary.html
-msgid "Donation page"
-msgstr "Página de donaciones"
-
-#: donations/templates/donations/_summary.html
-msgid "Preview the donation page"
-msgstr "Vista previa de la página de donaciones"
-
-#: donations/templates/donations/_summary.html
-msgid "All donations"
-msgstr "Todas las donaciones"
 
 #: donations/templates/donations/_your_donations.html
 msgid "Your donations"
@@ -674,6 +912,7 @@ msgstr "¿Quiere tener sus donaciones y recibos en un solo lugar?"
 #: templates/accounts/_login_dialog.html
 #: templates/accounts/_login_form.html
 #: templates/accounts/login.html
+#: templates/accounts/password_forgot.html
 #: templates/accounts/register.html
 msgid "Log in"
 msgstr "Iniciar sesión"
@@ -695,12 +934,14 @@ msgid "You’ll pay on Stripe’s secure page. We never see your card number."
 msgstr "Pagará en la página segura de Stripe. Nosotros nunca vemos el número de su tarjeta."
 
 #: donations/templates/donations/email/receipt.txt
+#: templates/accounts/email/password_reset.txt
 #: volunteers/templates/volunteers/email/confirmation.txt
 #, python-format
 msgid "Hi %(name)s,"
 msgstr "Hola, %(name)s:"
 
 #: donations/templates/donations/email/receipt.txt
+#: templates/accounts/email/password_reset.txt
 msgid "Hello,"
 msgstr "Hola:"
 
@@ -721,11 +962,6 @@ msgstr "Número de recibo"
 
 #: donations/templates/donations/email/receipt.txt
 #: donations/templates/donations/receipt.html
-msgid "Date"
-msgstr "Fecha"
-
-#: donations/templates/donations/email/receipt.txt
-#: donations/templates/donations/receipt.html
 msgid "Donation"
 msgstr "Donación"
 
@@ -740,23 +976,27 @@ msgid "See or print this receipt at any time: %(url)s"
 msgstr "Vea o imprima este recibo cuando quiera: %(url)s"
 
 #: donations/templates/donations/email/receipt.txt
+#: templates/accounts/email/password_reset.txt
 #, python-format
 msgid "Questions? Write to %(email)s."
 msgstr "¿Preguntas? Escriba a %(email)s."
 
 #: donations/templates/donations/email/receipt.txt
+#: templates/accounts/email/password_reset.txt
 #: templates/pages/_band.html
 #: volunteers/templates/volunteers/email/confirmation.txt
 msgid "Our neighbors."
 msgstr "Nuestros vecinos."
 
 #: donations/templates/donations/email/receipt.txt
+#: templates/accounts/email/password_reset.txt
 #: templates/pages/_band.html
 #: volunteers/templates/volunteers/email/confirmation.txt
 msgid "Our community."
 msgstr "Nuestra comunidad."
 
 #: donations/templates/donations/email/receipt.txt
+#: templates/accounts/email/password_reset.txt
 #: templates/pages/_band.html
 #: volunteers/templates/volunteers/email/confirmation.txt
 msgid "Our table."
@@ -768,6 +1008,7 @@ msgid "Thank you"
 msgstr "Gracias"
 
 #: donations/templates/donations/receipt.html
+#: emails/models.py
 msgid "Donation receipt"
 msgstr "Recibo de donación"
 
@@ -880,6 +1121,560 @@ msgstr "Esta cuenta no tiene una donación mensual que cambiar."
 msgid "We couldn’t open that page just now. Please try again in a minute."
 msgstr "No pudimos abrir esa página en este momento. Inténtelo de nuevo en un minuto."
 
+#: emails/admin.py
+msgid "problem"
+msgstr "problema"
+
+#: emails/dns.py
+msgid "Couldn’t check DNS just now. Try again later."
+msgstr "No se pudo revisar el DNS en este momento. Inténtelo más tarde."
+
+#: emails/dns.py
+#, python-format
+msgid "Mail to @%(domain)s"
+msgstr "Correo para @%(domain)s"
+
+#: emails/dns.py
+#, python-format
+msgid "Received by %(host)s, so replies to the site’s emails reach you."
+msgstr "Lo recibe %(host)s, así que las respuestas a los correos del sitio le llegan."
+
+#: emails/dns.py
+#, python-format
+msgid "No mail server receives email for %(domain)s, so replies to the site’s emails bounce. Set up email for the domain, or send replies to another address."
+msgstr "Ningún servidor de correo recibe correos para %(domain)s, así que las respuestas a los correos del sitio rebotan. Configure el correo del dominio o envíe las respuestas a otra dirección."
+
+#: emails/dns.py
+#, python-format
+msgid "In place: %(record)s"
+msgstr "Configurado: %(record)s"
+
+#: emails/dns.py
+msgid "Recommended, so Gmail and others trust the site’s emails. At GoDaddy, add a TXT record named _dmarc with the value v=DMARC1; p=none;"
+msgstr "Recomendado, para que Gmail y otros confíen en los correos del sitio. En GoDaddy, agregue un registro TXT llamado _dmarc con el valor v=DMARC1; p=none;"
+
+#: emails/dns.py
+msgid "Email signature (DKIM)"
+msgstr "Firma del correo (DKIM)"
+
+#: emails/dns.py
+msgid "In place."
+msgstr "Configurada."
+
+#: emails/dns.py
+msgid "Missing. Add the DNS records the email service shows for your domain, then check again."
+msgstr "Falta. Agregue los registros DNS que el servicio de correo muestra para su dominio y vuelva a revisar."
+
+#: emails/forms.py
+#: emails/templates/emails/_manage.html
+msgid "Email service"
+msgstr "Servicio de correo"
+
+#: emails/forms.py
+#: templates/accounts/dashboard_user.html
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: emails/forms.py
+#: emails/templates/emails/_manage.html
+msgid "API key or password"
+msgstr "Clave de API o contraseña"
+
+#: emails/forms.py
+#: emails/models.py
+msgid "SMTP server"
+msgstr "Servidor SMTP"
+
+#: emails/forms.py
+msgid "Port"
+msgstr "Puerto"
+
+#: emails/forms.py
+msgid "Security"
+msgstr "Seguridad"
+
+#: emails/forms.py
+msgid "Sender name"
+msgstr "Nombre del remitente"
+
+#: emails/forms.py
+msgid "Send from"
+msgstr "Enviar desde"
+
+#: emails/forms.py
+#: emails/templates/emails/_manage.html
+msgid "Replies go to"
+msgstr "Las respuestas van a"
+
+#: emails/forms.py
+#, python-format
+msgid "Saved, ends in …%(end)s. Leave empty to keep it."
+msgstr "Guardada, termina en …%(end)s. Déjelo vacío para conservarla."
+
+#: emails/forms.py
+msgid "Saved. Leave empty to keep it."
+msgstr "Guardada. Déjelo vacío para conservarla."
+
+#: emails/forms.py
+msgid "Enter the SMTP server, like smtp.example.com."
+msgstr "Escriba el servidor SMTP, como smtp.example.com."
+
+#: emails/forms.py
+msgid "Paste the API key or password from the email service."
+msgstr "Pegue la clave de API o la contraseña del servicio de correo."
+
+#: emails/forms.py
+msgid "A Resend API key starts with re_. Copy it again from Resend’s API Keys page."
+msgstr "Una clave de API de Resend empieza con re_. Cópiela otra vez desde la página API Keys de Resend."
+
+#: emails/forms.py
+msgid "Enter the SMTP login from Brevo’s SMTP & API page."
+msgstr "Escriba el usuario SMTP (SMTP login) de la página SMTP & API de Brevo."
+
+#: emails/forms.py
+msgid "Enter the full Google email address, like info@tahoeneighborhoodtable.com."
+msgstr "Escriba la dirección completa de Google, como info@tahoeneighborhoodtable.com."
+
+#: emails/forms.py
+#, python-format
+msgid "These aren’t email addresses: %(addresses)s"
+msgstr "Estas no son direcciones de correo: %(addresses)s"
+
+#: emails/forms.py
+msgid "Send it to"
+msgstr "Enviarlo a"
+
+#: emails/manage.py
+msgid "Saved, but the site couldn’t sign in to the email service."
+msgstr "Se guardó, pero el sitio no pudo iniciar sesión en el servicio de correo."
+
+#: emails/manage.py
+#, python-format
+msgid "Its answer: %(details)s"
+msgstr "Su respuesta: %(details)s"
+
+#: emails/manage.py
+#, python-format
+msgid "Email is on. The site signed in to %(service)s. Send yourself a test email to make sure it arrives."
+msgstr "El correo está activado. El sitio inició sesión en %(service)s. Envíese un correo de prueba para confirmar que llega."
+
+#: emails/manage.py
+msgid "Saved which emails the site sends."
+msgstr "Se guardó qué correos envía el sitio."
+
+#: emails/manage.py
+#: emails/templates/emails/_manage.html
+msgid "Connect an email service first."
+msgstr "Primero conecte un servicio de correo."
+
+#: emails/manage.py
+msgid "Test email from Tahoe Neighborhood Table"
+msgstr "Correo de prueba de Tahoe Neighborhood Table"
+
+#: emails/manage.py
+#, python-format
+msgid "Sent a test email to %(address)s. If it isn’t there in a few minutes, look in the spam folder."
+msgstr "Se envió un correo de prueba a %(address)s. Si no llega en unos minutos, revise la carpeta de correo no deseado."
+
+#: emails/manage.py
+msgid "The test email didn’t go out."
+msgstr "El correo de prueba no se envió."
+
+#: emails/manage.py
+msgid "This email can’t be sent again."
+msgstr "Este correo no se puede volver a enviar."
+
+#: emails/manage.py
+#, python-format
+msgid "Sent “%(subject)s” again to %(to)s."
+msgstr "Se volvió a enviar “%(subject)s” a %(to)s."
+
+#: emails/manage.py
+msgid "It didn’t go out again."
+msgstr "Tampoco se envió esta vez."
+
+#: emails/manage.py
+msgid "Email is off. The site won’t send email until you connect an email service again."
+msgstr "El correo está desactivado. El sitio no enviará correos hasta que vuelva a conectar un servicio de correo."
+
+#: emails/manage.py
+msgid "Removed. The site now uses the email settings in the server’s settings file."
+msgstr "Se quitó. Ahora el sitio usa la configuración de correo del archivo de configuración del servidor."
+
+#: emails/manage.py
+msgid "Connect an email service so the site can send receipts, shift confirmations and password resets."
+msgstr "Conecte un servicio de correo para que el sitio pueda enviar recibos, confirmaciones de turnos y enlaces para restablecer contraseñas."
+
+#: emails/manage.py
+msgid "Problem"
+msgstr "Problema"
+
+#: emails/manage.py
+msgid "The last email didn’t go out. See Recent emails."
+msgstr "El último correo no se envió. Vea Correos recientes."
+
+#: emails/manage.py
+#: emails/templates/emails/_manage.html
+msgid "On"
+msgstr "Activado"
+
+#: emails/manage.py
+#, python-format
+msgid "Sending through %(service)s."
+msgstr "Envía a través de %(service)s."
+
+#: emails/models.py
+msgid "Google Workspace or Gmail"
+msgstr "Google Workspace o Gmail"
+
+#: emails/models.py
+msgid "Another email service"
+msgstr "Otro servicio de correo"
+
+#: emails/models.py
+msgid "SSL/TLS, usually port 465"
+msgstr "SSL/TLS, normalmente el puerto 465"
+
+#: emails/models.py
+msgid "STARTTLS, usually port 587"
+msgstr "STARTTLS, normalmente el puerto 587"
+
+#: emails/models.py
+msgid "email service"
+msgstr "servicio de correo"
+
+#: emails/models.py
+msgid "port"
+msgstr "puerto"
+
+#: emails/models.py
+msgid "security"
+msgstr "seguridad"
+
+#: emails/models.py
+msgid "username"
+msgstr "nombre de usuario"
+
+#: emails/models.py
+msgid "sender name"
+msgstr "nombre del remitente"
+
+#: emails/models.py
+msgid "send from"
+msgstr "enviar desde"
+
+#: emails/models.py
+msgid "replies go to"
+msgstr "las respuestas van a"
+
+#: emails/models.py
+msgid "Email volunteers a copy of their shifts"
+msgstr "Enviar a los voluntarios una copia de sus turnos"
+
+#: emails/models.py
+msgid "Tell these people about each new volunteer sign-up"
+msgstr "Avisar a estas personas de cada nueva inscripción de voluntariado"
+
+#: emails/models.py
+msgid "One email address per line. Leave it empty for nobody."
+msgstr "Una dirección de correo por línea. Déjelo vacío para no avisar a nadie."
+
+#: emails/models.py
+msgid "Email donors their receipt"
+msgstr "Enviar a los donantes su recibo"
+
+#: emails/models.py
+msgid "email settings"
+msgstr "configuración de correo"
+
+#: emails/models.py
+msgid "Email settings"
+msgstr "Configuración de correo"
+
+#: emails/models.py
+msgid "Volunteer’s shifts"
+msgstr "Turnos del voluntario"
+
+#: emails/models.py
+msgid "New volunteer notice"
+msgstr "Aviso de nuevo voluntario"
+
+#: emails/models.py
+msgid "Password reset"
+msgstr "Restablecer contraseña"
+
+#: emails/models.py
+msgid "Test email"
+msgstr "Correo de prueba"
+
+#: emails/models.py
+msgid "Sent"
+msgstr "Enviado"
+
+#: emails/models.py
+msgid "Didn’t go out"
+msgstr "No se envió"
+
+#: emails/models.py
+msgid "Not sent: email was off"
+msgstr "Sin enviar: el correo estaba desactivado"
+
+#: emails/models.py
+msgid "The email service didn’t accept the username and password (or API key)."
+msgstr "El servicio de correo no aceptó el nombre de usuario y la contraseña (o la clave de API)."
+
+#: emails/models.py
+msgid "The email service won’t send from this address. Check that the domain is verified there."
+msgstr "El servicio de correo no envía desde esta dirección. Revise que el dominio esté verificado en el servicio."
+
+#: emails/models.py
+msgid "The email service turned down this address."
+msgstr "El servicio de correo rechazó esta dirección."
+
+#: emails/models.py
+msgid "The email service turned down this email."
+msgstr "El servicio de correo rechazó este correo."
+
+#: emails/models.py
+msgid "The site couldn’t reach the email service. Check the SMTP server and port."
+msgstr "El sitio no pudo conectarse con el servicio de correo. Revise el servidor SMTP y el puerto."
+
+#: emails/models.py
+msgid "The email service didn’t answer in time."
+msgstr "El servicio de correo no respondió a tiempo."
+
+#: emails/models.py
+msgid "The secure connection didn’t work. Check the security setting and the port."
+msgstr "La conexión segura no funcionó. Revise la opción de seguridad y el puerto."
+
+#: emails/models.py
+msgid "Something went wrong while sending."
+msgstr "Algo salió mal al enviar."
+
+#: emails/models.py
+msgid "to"
+msgstr "para"
+
+#: emails/models.py
+msgid "subject"
+msgstr "asunto"
+
+#: emails/models.py
+msgid "message"
+msgstr "mensaje"
+
+#: emails/models.py
+msgid "details"
+msgstr "detalles"
+
+#: emails/models.py
+#: volunteers/models.py
+msgid "created"
+msgstr "creado"
+
+#: emails/models.py
+msgid "sent"
+msgstr "enviado"
+
+#: emails/models.py
+msgid "emails"
+msgstr "correos electrónicos"
+
+#: emails/templates/emails/_manage.html
+msgid "The site emails volunteers their shifts, donors their receipts, organizers about new sign-ups, and a reset link to anyone who forgets their password."
+msgstr "El sitio envía a los voluntarios sus turnos, a los donantes sus recibos, a los organizadores avisos de nuevas inscripciones y un enlace a quien olvide su contraseña."
+
+#: emails/templates/emails/_manage.html
+msgid "The saved API key or password can’t be read anymore, because the server’s secret key changed. Paste it again below."
+msgstr "La clave de API o la contraseña guardada ya no se puede leer porque cambió la clave secreta del servidor. Péguela otra vez abajo."
+
+#: emails/templates/emails/_manage.html
+msgid "Service"
+msgstr "Servicio"
+
+#: emails/templates/emails/_manage.html
+msgid "Sends from"
+msgstr "Envía desde"
+
+#: emails/templates/emails/_manage.html
+#, python-format
+msgid "Saved, ends in …%(end)s"
+msgstr "Guardada, termina en …%(end)s"
+
+#: emails/templates/emails/_manage.html
+msgid "Saved"
+msgstr "Guardada"
+
+#: emails/templates/emails/_manage.html
+msgid "Change the email service"
+msgstr "Cambiar el servicio de correo"
+
+#: emails/templates/emails/_manage.html
+msgid "Stop sending email"
+msgstr "Dejar de enviar correos"
+
+#: emails/templates/emails/_manage.html
+#, python-format
+msgid "Sending through %(host)s, set in the server’s settings file (/srv/tahoetable/.env). An email service saved here takes its place."
+msgstr "Envía a través de %(host)s, según el archivo de configuración del servidor (/srv/tahoetable/.env). Un servicio de correo guardado aquí lo reemplaza."
+
+#: emails/templates/emails/_manage.html
+msgid "The site isn’t sending email yet. Connect a sending service. Resend is free at the site’s size and takes about 10 minutes:"
+msgstr "El sitio todavía no envía correos. Conecte un servicio de envío. Resend es gratis para un sitio de este tamaño y toma unos 10 minutos:"
+
+#: emails/templates/emails/_manage.html
+msgid "Create a free account at <a href=\"https://resend.com\" target=\"_blank\" rel=\"noopener\">resend.com</a>."
+msgstr "Cree una cuenta gratis en <a href=\"https://resend.com\" target=\"_blank\" rel=\"noopener\">resend.com</a>."
+
+#: emails/templates/emails/_manage.html
+#, python-format
+msgid "In Resend, open <b>Domains</b>, add <b>%(domain)s</b> and choose <b>Auto Configure</b>, which adds Resend’s DNS records at GoDaddy for you. Wait until the domain shows <b>Verified</b>."
+msgstr "En Resend, abra <b>Domains</b>, agregue <b>%(domain)s</b> y elija <b>Auto Configure</b>, que agrega por usted los registros DNS de Resend en GoDaddy. Espere hasta que el dominio diga <b>Verified</b>."
+
+#: emails/templates/emails/_manage.html
+msgid "Open <b>API Keys</b>, create a key with <b>Sending access</b>, and copy it."
+msgstr "Abra <b>API Keys</b>, cree una clave con <b>Sending access</b> y cópiela."
+
+#: emails/templates/emails/_manage.html
+msgid "Paste it here and choose <b>Save and connect</b>. Then send yourself a test email."
+msgstr "Péguela aquí y elija <b>Guardar y conectar</b>. Después envíese un correo de prueba."
+
+#: emails/templates/emails/_manage.html
+msgid "What the site emails"
+msgstr "Qué correos envía el sitio"
+
+#: emails/templates/emails/_manage.html
+msgid "Right after they sign up, in the language they signed up in."
+msgstr "Justo después de inscribirse, en el idioma en que se inscribieron."
+
+#: emails/templates/emails/_manage.html
+msgid "With the receipt number and the 501(c)(3) statement. If Stripe also sends its own receipts (Stripe Dashboard, Settings, Customer emails), donors get both."
+msgstr "Con el número de recibo y la declaración 501(c)(3). Si Stripe también envía sus propios recibos (Stripe Dashboard, Settings, Customer emails), los donantes reciben los dos."
+
+#: emails/templates/emails/_manage.html
+msgid "Password reset emails always go out, since people can’t log in without them."
+msgstr "Los correos para restablecer la contraseña siempre se envían, porque sin ellos no se puede iniciar sesión."
+
+#: emails/templates/emails/_manage.html
+#: templates/accounts/dashboard_admin.html
+msgid "Save"
+msgstr "Guardar"
+
+#: emails/templates/emails/_manage.html
+msgid "Send a test email"
+msgstr "Enviar un correo de prueba"
+
+#: emails/templates/emails/_manage.html
+msgid "Send test email"
+msgstr "Enviar correo de prueba"
+
+#: emails/templates/emails/_manage.html
+msgid "Once an email service is connected, send yourself a test here to make sure email arrives."
+msgstr "Cuando haya un servicio de correo conectado, envíese aquí una prueba para confirmar que los correos llegan."
+
+#: emails/templates/emails/_manage.html
+msgid "Your domain’s email records"
+msgstr "Registros de correo de su dominio"
+
+#: emails/templates/emails/_manage.html
+#, python-format
+msgid "What DNS says about %(domain)s right now. The records themselves are added at GoDaddy."
+msgstr "Lo que dice el DNS sobre %(domain)s en este momento. Los registros se agregan en GoDaddy."
+
+#: emails/templates/emails/_manage.html
+msgid "To do"
+msgstr "Por hacer"
+
+#: emails/templates/emails/_manage.html
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: emails/templates/emails/_manage.html
+msgid "Check again"
+msgstr "Volver a revisar"
+
+#: emails/templates/emails/_manage.html
+msgid "Recent emails"
+msgstr "Correos recientes"
+
+#: emails/templates/emails/_manage.html
+msgid "All emails"
+msgstr "Todos los correos"
+
+#: emails/templates/emails/_manage.html
+msgid "The site keeps a copy of each email for 6 months, so you can see what went out and send it again. Password reset links aren’t kept."
+msgstr "El sitio guarda una copia de cada correo durante 6 meses, para que pueda ver qué se envió y volver a enviarlo. Los enlaces para restablecer contraseñas no se guardan."
+
+#: emails/templates/emails/_manage.html
+msgid "When"
+msgstr "Cuándo"
+
+#: emails/templates/emails/_manage.html
+msgid "To"
+msgstr "Para"
+
+#: emails/templates/emails/_manage.html
+msgid "Send again"
+msgstr "Volver a enviar"
+
+#: emails/templates/emails/_manage.html
+msgid "Send now"
+msgstr "Enviar ahora"
+
+#: emails/templates/emails/_manage.html
+msgid "No emails yet."
+msgstr "Todavía no hay correos."
+
+#: emails/templates/emails/_service_form.html
+msgid "Recommended"
+msgstr "Recomendado"
+
+#: emails/templates/emails/_service_form.html
+msgid "Free for up to 3,000 emails a month (100 a day). The username is always resend, so only the API key goes here. It starts with re_."
+msgstr "Gratis hasta 3,000 correos al mes (100 al día). El nombre de usuario siempre es resend, así que aquí solo va la clave de API. Empieza con re_."
+
+#: emails/templates/emails/_service_form.html
+msgid "Free for up to 300 emails a day. Use the SMTP login and an SMTP key from Brevo’s SMTP & API page."
+msgstr "Gratis hasta 300 correos al día. Use el usuario SMTP (SMTP login) y una clave SMTP de la página SMTP & API de Brevo."
+
+#: emails/templates/emails/_service_form.html
+msgid "Use the full email address and an app password, from your Google Account’s Security page (2-Step Verification has to be on)."
+msgstr "Use la dirección de correo completa y una contraseña de aplicación, de la página Seguridad de su cuenta de Google (la verificación en dos pasos debe estar activada)."
+
+#: emails/templates/emails/_service_form.html
+msgid "Use the SMTP settings from your email service’s help pages."
+msgstr "Use la configuración SMTP de las páginas de ayuda de su servicio de correo."
+
+#: emails/templates/emails/_service_form.html
+msgid "Usually the same address. Leave it empty if nobody should get replies."
+msgstr "Normalmente es la misma dirección. Déjelo vacío si nadie debe recibir respuestas."
+
+#: emails/templates/emails/_service_form.html
+msgid "Save and connect"
+msgstr "Guardar y conectar"
+
+#: emails/templates/emails/email/test.txt
+msgid "This is a test email from the Tahoe Neighborhood Table website."
+msgstr "Este es un correo de prueba del sitio web de Tahoe Neighborhood Table."
+
+#: emails/templates/emails/email/test.txt
+msgid "If you’re reading it, the site can send email."
+msgstr "Si lo está leyendo, el sitio puede enviar correos."
+
+#: emails/templates/emails/email/test.txt
+#, python-format
+msgid "It went out through %(service)s."
+msgstr "Se envió a través de %(service)s."
+
+#: emails/templates/emails/email/test.txt
+#, python-format
+msgid "Sent by %(name)s from the Management page."
+msgstr "Lo envió %(name)s desde la página de Gestión."
+
+#: emails/templates/emails/email/test.txt
+msgid "Sent from the server with manage.py send_test_email."
+msgstr "Enviado desde el servidor con manage.py send_test_email."
+
 #: tahoetable/urls.py
 msgid "Tahoe Neighborhood Table admin"
 msgstr "Administración de Tahoe Neighborhood Table"
@@ -906,6 +1701,9 @@ msgstr "Ir a su panel"
 
 #: templates/403.html
 #: templates/accounts/login.html
+#: templates/accounts/password_forgot.html
+#: templates/accounts/password_forgot_sent.html
+#: templates/accounts/password_reset.html
 #: templates/accounts/register.html
 msgid "Back to the website"
 msgstr "Volver al sitio web"
@@ -966,6 +1764,11 @@ msgid "Welcome back to Tahoe Neighborhood Table."
 msgstr "Le damos la bienvenida de nuevo a Tahoe Neighborhood Table."
 
 #: templates/accounts/_login_form.html
+#: templates/accounts/password_forgot.html
+msgid "Forgot your password?"
+msgstr "¿Olvidó su contraseña?"
+
+#: templates/accounts/_login_form.html
 msgid "New here?"
 msgstr "¿Primera vez aquí?"
 
@@ -973,6 +1776,70 @@ msgstr "¿Primera vez aquí?"
 #, python-format
 msgid "Trouble logging in? Email <span class=\"nowrap\">%(email)s</span>."
 msgstr "¿Problemas para iniciar sesión? Escriba a <span class=\"nowrap\">%(email)s</span>."
+
+#: templates/accounts/_manage_site.html
+msgid "Publishing and backups"
+msgstr "Publicación y copias de seguridad"
+
+#: templates/accounts/_manage_site.html
+msgid "Changes to the site go live a few minutes after they’re saved to GitHub, once the tests pass. The database is backed up every night."
+msgstr "Los cambios del sitio se publican unos minutos después de guardarse en GitHub, cuando pasan las pruebas. La base de datos se copia cada noche."
+
+#: templates/accounts/_manage_site.html
+msgid "Version"
+msgstr "Versión"
+
+#: templates/accounts/_manage_site.html
+msgid "Not published from GitHub"
+msgstr "No se publica desde GitHub"
+
+#: templates/accounts/_manage_site.html
+msgid "Last update"
+msgstr "Última actualización"
+
+#: templates/accounts/_manage_site.html
+msgid "went live"
+msgstr "se publicó"
+
+#: templates/accounts/_manage_site.html
+msgid "didn’t go live"
+msgstr "no se publicó"
+
+#: templates/accounts/_manage_site.html
+msgid "going live now"
+msgstr "publicándose ahora"
+
+#: templates/accounts/_manage_site.html
+msgid "What happened"
+msgstr "Qué pasó"
+
+#: templates/accounts/_manage_site.html
+msgid "Publishing history on GitHub"
+msgstr "Historial de publicaciones en GitHub"
+
+#: templates/accounts/_manage_site.html
+msgid "Last backup"
+msgstr "Última copia"
+
+#: templates/accounts/_manage_site.html
+msgid "Copies kept"
+msgstr "Copias guardadas"
+
+#: templates/accounts/_manage_site.html
+msgid "Newest copy"
+msgstr "Copia más reciente"
+
+#: templates/accounts/_manage_site.html
+msgid "Where"
+msgstr "Dónde"
+
+#: templates/accounts/_manage_site.html
+msgid "Backups run on the live server, in /srv/tahoetable/backups."
+msgstr "Las copias de seguridad se hacen en el servidor del sitio publicado, en /srv/tahoetable/backups."
+
+#: templates/accounts/_manage_site.html
+msgid "The server copies the database every night and before each update, and keeps 14 days of copies. DEPLOY-HOSTINGER.md explains restoring one."
+msgstr "El servidor copia la base de datos cada noche y antes de cada actualización, y guarda las copias de 14 días. DEPLOY-HOSTINGER.md explica cómo restaurar una."
 
 #: templates/accounts/dashboard_admin.html
 #: templates/accounts/dashboard_base.html
@@ -994,6 +1861,7 @@ msgid "Add a person"
 msgstr "Agregar una persona"
 
 #: templates/accounts/dashboard_admin.html
+#: templates/accounts/manage.html
 msgid "Open the full admin site"
 msgstr "Abrir el sitio de administración completo"
 
@@ -1043,10 +1911,6 @@ msgid "You can't remove your own Admin role"
 msgstr "No puede quitarse su propio rol de Administrador"
 
 #: templates/accounts/dashboard_admin.html
-msgid "Save"
-msgstr "Guardar"
-
-#: templates/accounts/dashboard_admin.html
 msgid "Never"
 msgstr "Nunca"
 
@@ -1073,14 +1937,14 @@ msgid "Next"
 msgstr "Siguiente"
 
 #: templates/accounts/dashboard_base.html
+#: templates/accounts/manage.html
+msgid "Management"
+msgstr "Gestión"
+
+#: templates/accounts/dashboard_base.html
 #: templates/accounts/dashboard_user.html
 msgid "User's Dashboard"
 msgstr "Panel de usuario"
-
-#: templates/accounts/dashboard_base.html
-#: volunteers/apps.py
-msgid "Volunteers"
-msgstr "Voluntariado"
 
 #: templates/accounts/dashboard_base.html
 msgid "View site"
@@ -1097,10 +1961,6 @@ msgstr "Su cuenta"
 #: templates/accounts/dashboard_user.html
 msgid "Not added yet"
 msgstr "Aún no se ha agregado"
-
-#: templates/accounts/dashboard_user.html
-msgid "Username"
-msgstr "Nombre de usuario"
 
 #: templates/accounts/dashboard_user.html
 msgid "No roles yet"
@@ -1131,10 +1991,96 @@ msgstr "Voluntariado"
 msgid "To change your name, email or password, email <span class=\"nowrap\">%(email)s</span>."
 msgstr "Para cambiar su nombre, correo electrónico o contraseña, escriba a <span class=\"nowrap\">%(email)s</span>."
 
+#: templates/accounts/email/password_reset.txt
+msgid "Someone asked to reset the password for your Tahoe Neighborhood Table account. To choose a new password, open this link:"
+msgstr "Alguien pidió restablecer la contraseña de su cuenta de Tahoe Neighborhood Table. Para elegir una contraseña nueva, abra este enlace:"
+
+#: templates/accounts/email/password_reset.txt
+msgid "The link works once, for 3 days."
+msgstr "El enlace funciona una sola vez, durante 3 días."
+
+#: templates/accounts/email/password_reset.txt
+msgid "If you didn’t ask for this, you can ignore this email. Your password stays the same."
+msgstr "Si usted no lo pidió, puede ignorar este correo. Su contraseña no cambia."
+
+#: templates/accounts/email/password_reset_subject.txt
+msgid "Choose a new password for Tahoe Neighborhood Table"
+msgstr "Elija una contraseña nueva para Tahoe Neighborhood Table"
+
 #: templates/accounts/login.html
+#: templates/accounts/password_forgot.html
+#: templates/accounts/password_forgot_sent.html
+#: templates/accounts/password_reset.html
 #: templates/accounts/register.html
 msgid "Tahoe Neighborhood Table home"
 msgstr "Inicio de Tahoe Neighborhood Table"
+
+#: templates/accounts/manage.html
+msgid "Running the site"
+msgstr "Gestión del sitio"
+
+#: templates/accounts/manage.html
+msgid "Email, volunteer events, donations, publishing and backups, in one place."
+msgstr "Correo, eventos de voluntariado, donaciones, publicación y copias de seguridad, en un solo lugar."
+
+#: templates/accounts/password_forgot.html
+msgid "Enter the email address on your account. We’ll email you a link to choose a new password."
+msgstr "Escriba el correo electrónico de su cuenta. Le enviaremos un enlace para elegir una contraseña nueva."
+
+#: templates/accounts/password_forgot.html
+msgid "Email me a link"
+msgstr "Enviarme un enlace"
+
+#: templates/accounts/password_forgot.html
+msgid "Remembered it?"
+msgstr "¿La recordó?"
+
+#: templates/accounts/password_forgot.html
+#, python-format
+msgid "The site can’t email reset links yet. Email <a href=\"mailto:%(email)s\">%(email)s</a> and we’ll help you get back in."
+msgstr "El sitio todavía no puede enviar enlaces para restablecer contraseñas. Escriba a <a href=\"mailto:%(email)s\">%(email)s</a> y le ayudaremos a entrar de nuevo."
+
+#: templates/accounts/password_forgot.html
+msgid "Back to Log in"
+msgstr "Volver a Iniciar sesión"
+
+#: templates/accounts/password_forgot_sent.html
+msgid "Check your email"
+msgstr "Revise su correo"
+
+#: templates/accounts/password_forgot_sent.html
+msgid "If there’s an account with that address, we just emailed it a link to choose a new password. The link works once, for 3 days."
+msgstr "Si hay una cuenta con esa dirección, le acabamos de enviar un enlace para elegir una contraseña nueva. El enlace funciona una sola vez, durante 3 días."
+
+#: templates/accounts/password_forgot_sent.html
+#, python-format
+msgid "Nothing after a few minutes? Look in the spam folder, or email <span class=\"nowrap\">%(email)s</span>."
+msgstr "¿No llegó nada en unos minutos? Revise la carpeta de correo no deseado o escriba a <span class=\"nowrap\">%(email)s</span>."
+
+#: templates/accounts/password_reset.html
+msgid "Choose a new password"
+msgstr "Elija una contraseña nueva"
+
+#: templates/accounts/password_reset.html
+msgid "This link doesn’t work anymore"
+msgstr "Este enlace ya no funciona"
+
+#: templates/accounts/password_reset.html
+#, python-format
+msgid "For the account %(email)s."
+msgstr "Para la cuenta %(email)s."
+
+#: templates/accounts/password_reset.html
+msgid "Save new password"
+msgstr "Guardar la contraseña nueva"
+
+#: templates/accounts/password_reset.html
+msgid "Password reset links work once, for 3 days. Ask for a new one and use the newest email."
+msgstr "Los enlaces para restablecer la contraseña funcionan una sola vez, durante 3 días. Pida uno nuevo y use el correo más reciente."
+
+#: templates/accounts/password_reset.html
+msgid "Email me a new link"
+msgstr "Enviarme un enlace nuevo"
 
 #: templates/accounts/register.html
 msgid "Keep your donations and receipts in one place."
@@ -1313,10 +2259,12 @@ msgid "Notes"
 msgstr "Notas"
 
 #: volunteers/admin.py
+#: volunteers/templates/volunteers/_manage.html
 msgid "Signed up"
 msgstr "Fecha de inscripción"
 
 #: volunteers/admin.py
+#: volunteers/templates/volunteers/_manage.html
 #, python-format
 msgid "%(taken)s of %(total)s"
 msgstr "%(taken)s de %(total)s"
@@ -1330,6 +2278,7 @@ msgid "Color"
 msgstr "Color"
 
 #: volunteers/admin.py
+#: volunteers/templates/volunteers/_manage.html
 msgid "Spots filled"
 msgstr "Lugares ocupados"
 
@@ -1342,6 +2291,7 @@ msgid "Sign-up form"
 msgstr "Formulario de inscripción"
 
 #: volunteers/admin.py
+#: volunteers/templates/volunteers/_manage.html
 msgid "Dates"
 msgstr "Fechas"
 
@@ -1350,6 +2300,7 @@ msgid "No shifts yet"
 msgstr "Aún no hay turnos"
 
 #: volunteers/admin.py
+#: volunteers/templates/volunteers/_manage.html
 msgid "Sign-up page"
 msgstr "Página de inscripción"
 
@@ -1381,6 +2332,7 @@ msgid "shift"
 msgstr "turno"
 
 #: volunteers/admin.py
+#: volunteers/templates/volunteers/_manage.html
 #: volunteers/templates/volunteers/email/organizer.txt
 msgid "Shifts"
 msgstr "Turnos"
@@ -1571,10 +2523,6 @@ msgid "One note per line, in the same order as the English. Leave it empty to sh
 msgstr "Una nota por línea, en el mismo orden que en inglés. Déjelo vacío para mostrar las notas en inglés."
 
 #: volunteers/models.py
-msgid "Sign-ups open"
-msgstr "Inscripciones abiertas"
-
-#: volunteers/models.py
 msgid "Untick to stop new sign-ups."
 msgstr "Desmarque esta casilla para detener las inscripciones nuevas."
 
@@ -1605,10 +2553,6 @@ msgstr "Compromiso"
 #: volunteers/models.py
 msgid "Agreement in Spanish"
 msgstr "Compromiso en español"
-
-#: volunteers/models.py
-msgid "created"
-msgstr "creado"
 
 #: volunteers/models.py
 msgid "event"
@@ -1859,6 +2803,76 @@ msgstr "(opcional)"
 #: volunteers/templates/volunteers/_fields.html
 msgid "We only use your details to organize this event."
 msgstr "Solo usamos sus datos para organizar este evento."
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Volunteer events"
+msgstr "Eventos de voluntariado"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Upcoming events and how full their shifts are. The Volunteer button on the home page opens the soonest event with sign-ups open."
+msgstr "Los próximos eventos y cuántos lugares quedan en sus turnos. El botón Voluntariado de la página de inicio abre el evento más cercano con inscripciones abiertas."
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Add an event"
+msgstr "Agregar un evento"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "All events"
+msgstr "Todos los eventos"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "All sign-ups"
+msgstr "Todas las inscripciones"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Event"
+msgstr "Evento"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Sign-ups"
+msgstr "Inscripciones"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Links"
+msgstr "Enlaces"
+
+#: volunteers/templates/volunteers/_manage.html
+msgctxt "sign-ups"
+msgid "Open"
+msgstr "Abiertas"
+
+#: volunteers/templates/volunteers/_manage.html
+msgctxt "sign-ups"
+msgid "Closed"
+msgstr "Cerradas"
+
+#: volunteers/templates/volunteers/_manage.html
+#, python-format
+msgid "%(count)s volunteer"
+msgid_plural "%(count)s volunteers"
+msgstr[0] "%(count)s voluntario"
+msgstr[1] "%(count)s voluntarios"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Edit"
+msgstr "Editar"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Roster (CSV)"
+msgstr "Lista de voluntarios (CSV)"
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "No upcoming events. Add one with its shifts, and the Volunteer button opens its sign-up."
+msgstr "No hay próximos eventos. Agregue uno con sus turnos y el botón Voluntariado abrirá su inscripción."
+
+#: volunteers/templates/volunteers/_manage.html
+msgid "Latest sign-ups"
+msgstr "Inscripciones recientes"
+
+#: volunteers/templates/volunteers/_manage.html
+msgctxt "person"
+msgid "Volunteer"
+msgstr "Voluntario"
 
 #: volunteers/templates/volunteers/_shifts.html
 #, python-format

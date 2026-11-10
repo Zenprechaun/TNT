@@ -4,13 +4,15 @@ import logging
 from datetime import datetime, timezone as dt_timezone
 
 from django.conf import settings
-from django.core.mail import send_mail
 from django.db import transaction
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone, translation
 from django.utils.http import urlencode
 from django.utils.translation import gettext
+
+from emails.models import Email, EmailSettings
+from emails.sending import send
 
 from . import stripe_api
 from .models import Donation, MonthlyDonation, StripeCustomer, StripeSetup, dollars, money, stripe_mode
@@ -301,8 +303,12 @@ def receipt_url(donation):
 
 
 def send_receipt(donation_pk):
-    """Emails the donor a receipt, in the language they donated in. Only once, and only if the site sends email."""
-    if not settings.DONATION_SEND_RECEIPTS:
+    """Emails the donor a receipt, in the language they donated in. Only once, and only if the
+    Management page has receipts turned on. The site keeps a copy (the emails app); if email is
+    off or the email service is down, admins can send it from there later.
+    """
+    conf = EmailSettings.load()
+    if not conf.donation_receipts:
         return
     donation = Donation.objects.filter(pk=donation_pk).first()
     if donation is None or donation.receipt_sent_at or not donation.email or not donation.is_paid:
@@ -311,16 +317,17 @@ def send_receipt(donation_pk):
         with translation.override(donation.language):
             context = {"donation": donation, "receipt_url": receipt_url(donation), "tax": tax_statement(),
                        "site_email": settings.SITE_EMAIL}
-            send_mail(
-                gettext("Your donation receipt from Tahoe Neighborhood Table"),
-                render_to_string("donations/email/receipt.txt", context),
-                settings.DEFAULT_FROM_EMAIL,
-                [donation.email],
-            )
-    except Exception:
-        log.exception("Couldn't send the receipt for donation %s", donation.pk)
-        return
-    Donation.objects.filter(pk=donation.pk).update(receipt_sent_at=timezone.now())
+            send(Email.RECEIPT, donation.email, gettext("Your donation receipt from Tahoe Neighborhood Table"),
+                 render_to_string("donations/email/receipt.txt", context), ref=f"donation:{donation.pk}", conf=conf)
+    except Exception:  # the donation is recorded either way
+        log.exception("Couldn't prepare the receipt for donation %s", donation.pk)
+
+
+def note_receipt_sent(sender, email, **kwargs):
+    """When a receipt goes out, now or when an admin sends it again, the donation records it."""
+    kind, _, pk = email.ref.partition(":")
+    if email.kind == Email.RECEIPT and kind == "donation" and pk.isdigit():
+        Donation.objects.filter(pk=int(pk), receipt_sent_at__isnull=True).update(receipt_sent_at=email.sent_at)
 
 
 def amount_label(cents, monthly):

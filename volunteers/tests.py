@@ -19,7 +19,7 @@ def clear_sample_event():
     Role.objects.all().delete()
 
 
-@override_settings(VOLUNTEER_SEND_CONFIRMATION=True, VOLUNTEER_NOTIFY_EMAILS=["boss@example.org"])
+@override_settings(EMAIL_HOST="smtp.example.org", VOLUNTEER_NOTIFY_EMAILS=["boss@example.org"])
 class SignupTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -278,7 +278,7 @@ class AdminPreviewTests(TestCase):
         self.assertNotIn("Admin preview.", html)
 
 
-@override_settings(VOLUNTEER_SEND_CONFIRMATION=True, VOLUNTEER_NOTIFY_EMAILS=["boss@example.org"])
+@override_settings(EMAIL_HOST="smtp.example.org", VOLUNTEER_NOTIFY_EMAILS=["boss@example.org"])
 class SpanishTests(TestCase):
     """With the site in Spanish, the sign-up is in Spanish too, including each event's own Spanish text."""
 

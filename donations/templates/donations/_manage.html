@@ -1,0 +1,56 @@
+{% load i18n %}
+<section class="m-section" id="donations" aria-labelledby="donations-title">
+  <header class="m-head">
+    <div>
+      <h2 class="m-title" id="donations-title">{% translate "Donations" %}</h2>
+      <p class="m-lede">
+        {% if not giving.connected %}{% translate "Stripe isn’t connected yet, so the Donate button opens an email. Admins can preview the donation page." %}
+        {% elif giving.livemode %}{% translate "Real donations through Stripe." %}
+        {% else %}{% translate "Test mode: these are Stripe test payments, not real money." %}{% endif %}
+      </p>
+    </div>
+    <div class="m-head__acts">
+      <a class="btn btn--small" href="{% url 'donations:donate' %}">{% if giving.connected %}{% translate "Donation page" %}{% else %}{% translate "Preview the donation page" %}{% endif %}</a>
+      <a class="btn btn--small" href="{% url 'admin:donations_donation_changelist' %}">{% translate "All donations" %}</a>
+      <a class="btn btn--small" href="{% url 'accounts:manage_donations_csv' giving.year %}">{% blocktranslate trimmed with year=giving.year %}Download {{ year }} (CSV){% endblocktranslate %}</a>
+    </div>
+  </header>
+
+  <div class="m-stats">
+    <div class="stat"><b>{{ giving.total }}</b><span>{% blocktranslate trimmed with year=giving.year count count=giving.count %}Donated in {{ year }}, from {{ count }} donation{% plural %}Donated in {{ year }}, from {{ count }} donations{% endblocktranslate %}</span></div>
+    <div class="stat"><b>{{ giving.monthly_count }}</b><span>{% blocktranslate trimmed with amount=giving.monthly_total %}Monthly donors, {{ amount }} a month in all{% endblocktranslate %}</span></div>
+    <div class="stat m-stat--text">
+      <b>{% if not giving.connected %}{% translate "Off" %}{% elif giving.updates_connected %}{% translate "Connected" %}{% else %}{% translate "Not connected" %}{% endif %}</b>
+      <span>{% if giving.connected and not giving.updates_connected %}{% translate "Stripe’s payment updates. Run connect_stripe on the server so the site hears about payments, refunds and monthly donations." %}{% else %}{% translate "Stripe’s payment updates, which tell the site about payments, refunds and monthly donations." %}{% endif %}</span>
+    </div>
+  </div>
+
+  {% if donations %}
+    <div class="table-wrap">
+      <table class="m-table">
+        <thead>
+          <tr>
+            <th scope="col">{% translate "Receipt" %}</th>
+            <th scope="col">{% translate "Date" %}</th>
+            <th scope="col">{% translate "Donor" %}</th>
+            <th scope="col">{% translate "Amount" %}</th>
+            <th scope="col">{% translate "Status" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in donations %}
+            <tr>
+              <td class="num"><a class="m-name" href="{% url 'admin:donations_donation_change' d.pk %}">{{ d.number }}</a></td>
+              <td class="num">{{ d.paid_at|default:d.created_at|date:"SHORT_DATE_FORMAT" }}</td>
+              <td>{{ d.name|default:"–" }}{% if d.email %}<span class="m-sub">{{ d.email }}</span>{% endif %}</td>
+              <td class="num">{{ d.amount_text }}{% if d.is_monthly %} <span class="m-sub">{% translate "Monthly" %}</span>{% endif %}</td>
+              <td><span class="m-chip m-chip--{% if d.status == 'paid' %}ok{% elif d.status == 'failed' %}warn{% else %}off{% endif %}">{{ d.get_status_display }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% elif giving.connected %}
+    <p class="m-muted">{% translate "No donations yet." %}</p>
+  {% endif %}
+</section>

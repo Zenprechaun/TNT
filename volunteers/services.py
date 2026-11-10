@@ -2,12 +2,14 @@
 import logging
 
 from django.conf import settings
-from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Count
 from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import gettext
+
+from emails.models import Email, EmailSettings
+from emails.sending import send
 
 from .models import Assignment, Shift
 
@@ -57,37 +59,35 @@ def register(form):
 
 
 def send_emails(signup_id):
+    """Emails the volunteer their shifts, and tells the organizers, as set on the Management page.
+
+    The site keeps a copy of each email (the emails app), sent or not, so nothing is lost if the
+    email service is down: admins can send it again.
+    """
     from .models import Signup
 
     signup = Signup.objects.select_related("event").get(pk=signup_id)
+    conf = EmailSettings.load()
     context = {
         "signup": signup,
         "event": signup.event,
         "shifts": signup.active_shifts(),
         "contact_email": settings.VOLUNTEER_CONTACT_EMAIL,
     }
-    if settings.VOLUNTEER_SEND_CONFIRMATION:
-        # The volunteer's email is in the language they signed up in.
-        try:
+    ref = f"signup:{signup.pk}"
+    try:
+        if conf.volunteer_confirmations:
+            # The volunteer's email is in the language they signed up in.
             with translation.override(signup.language):
-                send_mail(
-                    gettext("You’re signed up: %(event)s") % {"event": signup.event.local.name},
-                    render_to_string("volunteers/email/confirmation.txt", context),
-                    settings.DEFAULT_FROM_EMAIL,
-                    [signup.email],
-                )
-        except Exception:
-            log.exception("Couldn't send the confirmation email for sign-up %s", signup.pk)
-    if settings.VOLUNTEER_NOTIFY_EMAILS:
-        # Organizers get theirs in the site's main language.
-        try:
+                send(Email.VOLUNTEER, signup.email,
+                     gettext("You’re signed up: %(event)s") % {"event": signup.event.local.name},
+                     render_to_string("volunteers/email/confirmation.txt", context), ref=ref, conf=conf)
+        if conf.notify_list:
+            # Organizers get theirs in the site's main language.
             with translation.override(settings.LANGUAGE_CODE):
-                send_mail(
-                    gettext("New volunteer: %(name)s (%(event)s)") % {
-                        "name": signup.full_name, "event": signup.event.local.name},
-                    render_to_string("volunteers/email/organizer.txt", context),
-                    settings.DEFAULT_FROM_EMAIL,
-                    settings.VOLUNTEER_NOTIFY_EMAILS,
-                )
-        except Exception:
-            log.exception("Couldn't send the organizer email for sign-up %s", signup.pk)
+                send(Email.ORGANIZER, conf.notify_list,
+                     gettext("New volunteer: %(name)s (%(event)s)") % {
+                         "name": signup.full_name, "event": signup.event.local.name},
+                     render_to_string("volunteers/email/organizer.txt", context), ref=ref, conf=conf)
+    except Exception:  # the sign-up is saved either way; never let an email problem undo the page
+        log.exception("Couldn't prepare the emails for sign-up %s", signup.pk)

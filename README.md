@@ -8,12 +8,14 @@ The Tahoe Neighborhood Table website, built with Python and Django 5.2, Django's
 - **Login popup**: people sign in with their username or email address. Anyone with the Admin role goes to the Admin's Dashboard. Everyone else goes to the User's Dashboard.
 - **User's Dashboard** (`/dashboard/user/`): the person's account details and roles.
 - **Admin's Dashboard** (`/dashboard/admin/`): counts of people, plus a searchable list of everyone, where admins change roles.
+- **Management** (`/dashboard/manage/`): for admins, the site at a glance: email, volunteer events, donations, publishing and backups. See "Management page" below.
 - **Full admin site** (`/admin/`): Django's built-in admin, open to anyone with the Admin role. Use **Add a person** there to create accounts.
 - **Volunteer sign-up**: the footer's **Volunteer** button opens a pop-up where people pick shifts and sign up. The same sign-up is a full page at `/volunteer/`. See "Volunteer events" below.
 - **Health check** (`/healthz`): shows whether the site and its database work, which version of the code is running, and the result of the latest publish.
 - **English and Spanish**: the **EN | ES** switch at the top of every page changes the language. See "English and Spanish" below.
 - **Donations** (`/donate/`): one-time and monthly donations through Stripe. See "Donations" below.
 - **Create an account** (`/accounts/register/`): anyone can make an account with their email, for example to keep their donations and receipts in one place.
+- **Forgot your password?** (`/accounts/password/forgot/`): emails a link to choose a new password, once the site can send email. The link works once, for 3 days, and logs the person in.
 
 Without JavaScript, **Log in** opens a full login page (`/accounts/login/`) instead of the popup.
 
@@ -23,7 +25,7 @@ Every account has a profile, and each profile has one or more roles. Two roles a
 
 | Role  | What it allows |
 |-------|----------------|
-| Admin | The Admin's Dashboard, the full admin site, and changing anyone's roles |
+| Admin | The Admin's Dashboard, the Management page, the full admin site, and changing anyone's roles |
 | User  | The User's Dashboard |
 
 New accounts start with the User role. Giving someone the Admin role also opens the full admin site to them, and taking it away closes it. Admins can't remove their own Admin role, so the site always keeps at least one admin. More roles can be added in the admin site under **People and roles → Roles**, and checked in code with the `role_required` decorator in `accounts/decorators.py`.
@@ -43,7 +45,7 @@ The server checks every sign-up: shifts can't be overbooked, nobody can pick ove
 
 The site starts with a sample **Tahoe Community Thanksgiving** event, with sign-ups closed. Edit its details and shifts before opening it, or delete it.
 
-**Email:** until the server has email settings (see `deploy/env.example`), the site doesn't send email, and the confirmation doesn't promise one. With them, volunteers get a copy of their shifts, and the addresses in `VOLUNTEER_NOTIFY_EMAILS` hear about each sign-up.
+**Email:** once an email service is connected on the Management page, volunteers get a copy of their shifts, and the organizers listed there hear about each sign-up. Until then the confirmation doesn't promise an email. See "Email" below.
 
 ## Donations
 
@@ -55,13 +57,40 @@ The **Donate** buttons open the donation page at `/donate/`:
 - Afterwards the thank-you page is their receipt: receipt number, date, amount and the 501(c)(3) statement, ready to print or save. The link keeps working, and signed-in donors find every receipt in their dashboard. Once the site can send email, donors also get the receipt by email.
 - Monthly donors change or stop their donation on a Stripe page: from their dashboard, or through the link on their receipt if they gave as a guest (Stripe emails them a sign-in link).
 
-Admins see every donation under **Donations** in the admin site, where they can download a spreadsheet. The Admin's Dashboard shows this year's total and the monthly donors.
+Admins see every donation under **Donations** in the admin site, where they can download a spreadsheet. The Admin's Dashboard and the Management page show this year's total and the monthly donors.
 
 **Before Stripe is connected**, the Donate button opens an email for visitors, as before, and admins get the whole donation page as a preview that charges nothing. DEPLOY-HOSTINGER.md explains connecting Stripe.
 
 **Receipts** say Tahoe Neighborhood Table is a 501(c)(3) nonprofit and donations are tax-deductible. Set `DONATIONS_TAX_DEDUCTIBLE=false` in the server settings if that ever stops being true, and `DONATIONS_TAX_ID` to print the EIN.
 
 **How it's built:** `donations/services.py` opens Stripe Checkout and records what Stripe reports. Stripe tells the site about payments through a webhook (`/donate/stripe/webhook/`), and every message must carry Stripe's signature. `donations/stripe_api.py` holds every call to Stripe, and the tests replace it, so they never contact Stripe.
+
+## Email
+
+The site sends email through an email service: **Resend** is recommended (free for 3,000 emails a month), and Brevo, Google Workspace or any SMTP service works too. An admin connects it on the Management page (`/dashboard/manage/#email`), and DEPLOY-HOSTINGER.md, "Turning on email", has the steps. The site emails:
+
+- volunteers a copy of their shifts, in the language they signed up in,
+- the organizers listed on the Management page about each new sign-up,
+- donors their receipt,
+- a link to choose a new password to anyone who asks for one.
+
+The Management page turns each of these on or off (except password resets), sends test emails, and checks the domain's email records in DNS.
+
+**Every email is kept** for six months (`emails.Email`), sent or not, with the email service's answer when one didn't go out. The Management page lists the latest and can send any of them again, so a receipt that failed while the email service was down, or that was "sent" while email was off, isn't lost. Password reset emails are the exception: their links are never stored.
+
+**How it's built:** `emails/sending.py` has `send()`, which every email goes through. The email service's API key or password is stored encrypted in the database, with a key made from `DJANGO_SECRET_KEY` (`emails/secrets.py`). Settings in the server's `.env` file (`EMAIL_HOST` and the rest, see `deploy/env.example`) also work, and are used when the Management page has none. Locally, set `EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend` to see emails in the terminal instead of sending them.
+
+## Management page
+
+`/dashboard/manage/`, for admins (the **Management** link at the top of the dashboards):
+
+- **At a glance:** a tile each for email, donations, volunteers, publishing and backups, marked when something needs attention.
+- **Email:** connect the email service, choose what the site emails and who hears about new volunteers, send a test, check the domain's DNS records, and see recent emails with a **Send again** button.
+- **Volunteer events:** upcoming events with how full they are, links to edit each one, its sign-up page and a roster spreadsheet, plus the latest sign-ups.
+- **Donations:** this year's total, the monthly donors, whether Stripe's payment updates are connected, the latest donations and a spreadsheet of the year.
+- **Publishing and backups:** the version that's live and how the latest publish went, and the newest nightly backup.
+
+Everything else is in the full admin site, which the page links to.
 
 ## English and Spanish
 
@@ -109,8 +138,9 @@ To check that everything works:
 | Path | What it holds |
 |------|---------------|
 | `tahoetable/settings.py` | Settings, including `SITE_EMAIL`, the address used for Donate, Volunteer and contact links |
-| `accounts/` | Roles, profiles, sign-in, the dashboards, the admin site setup and the tests |
-| `pages/` | The home page, the health check and the `translations` command (`pages/translation_files.py`) |
+| `accounts/` | Roles, profiles, sign-in, password resets, the dashboards (the Management page is `accounts/manage.py`), the admin site setup and the tests |
+| `pages/` | The home page, the health check, publishing and backup status (`pages/status.py`) and the `translations` command (`pages/translation_files.py`) |
+| `emails/` | Email: sending and keeping a copy of each email, the email service settings, DNS checks and the `send_test_email` command |
 | `locale/es/` | The Spanish translations. See "English and Spanish" |
 | `volunteers/` | Volunteer events, shifts and sign-ups: the pop-up, the `/volunteer/` pages, the admin screens, emails and calendar files |
 | `donations/` | Donations through Stripe: the `/donate/` pages, receipts, the webhook, the admin screens and the `connect_stripe` command |
@@ -140,6 +170,6 @@ The site runs on a Hostinger VPS at https://tahoeneighborhoodtable.com. **DEPLOY
 
 During server setup you choose a new password for the Admin account.
 
-One thing the site doesn't do yet: people can't reset a forgotten password by email. Admins change passwords for now.
+Once email is on, anyone who forgets their password can reset it from **Forgot your password?** in the login popup. Admins can also change any password in the admin site.
 
 `db.sqlite3` is listed in `.gitignore`, so accounts and password hashes stay out of version control.

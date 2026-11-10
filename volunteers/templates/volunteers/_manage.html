@@ -1,0 +1,77 @@
+{% load i18n %}
+<section class="m-section" id="volunteers" aria-labelledby="volunteers-title">
+  <header class="m-head">
+    <div>
+      <h2 class="m-title" id="volunteers-title">{% translate "Volunteer events" %}</h2>
+      <p class="m-lede">{% translate "Upcoming events and how full their shifts are. The Volunteer button on the home page opens the soonest event with sign-ups open." %}</p>
+    </div>
+    <div class="m-head__acts">
+      <a class="btn btn--small btn--primary" href="{% url 'admin:volunteers_event_add' %}">{% translate "Add an event" %}</a>
+      <a class="btn btn--small" href="{% url 'admin:volunteers_event_changelist' %}">{% translate "All events" %}</a>
+      <a class="btn btn--small" href="{% url 'admin:volunteers_signup_changelist' %}">{% translate "All sign-ups" %}</a>
+    </div>
+  </header>
+
+  <div class="table-wrap">
+    <table class="m-table">
+      <thead>
+        <tr>
+          <th scope="col">{% translate "Event" %}</th>
+          <th scope="col">{% translate "Dates" %}</th>
+          <th scope="col">{% translate "Spots filled" %}</th>
+          <th scope="col">{% translate "Sign-ups" %}</th>
+          <th scope="col"><span class="vh">{% translate "Links" %}</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in events %}
+          <tr>
+            <td><b>{{ row.event }}</b>{% if row.event.local.location %}<span class="m-sub">{{ row.event.local.location }}</span>{% endif %}</td>
+            <td>{{ row.dates }}</td>
+            <td>
+              <span class="m-meter" style="--fill:{{ row.percent }}%" aria-hidden="true"></span>
+              <span class="num">{% blocktranslate trimmed with taken=row.taken total=row.total %}{{ taken }} of {{ total }}{% endblocktranslate %}</span>
+            </td>
+            <td>
+              {% if row.accepting %}<span class="m-chip m-chip--ok">{% translate "Open" context "sign-ups" %}</span>{% else %}<span class="m-chip m-chip--off">{% translate "Closed" context "sign-ups" %}</span>{% endif %}
+              <span class="m-sub">{% blocktranslate trimmed count count=row.signups %}{{ count }} volunteer{% plural %}{{ count }} volunteers{% endblocktranslate %}</span>
+            </td>
+            <td class="m-links">
+              <a href="{% url 'admin:volunteers_event_change' row.event.pk %}">{% translate "Edit" %}</a>
+              <a href="{% url 'accounts:manage_roster' row.event.pk %}">{% translate "Roster (CSV)" %}</a>
+              <a href="{% url 'volunteers:signup' row.event.slug %}">{% translate "Sign-up page" %}</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td class="empty" colspan="5">{% translate "No upcoming events. Add one with its shifts, and the Volunteer button opens its sign-up." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if signups %}
+    <h3 class="m-subtitle">{% translate "Latest sign-ups" %}</h3>
+    <div class="table-wrap">
+      <table class="m-table">
+        <thead>
+          <tr>
+            <th scope="col">{% translate "Volunteer" context "person" %}</th>
+            <th scope="col">{% translate "Event" %}</th>
+            <th scope="col">{% translate "Shifts" %}</th>
+            <th scope="col">{% translate "Signed up" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for signup in signups %}
+            <tr>
+              <td><a class="m-name" href="{% url 'admin:volunteers_signup_change' signup.pk %}">{{ signup.full_name }}</a><span class="m-sub">{{ signup.email }}</span></td>
+              <td>{{ signup.event }}</td>
+              <td class="num">{{ signup.shift_count }}</td>
+              <td class="num">{{ signup.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</section>

@@ -1,0 +1,41 @@
+{% load i18n %}
+<section class="m-section" id="site" aria-labelledby="site-title">
+  <header class="m-head">
+    <div>
+      <h2 class="m-title" id="site-title">{% translate "Publishing and backups" %}</h2>
+      <p class="m-lede">{% translate "Changes to the site go live a few minutes after they’re saved to GitHub, once the tests pass. The database is backed up every night." %}</p>
+    </div>
+  </header>
+  <div class="m-grid">
+    <article class="card m-card">
+      <h3>{% translate "Publishing" %}</h3>
+      <dl class="facts">
+        <dt>{% translate "Version" %}</dt>
+        <dd>{% if publishing.is_commit %}<a href="{{ publishing.commit_url }}" target="_blank" rel="noopener">{{ publishing.short }}</a>{% else %}{% translate "Not published from GitHub" %}{% endif %}</dd>
+        {% if publishing.finished_at %}
+          <dt>{% translate "Last update" %}</dt>
+          <dd>{{ publishing.finished_at|date:"SHORT_DATETIME_FORMAT" }}{% if publishing.state == "ok" %} · {% translate "went live" %}{% elif publishing.state == "failed" %} · {% translate "didn’t go live" %}{% elif publishing.state == "running" %} · {% translate "going live now" %}{% endif %}</dd>
+        {% endif %}
+        {% if publishing.state == "failed" %}
+          <dt>{% translate "What happened" %}</dt>
+          <dd>{{ publishing.message|default:publishing.step }}{% if publishing.failed_revision %} ({{ publishing.failed_revision }}){% endif %}</dd>
+        {% endif %}
+      </dl>
+      <div class="card__acts"><a class="btn btn--small" href="{{ publishing.history_url }}" target="_blank" rel="noopener">{% translate "Publishing history on GitHub" %}</a></div>
+    </article>
+    <article class="card m-card">
+      <h3>{% translate "Backups" %}</h3>
+      {% if backups %}
+        <dl class="facts">
+          <dt>{% translate "Last backup" %}</dt><dd>{% if backups.latest %}{{ backups.latest|date:"SHORT_DATETIME_FORMAT" }}{% else %}{% translate "None yet" %}{% endif %}</dd>
+          <dt>{% translate "Copies kept" %}</dt><dd>{{ backups.count }}</dd>
+          {% if backups.size %}<dt>{% translate "Newest copy" %}</dt><dd>{{ backups.size|filesizeformat }}</dd>{% endif %}
+          <dt>{% translate "Where" %}</dt><dd><code>{{ backups.folder }}</code></dd>
+        </dl>
+      {% else %}
+        <p class="m-muted">{% translate "Backups run on the live server, in /srv/tahoetable/backups." %}</p>
+      {% endif %}
+      <p class="m-muted">{% translate "The server copies the database every night and before each update, and keeps 14 days of copies. DEPLOY-HOSTINGER.md explains restoring one." %}</p>
+    </article>
+  </div>
+</section>

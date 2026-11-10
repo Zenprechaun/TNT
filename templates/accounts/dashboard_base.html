@@ -11,6 +11,7 @@
       <nav class="dash-nav" aria-label="{% translate 'Account' %}">
         {% if is_admin_user %}
           <a class="dash-nav__link" href="{% url 'accounts:admin_dashboard' %}"{% if dash == "admin" %} aria-current="page"{% endif %}>{% translate "Admin's Dashboard" %}</a>
+          <a class="dash-nav__link" href="{% url 'accounts:manage' %}"{% if dash == "manage" %} aria-current="page"{% endif %}>{% translate "Management" %}</a>
           <a class="dash-nav__link" href="{% url 'accounts:user_dashboard' %}"{% if dash == "user" %} aria-current="page"{% endif %}>{% translate "User's Dashboard" %}</a>
           <a class="dash-nav__link" href="{% url 'admin:volunteers_event_changelist' %}">{% translate "Volunteers" %}</a>
           <a class="dash-nav__link" href="{% url 'admin:donations_donation_changelist' %}">{% translate "Donations" %}</a>
@@ -27,7 +28,7 @@
   <main class="dash-main">
     {% if messages %}
       <div class="notices" role="status">
-        {% for message in messages %}<p class="notice notice--{{ message.tags }}">{{ message }}</p>{% endfor %}
+        {% for message in messages %}{% if "email" not in message.extra_tags %}<p class="notice notice--{{ message.level_tag }}">{{ message }}</p>{% endif %}{% endfor %}
       </div>
     {% endif %}
     {% block dash %}{% endblock %}

@@ -1,16 +1,18 @@
-"""Signing in, and the User's and Admin's dashboards."""
+"""Signing in, resetting a forgotten password, and the User's and Admin's dashboards."""
 
 from datetime import timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme, urlencode
 from django.utils.translation import gettext as _
@@ -20,10 +22,11 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_http_methods, require_POST
 
-from .decorators import role_required
+from emails.sending import is_on as email_is_on
 from pages.limits import over_limit
 
-from .forms import LoginForm, RegisterForm, RolesForm
+from .decorators import role_required
+from .forms import ForgotPasswordForm, LoginForm, NewPasswordForm, RegisterForm, RolesForm
 from .models import Role
 from .roles import dashboard_url_for, get_profile
 
@@ -96,6 +99,50 @@ def register_view(request):
             messages.success(request, _("Welcome, %(name)s! Your account is ready.") % {"name": user.first_name})
             return redirect(next_url or dashboard_url_for(user))
     return render(request, "accounts/register.html", {"form": form, "next": next_url})
+
+
+class ForgotPasswordView(auth_views.PasswordResetView):
+    """Forgot your password? Emails a link to choose a new one, once the site can send email."""
+
+    form_class = ForgotPasswordForm
+    template_name = "accounts/password_forgot.html"
+    email_template_name = "accounts/email/password_reset.txt"
+    subject_template_name = "accounts/email/password_reset_subject.txt"
+    success_url = reverse_lazy("accounts:password_reset_sent")
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(email_on=email_is_on(), **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not email_is_on():
+            return self.get(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        if over_limit(self.request, "password-reset", limit=5, seconds=3600):
+            form.add_error(None, _("Too many reset emails from here. Please try again later."))
+            return self.form_invalid(form)
+        self.extra_email_context = {"site_email": settings.SITE_EMAIL}
+        return super().form_valid(form)
+
+
+class ForgotPasswordSentView(auth_views.PasswordResetDoneView):
+    template_name = "accounts/password_forgot_sent.html"
+
+
+class ResetPasswordView(auth_views.PasswordResetConfirmView):
+    """The link from the email: choose a new password, and you're logged in."""
+
+    form_class = NewPasswordForm
+    template_name = "accounts/password_reset.html"
+    post_reset_login = True
+    post_reset_login_backend = "accounts.backends.EmailOrUsernameBackend"
+    success_url = reverse_lazy("accounts:dashboard")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, _("Your new password is saved, and you’re logged in."))
+        return response
 
 
 @login_required

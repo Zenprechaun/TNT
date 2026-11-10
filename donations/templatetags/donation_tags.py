@@ -1,8 +1,7 @@
 from django import template
-from django.db.models import Count, Q, Sum
-from django.utils import timezone
 
-from ..models import Donation, MonthlyDonation, money, stripe_mode
+from ..models import Donation, MonthlyDonation, stripe_mode
+from ..summary import totals
 
 register = template.Library()
 
@@ -25,18 +24,4 @@ def your_donations(context):
 @register.inclusion_tag("donations/_summary.html")
 def donation_summary():
     """The donations card on the Admin's Dashboard: this year's total and the monthly donors."""
-    livemode = stripe_mode() == "live"
-    year = timezone.localdate().year
-    paid = Donation.objects.filter(status=Donation.PAID, livemode=livemode, paid_at__year=year)
-    totals = paid.aggregate(total=Sum("amount"), count=Count("pk"), donors=Count("email", distinct=True))
-    monthly = MonthlyDonation.objects.filter(livemode=livemode, status__in=["active", "past_due"]).aggregate(
-        count=Count("pk"), total=Sum("amount"))
-    return {
-        "connected": bool(stripe_mode()),
-        "livemode": livemode,
-        "year": year,
-        "total": money(totals["total"] or 0),
-        "count": totals["count"],
-        "monthly_count": monthly["count"],
-        "monthly_total": money(monthly["total"] or 0),
-    }
+    return totals()

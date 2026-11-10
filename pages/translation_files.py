@@ -77,7 +77,8 @@ def source_files(root):
             continue
         parts = rel.parts
         if path.suffix == ".py":
-            if path.name in ("tests.py", "manage.py") or path.name.startswith("test_") or "tests" in parts:
+            # The project's own manage.py has no text for visitors; apps' manage.py modules can.
+            if path.name == "tests.py" or rel == Path("manage.py") or path.name.startswith("test_") or "tests" in parts:
                 continue
             found["django"].append(path)
         elif path.suffix in (".html", ".txt") and "templates" in parts:

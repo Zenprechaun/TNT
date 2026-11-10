@@ -9,6 +9,9 @@ from django.utils.translation import gettext, ngettext
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_GET, require_http_methods
 
+from emails.models import Email
+from emails.sending import will_send
+
 from . import calendar, services
 from .forms import SignupForm, shift_name
 from .models import Event, Signup, long_day
@@ -90,7 +93,7 @@ def signup_context(event=None, form=None, problem=None, request=None):
         "roles": list({r["shift"].role.pk: r["shift"].role for r in rows}.values()),
         "accepting": open_now,
         "preview": not open_now,
-        "send_confirmation": settings.VOLUNTEER_SEND_CONFIRMATION,
+        "send_confirmation": will_send(Email.VOLUNTEER),
     }
     return context
 
@@ -116,7 +119,7 @@ def confirmation_payload(signup):
     return {
         "firstName": signup.first_name,
         "email": signup.email,
-        "emailed": settings.VOLUNTEER_SEND_CONFIRMATION,
+        "emailed": will_send(Email.VOLUNTEER),
         "count": len(shifts),
         "shifts": [{
             "id": s.pk,
@@ -206,7 +209,7 @@ def confirmed(request, slug, token):
         "event": signup.event,
         "shifts": [{"shift": s, "gcal": calendar.google_link(s)} for s in shifts],
         "contact_email": settings.VOLUNTEER_CONTACT_EMAIL,
-        "send_confirmation": settings.VOLUNTEER_SEND_CONFIRMATION,
+        "send_confirmation": will_send(Email.VOLUNTEER),
     })
 
 

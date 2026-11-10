@@ -1,0 +1,145 @@
+{% load i18n %}
+<section class="m-section" id="email" aria-labelledby="email-title">
+  <header class="m-head">
+    <div>
+      <h2 class="m-title" id="email-title">{% translate "Email" %}</h2>
+      <p class="m-lede">{% translate "The site emails volunteers their shifts, donors their receipts, organizers about new sign-ups, and a reset link to anyone who forgets their password." %}</p>
+    </div>
+  </header>
+  {% for message in messages %}{% if "email" in message.extra_tags %}<p class="notice notice--{{ message.level_tag }}" role="status">{{ message }}</p>{% endif %}{% endfor %}
+
+  <div class="m-grid">
+    <article class="card m-card" id="email-service">
+      <div class="m-card__head">
+        <h3>{% translate "Email service" %}</h3>
+        {% if e.on %}<span class="m-chip m-chip--ok">{% translate "On" %}</span>{% else %}<span class="m-chip m-chip--off">{% translate "Off" %}</span>{% endif %}
+      </div>
+      {% if e.conf.password_unreadable %}<p class="m-note m-note--warn">{% translate "The saved API key or password can’t be read anymore, because the server’s secret key changed. Paste it again below." %}</p>{% endif %}
+      {% if e.on and e.connection.source == "site" %}
+        <dl class="facts">
+          <dt>{% translate "Service" %}</dt><dd>{{ e.conf.service_name }}</dd>
+          <dt>{% translate "Sends from" %}</dt><dd>{{ e.conf.sender }}</dd>
+          <dt>{% translate "Replies go to" %}</dt><dd>{{ e.conf.reply_to|default:"–" }}</dd>
+          <dt>{% translate "API key or password" %}</dt><dd>{% if e.conf.password_end %}{% blocktranslate trimmed with end=e.conf.password_end %}Saved, ends in …{{ end }}{% endblocktranslate %}{% else %}{% translate "Saved" %}{% endif %}</dd>
+          {% if e.conf.connected_at %}<dt>{% translate "Connected" %}</dt><dd>{{ e.conf.connected_at|date:"SHORT_DATETIME_FORMAT" }}</dd>{% endif %}
+        </dl>
+        <details class="m-more"{% if e.service_form.is_bound %} open{% endif %}>
+          <summary>{% translate "Change the email service" %}</summary>
+          {% include "emails/_service_form.html" %}
+          <form class="m-stop" method="post" action="{% url 'accounts:manage' %}#email-service">
+            {% csrf_token %}<input type="hidden" name="action" value="disconnect">
+            <button class="m-linkbtn" type="submit">{% translate "Stop sending email" %}</button>
+          </form>
+        </details>
+      {% else %}
+        {% if e.on %}
+          <p class="m-note">{% blocktranslate trimmed with host=e.connection.host %}Sending through {{ host }}, set in the server’s settings file (/srv/tahoetable/.env). An email service saved here takes its place.{% endblocktranslate %}</p>
+        {% else %}
+          <p>{% translate "The site isn’t sending email yet. Connect a sending service. Resend is free at the site’s size and takes about 10 minutes:" %}</p>
+          <ol class="m-steps">
+            <li>{% blocktranslate trimmed %}Create a free account at <a href="https://resend.com" target="_blank" rel="noopener">resend.com</a>.{% endblocktranslate %}</li>
+            <li>{% blocktranslate trimmed with domain=e.domain %}In Resend, open <b>Domains</b>, add <b>{{ domain }}</b> and choose <b>Auto Configure</b>, which adds Resend’s DNS records at GoDaddy for you. Wait until the domain shows <b>Verified</b>.{% endblocktranslate %}</li>
+            <li>{% blocktranslate trimmed %}Open <b>API Keys</b>, create a key with <b>Sending access</b>, and copy it.{% endblocktranslate %}</li>
+            <li>{% blocktranslate trimmed %}Paste it here and choose <b>Save and connect</b>. Then send yourself a test email.{% endblocktranslate %}</li>
+          </ol>
+        {% endif %}
+        {% include "emails/_service_form.html" %}
+      {% endif %}
+    </article>
+
+    <article class="card m-card" id="email-choices">
+      <h3>{% translate "What the site emails" %}</h3>
+      {% with f=e.choices_form %}
+      <form class="m-form" method="post" action="{% url 'accounts:manage' %}#email-choices" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="action" value="choices">
+        <label class="m-check">{{ f.volunteer_confirmations }}<span><b>{{ f.volunteer_confirmations.label }}</b><small>{% translate "Right after they sign up, in the language they signed up in." %}</small></span></label>
+        <label class="m-check">{{ f.donation_receipts }}<span><b>{{ f.donation_receipts.label }}</b><small>{% translate "With the receipt number and the 501(c)(3) statement. If Stripe also sends its own receipts (Stripe Dashboard, Settings, Customer emails), donors get both." %}</small></span></label>
+        {% include "emails/_field.html" with field=f.volunteer_notify help=f.volunteer_notify.help_text %}
+        <p class="m-help">{% translate "Password reset emails always go out, since people can’t log in without them." %}</p>
+        <div class="m-acts"><button class="btn" type="submit">{% translate "Save" %}</button></div>
+      </form>
+      {% endwith %}
+    </article>
+  </div>
+
+  <div class="m-grid">
+    <article class="card m-card" id="email-test">
+      <h3>{% translate "Send a test email" %}</h3>
+      {% if e.on %}
+        {% with f=e.test_form %}
+        <form class="m-form" method="post" action="{% url 'accounts:manage' %}#email-test" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="action" value="test">
+          {% include "emails/_field.html" with field=f.to %}
+          <div class="m-acts"><button class="btn" type="submit">{% translate "Send test email" %}</button></div>
+        </form>
+        {% endwith %}
+      {% else %}
+        <p class="m-muted">{% translate "Once an email service is connected, send yourself a test here to make sure email arrives." %}</p>
+      {% endif %}
+    </article>
+
+    <article class="card m-card" id="email-dns">
+      <h3>{% translate "Your domain’s email records" %}</h3>
+      <p class="m-muted">{% blocktranslate trimmed with domain=e.domain %}What DNS says about {{ domain }} right now. The records themselves are added at GoDaddy.{% endblocktranslate %}</p>
+      <ul class="m-checks">
+        {% for row in e.dns_rows %}
+          <li>
+            <span class="m-chip m-chip--{{ row.state }}">{% if row.state == "ok" %}{% translate "OK" %}{% elif row.state == "warn" %}{% translate "To do" %}{% else %}{% translate "Unknown" %}{% endif %}</span>
+            <b>{{ row.label }}</b>
+            <p>{{ row.text }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+      <form method="post" action="{% url 'accounts:manage' %}#email-dns">
+        {% csrf_token %}<input type="hidden" name="action" value="check-dns">
+        <button class="btn btn--small" type="submit">{% translate "Check again" %}</button>
+      </form>
+    </article>
+  </div>
+
+  <div class="m-log" id="email-log">
+    <div class="m-log__head">
+      <h3>{% translate "Recent emails" %}</h3>
+      <a href="{% url 'admin:emails_email_changelist' %}">{% translate "All emails" %}</a>
+    </div>
+    <p class="m-muted">{% translate "The site keeps a copy of each email for 6 months, so you can see what went out and send it again. Password reset links aren’t kept." %}</p>
+    <div class="table-wrap">
+      <table class="m-table">
+        <thead>
+          <tr>
+            <th scope="col">{% translate "When" %}</th>
+            <th scope="col">{% translate "To" %}</th>
+            <th scope="col">{% translate "Email" %}</th>
+            <th scope="col">{% translate "Status" %}</th>
+            <th scope="col"><span class="vh">{% translate "Send again" %}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in e.recent %}
+            <tr>
+              <td class="num">{{ m.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+              <td class="m-wrap">{{ m.to }}</td>
+              <td><b>{{ m.get_kind_display }}</b><span class="m-sub">{{ m.subject }}</span></td>
+              <td>
+                <span class="m-chip m-chip--{% if m.status == 'sent' %}ok{% elif m.status == 'failed' %}warn{% else %}off{% endif %}">{{ m.get_status_display }}</span>
+                {% if m.status == "failed" %}<span class="m-problem">{{ m.problem_text }}</span>{% if m.error %}<span class="m-details">{{ m.error }}</span>{% endif %}{% endif %}
+              </td>
+              <td>
+                {% if m.can_send_again %}
+                  <form method="post" action="{% url 'accounts:manage' %}#email-log">
+                    {% csrf_token %}<input type="hidden" name="action" value="send-again"><input type="hidden" name="email" value="{{ m.pk }}">
+                    <button class="btn btn--small" type="submit"{% if not e.on %} disabled title="{% translate 'Connect an email service first.' %}"{% endif %}>{% if m.status == "sent" %}{% translate "Send again" %}{% else %}{% translate "Send now" %}{% endif %}</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td class="empty" colspan="5">{% translate "No emails yet." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

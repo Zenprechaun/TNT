@@ -1,0 +1,8 @@
+{% load i18n %}{% autoescape off %}{% translate "This is a test email from the Tahoe Neighborhood Table website." %}
+
+{% translate "If you’re reading it, the site can send email." %}{% if service %} {% blocktranslate trimmed %}It went out through {{ service }}.{% endblocktranslate %}{% endif %}
+
+{% if sender %}{% blocktranslate trimmed with name=sender.get_full_name|default:sender.get_username %}Sent by {{ name }} from the Management page.{% endblocktranslate %}{% else %}{% translate "Sent from the server with manage.py send_test_email." %}{% endif %}
+
+Tahoe Neighborhood Table
+{% endautoescape %}

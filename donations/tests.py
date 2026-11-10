@@ -22,7 +22,7 @@ User = get_user_model()
 DONATE = reverse("donations:donate")
 WEBHOOK = reverse("donations:webhook")
 CONNECTED = {"STRIPE_SECRET_KEY": "sk_test_123", "STRIPE_WEBHOOK_SECRET": "whsec_env", "SITE_URL": "https://example.org",
-             "DONATIONS_TAX_DEDUCTIBLE": True, "DONATIONS_TAX_ID": "12-3456789", "DONATION_SEND_RECEIPTS": True}
+             "DONATIONS_TAX_DEDUCTIBLE": True, "DONATIONS_TAX_ID": "12-3456789", "EMAIL_HOST": "smtp.example.org"}
 
 
 def checkout_session(donation, **extra):

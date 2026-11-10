@@ -112,10 +112,31 @@ Until these steps are done, the Donate button opens an email, and only admins se
    Put the organization's EIN after `DONATIONS_TAX_ID=` to print it on receipts, or leave it empty. Save with Ctrl+O, Enter, then Ctrl+X, and run `systemctl restart tahoetable`.
 3. **Connect.** Run `sudo -u tahoetable /srv/tahoetable/manage.sh connect_stripe`. It sets up three things in Stripe: the webhook that tells the site about payments, the Donation product, and the page where monthly donors change or stop their donation. Running it again is safe.
 4. **Try it.** Donate on the site with the test card 4242 4242 4242 4242, any future expiry date and any CVC. The thank-you page should show a receipt, and the donation should appear under **Donations** in the admin site.
-5. **Receipts by email.** Until the site has email settings, turn on Stripe's own receipts: in the Stripe Dashboard, open **Settings → Customer emails** and turn on emails for **Successful payments**.
+5. **Receipts by email.** Once email is on (see "Turning on email" below), the site emails donors their receipt with the 501(c)(3) statement. Until then, turn on Stripe's own receipts: in the Stripe Dashboard, open **Settings → Customer emails** and turn on emails for **Successful payments**. With both on, donors get two receipts, so turn Stripe's off once the site's work.
 6. **Go live** once Stripe has approved the account: in Stripe, turn off **Test mode** and copy the live secret key (`sk_live_`). Replace the test key in `/srv/tahoetable/.env`, restart the site, and run `connect_stripe` again.
 
+The Management page (`/dashboard/manage/#donations`) shows whether the site is in test mode and whether Stripe's payment updates (step 3) are connected.
+
 Stripe offers lower card fees to registered nonprofits that take at least 80% of their payments as tax-deductible donations; apply through Stripe support once the account is active. If the rate changes, set `DONATION_FEE_PERCENT` and `DONATION_FEE_CENTS` in `/srv/tahoetable/.env` so the "cover the card fee" amount matches.
+
+## Turning on email
+
+The site sends its emails (volunteers' shifts, notices to organizers, donation receipts, password reset links) through an email service. It doesn't run a mail server on the VPS: mail from a new server is often marked as spam, especially by Outlook and Hotmail. **Resend** is free for up to 3,000 emails a month (100 a day), and the steps take about 10 minutes:
+
+1. **Create a Resend account** at https://resend.com.
+2. **Add the domain.** In Resend, open **Domains**, add `tahoeneighborhoodtable.com` and choose **Auto Configure**. Resend asks to sign in to GoDaddy and adds its DNS records there (a few records for `send` and `resend._domainkey`; they don't change the website or any existing email). Wait until the domain shows **Verified**, usually a few minutes. To add the records by hand instead, copy each one from Resend into GoDaddy's DNS page, with only the part before the domain in the **Name** box (`send`, not `send.tahoeneighborhoodtable.com`).
+3. **Create an API key.** In Resend, open **API Keys**, create a key with **Sending access**, and copy it. Resend shows it only once.
+4. **Connect the site.** Log in to the site as an admin, open **Management** (`/dashboard/manage/`), and under **Email service** choose Resend, paste the key, and choose **Save and connect**. The site signs in to Resend right away and says whether it worked. The key is stored encrypted.
+5. **Send a test email** from the same page, to yourself. If it doesn't arrive within a few minutes, look in the spam folder, then at **Recent emails** on the Management page, which shows Resend's answer when an email didn't go out.
+
+On the same page, **What the site emails** lists who hears about each new volunteer, and turns volunteer confirmations and donation receipts on or off. **Your domain's email records** checks the DNS:
+
+- **Mail to @tahoeneighborhoodtable.com** must have a mail server, or replies to the site's emails (they go to info@tahoeneighborhoodtable.com) bounce. That's whichever service handles the domain's email; Resend only sends.
+- **DMARC** is recommended: at GoDaddy, add a TXT record named `_dmarc` with the value `v=DMARC1; p=none;` unless there's one already.
+
+**Other services** work too: Brevo (free for 300 emails a day), Google Workspace or Gmail with an app password, or any service that offers SMTP. Choose it on the Management page. Settings in `/srv/tahoetable/.env` (`EMAIL_HOST` and the rest, see `deploy/env.example`) also work; the Management page's settings take their place when both are set.
+
+**If email stops:** the Management page's Email tile says so, and **Recent emails** shows each email that didn't go out and why. Fix the cause (often an expired key or a daily limit), then use **Send now** or **Send again** on the emails that matter, such as receipts. Nothing is lost while email is off: the site keeps every email for six months.
 
 ## Everyday tasks
 
@@ -129,6 +150,7 @@ Run these on the VPS as root.
 | Change someone's password | `sudo -u tahoetable /srv/tahoetable/manage.sh changepassword Admin` |
 | Create another admin | `sudo -u tahoetable /srv/tahoetable/manage.sh createsuperuser` |
 | Connect or reconnect Stripe | `sudo -u tahoetable /srv/tahoetable/manage.sh connect_stripe` |
+| Send a test email | `sudo -u tahoetable /srv/tahoetable/manage.sh send_test_email you@example.com` (or use the Management page) |
 | Back up the database now | `sudo -u tahoetable /srv/tahoetable/backup_db.sh` |
 | Install Ubuntu updates | `apt-get update && apt-get upgrade` |
 | See recent publishes | `journalctl -u tahoetable-publish -n 100` |

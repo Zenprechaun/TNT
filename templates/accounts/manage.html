@@ -1,0 +1,31 @@
+{% extends "accounts/dashboard_base.html" %}
+{% load static i18n %}
+{% block title %}{% translate "Management" %} · Tahoe Neighborhood Table{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'site/css/manage.css' %}">{% endblock %}
+{% block dash %}
+<header class="dash-intro">
+  <div>
+    <p class="dash-eyebrow">{% translate "Management" %}</p>
+    <h1 class="dash-title">{% translate "Running the site" %}</h1>
+    <p class="dash-sub">{% translate "Email, volunteer events, donations, publishing and backups, in one place." %}</p>
+  </div>
+  <div class="dash-actions">
+    <a class="btn" href="{% url 'admin:index' %}">{% translate "Open the full admin site" %}</a>
+  </div>
+</header>
+
+<nav class="m-tiles" aria-label="{% translate 'Status' %}">
+  {% for tile in tiles %}
+    <a class="m-tile m-tile--{{ tile.state }}" href="{{ tile.href }}">
+      <span class="m-tile__top"><span class="m-tile__label">{{ tile.label }}</span><span class="m-chip m-chip--{{ tile.state }}">{{ tile.chip }}</span></span>
+      <span class="m-tile__text">{{ tile.text }}</span>
+    </a>
+  {% endfor %}
+</nav>
+
+{% include "emails/_manage.html" with e=email %}
+{% include "volunteers/_manage.html" %}
+{% include "donations/_manage.html" %}
+{% include "accounts/_manage_site.html" %}
+{% endblock %}
+{% block scripts %}<script src="{% static 'site/js/manage.js' %}" defer></script>{% endblock %}

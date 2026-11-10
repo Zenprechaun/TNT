@@ -1,0 +1,6 @@
+<div class="m-field{% if field.errors %} has-error{% endif %}"{% if services %} data-services="{{ services }}"{% endif %}>
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {{ field }}
+  {% if help %}<p class="m-help">{{ help }}</p>{% endif %}
+  {% for error in field.errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+</div>

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
+    "emails.apps.EmailsConfig",
     "volunteers.apps.VolunteersConfig",
     "donations.apps.DonationsConfig",
 ]
@@ -141,26 +142,26 @@ SITE_EMAIL = "info@tahoeneighborhoodtable.com"
 # The site's own address, for links in emails and for Stripe to send payment updates to.
 SITE_URL = os.environ.get("SITE_URL", "https://tahoeneighborhoodtable.com")
 
-# Email. Until EMAIL_HOST is set in /srv/tahoetable/.env, the site doesn't send email:
-# messages are written to the server log instead (journalctl -u tahoetable).
+# Email. The site sends email through an email service such as Resend, connected on the
+# Management page (/dashboard/manage/#email), which also lists every email the site sent.
+# Until a service is connected there, or EMAIL_HOST is set in /srv/tahoetable/.env, the site
+# doesn't send email. See the emails app and DEPLOY-HOSTINGER.md, "Turning on email".
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
-if EMAIL_HOST:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
-    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
-    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-    EMAIL_USE_SSL = env_flag("EMAIL_USE_SSL", "false")
-    EMAIL_USE_TLS = env_flag("EMAIL_USE_TLS", "false" if EMAIL_USE_SSL else "true")
-    EMAIL_TIMEOUT = 15
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_SSL = env_flag("EMAIL_USE_SSL", "false")
+EMAIL_USE_TLS = env_flag("EMAIL_USE_TLS", "false" if EMAIL_USE_SSL else "true")
+EMAIL_TIMEOUT = 10
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", f"Tahoe Neighborhood Table <{SITE_EMAIL}>")
+# How long a password reset link works: 3 days.
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 3
 
 # Volunteer sign-ups (the volunteers app).
 VOLUNTEER_CONTACT_EMAIL = SITE_EMAIL
-# Email volunteers a copy of their shifts. Off until the site can send email.
-VOLUNTEER_SEND_CONFIRMATION = env_flag("VOLUNTEER_SEND_CONFIRMATION", "true" if EMAIL_HOST else "false")
-# Organizers to tell about each new sign-up, separated by commas. Leave empty for nobody.
+# Organizers to tell about each new sign-up, separated by commas. This only fills in the list the
+# first time; after that, change it on the Management page.
 VOLUNTEER_NOTIFY_EMAILS = env_list("VOLUNTEER_NOTIFY_EMAILS")
 
 # Donations through Stripe (the donations app). Until STRIPE_SECRET_KEY is set in
@@ -173,8 +174,6 @@ STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
 DONATIONS_TAX_DEDUCTIBLE = env_flag("DONATIONS_TAX_DEDUCTIBLE", "true")
 # The organization's EIN, printed on receipts when set.
 DONATIONS_TAX_ID = os.environ.get("DONATIONS_TAX_ID", "")
-# Email donors a receipt from the site. Off until the site can send email; Stripe can send its own.
-DONATION_SEND_RECEIPTS = env_flag("DONATION_SEND_RECEIPTS", "true" if EMAIL_HOST else "false")
 # What Stripe charges per card payment, used to offer donors the option to cover it.
 DONATION_FEE_PERCENT = float(os.environ.get("DONATION_FEE_PERCENT", "2.9"))
 DONATION_FEE_CENTS = int(os.environ.get("DONATION_FEE_CENTS", "30"))
@@ -186,6 +185,10 @@ SITE_REVISION = _REVISION_FILE.read_text().strip() if _REVISION_FILE.exists() el
 
 # Where automatic publishing records the result of its latest run, next to the database.
 PUBLISH_STATUS_FILE = Path(DATABASES["default"]["NAME"]).parent / "publish-status.json"
+# Where deploy/backup_db.sh keeps the nightly copies of the database: /srv/tahoetable/backups.
+BACKUP_DIR = Path(os.environ.get("DJANGO_BACKUP_DIR") or Path(DATABASES["default"]["NAME"]).parent.parent / "backups")
+# The code on GitHub, for links from the Management page.
+GITHUB_REPOSITORY_URL = os.environ.get("GITHUB_REPOSITORY_URL", "https://github.com/Zenprechaun/TNT")
 
 if not DEBUG:
     # Nginx handles HTTPS and tells Django about it with this header.
