@@ -28,7 +28,7 @@
   <main class="dash-main">
     {% if messages %}
       <div class="notices" role="status">
-        {% for message in messages %}{% if "email" not in message.extra_tags %}<p class="notice notice--{{ message.level_tag }}">{{ message }}</p>{% endif %}{% endfor %}
+        {% for message in messages %}{% if not message.extra_tags %}<p class="notice notice--{{ message.level_tag }}">{{ message }}</p>{% endif %}{% endfor %}
       </div>
     {% endif %}
     {% block dash %}{% endblock %}

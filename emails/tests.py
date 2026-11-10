@@ -3,7 +3,7 @@ import smtplib
 import socket
 import ssl
 import tempfile
-from datetime import date, time, timedelta
+from datetime import time, timedelta
 from pathlib import Path
 from unittest import mock
 

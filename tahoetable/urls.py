@@ -13,6 +13,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("volunteer/", include("volunteers.urls")),
     path("", include("donations.urls")),
+    path("", include("mailboxes.urls")),
     # The language switch posts here (Django's set_language view).
     path("i18n/", include("django.conf.urls.i18n")),
     # Translations for the site's scripts, in the visitor's language. Naming a package keeps it to

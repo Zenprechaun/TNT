@@ -1,0 +1,211 @@
+{% load i18n %}
+<section class="m-section" id="mailboxes" aria-labelledby="mailboxes-title">
+  <header class="m-head">
+    <div>
+      <h2 class="m-title" id="mailboxes-title">{% translate "Staff and volunteer email" %}</h2>
+      <p class="m-lede">{% blocktranslate trimmed with domain=mb.conn.domain %}Google Workspace email accounts at @{{ domain }} for staff and volunteers. Only admins can create, change or delete them.{% endblocktranslate %}</p>
+    </div>
+    {% if mb.connected %}<div class="m-head__acts"><a class="btn btn--small" href="{{ mb.admin_console_url }}" target="_blank" rel="noopener">{% translate "Google Admin console" %}</a></div>{% endif %}
+  </header>
+  {% for message in messages %}{% if message.extra_tags == "mailboxes" %}<p class="notice notice--{{ message.level_tag }}" role="status">{{ message }}</p>{% endif %}{% endfor %}
+
+  {% if mb.new_password %}
+    <div class="m-secret" role="status">
+      <p>{% if mb.new_password.action == "created" %}{% translate "New account" %}{% else %}{% translate "New temporary password" %}{% endif %}: <b>{{ mb.new_password.email }}</b></p>
+      <p class="m-secret__pw"><code data-copy-text>{{ mb.new_password.password }}</code><button class="btn btn--small" type="button" data-copy data-copied="{% translate 'Copied' %}">{% translate "Copy" %}</button></p>
+      <p class="m-help">{% translate "Give this temporary password to them in person or by phone. They sign in at mail.google.com and choose their own password right away. It won’t be shown again." %}</p>
+    </div>
+  {% endif %}
+
+  {% if not mb.connected %}
+    <div class="m-grid">
+      <article class="card m-card" id="mailboxes-connect">
+        <div class="m-card__head">
+          <h3>{% translate "Connect Google Workspace" %}</h3>
+          <span class="m-chip m-chip--off">{% translate "Not connected" %}</span>
+        </div>
+        <ol class="m-steps">
+          <li>{% blocktranslate trimmed %}Get approved for <a href="https://www.google.com/nonprofits/" target="_blank" rel="noopener">Google for Nonprofits</a>, then turn on Google Workspace for Nonprofits for your domain.{% endblocktranslate %}</li>
+          <li>{% blocktranslate trimmed with staff=mb.conn.staff_unit volunteers=mb.conn.volunteer_unit %}In the <a href="https://admin.google.com" target="_blank" rel="noopener">Google Admin console</a>, create two organizational units, <b>{{ staff }}</b> and <b>{{ volunteers }}</b>. Then create an account for the website, such as website-admin@, give it the prebuilt <b>User Management Admin</b> role, and turn on 2-Step Verification for it.{% endblocktranslate %}</li>
+          <li>{% blocktranslate trimmed %}In the <a href="https://console.cloud.google.com" target="_blank" rel="noopener">Google Cloud console</a>, create a project and turn on the <b>Admin SDK API</b>. Set up the OAuth consent screen as <b>Internal</b>, then create an <b>OAuth client ID</b> for a <b>Web application</b>, with this authorized redirect URI:{% endblocktranslate %}
+            <span class="m-copy"><code data-copy-text>{{ mb.redirect_uri }}</code><button class="btn btn--small" type="button" data-copy data-copied="{% translate 'Copied' %}">{% translate "Copy" %}</button></span></li>
+          <li>{% blocktranslate trimmed %}Paste the client ID and client secret here and save. Then choose <b>Connect Google</b> and sign in as the website’s admin account.{% endblocktranslate %}</li>
+        </ol>
+        {% include "mailboxes/_connection_form.html" %}
+        {% if mb.conn.is_set_up %}
+          <form method="post" action="{% url 'accounts:manage' %}#mailboxes">
+            {% csrf_token %}<input type="hidden" name="action" value="google-connect">
+            <button class="btn btn--primary" type="submit">{% translate "Connect Google" %}</button>
+          </form>
+        {% endif %}
+      </article>
+      {% include "mailboxes/_monitoring.html" %}
+    </div>
+  {% else %}
+    {% if mb.error %}
+      <div class="m-note m-note--warn">
+        <p>{{ mb.error }}</p>
+        {% if mb.reconnect %}
+          <form method="post" action="{% url 'accounts:manage' %}#mailboxes">
+            {% csrf_token %}<input type="hidden" name="action" value="google-connect">
+            <button class="btn btn--small" type="submit">{% translate "Connect Google again" %}</button>
+          </form>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="m-log" id="mailboxes-accounts">
+      <div class="m-log__head">
+        <h3>{% blocktranslate trimmed count count=mb.counts.total %}{{ count }} account{% plural %}{{ count }} accounts{% endblocktranslate %}</h3>
+        <span class="m-muted">{% blocktranslate trimmed with staff=mb.counts.staff volunteers=mb.counts.volunteers %}Staff: {{ staff }} · Volunteers: {{ volunteers }}{% endblocktranslate %}</span>
+      </div>
+      <div class="table-wrap">
+        <table class="m-table m-accounts">
+          <thead>
+            <tr>
+              <th scope="col">{% translate "Name" %}</th>
+              <th scope="col">{% translate "Staff or volunteer" %}</th>
+              <th scope="col">{% translate "Manager" %}</th>
+              <th scope="col">{% translate "Status" %}</th>
+              <th scope="col">{% translate "Last sign-in" %}</th>
+              <th scope="col"><span class="vh">{% translate "Manage" %}</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in mb.accounts %}
+              <tr>
+                <td><b>{{ a.name }}</b><span class="m-sub">{{ a.email }}</span></td>
+                <td>{% if a.kind == "staff" %}{% translate "Staff" %}{% else %}{% translate "Volunteer" context "person" %}{% endif %}</td>
+                <td>{% if a.manager %}{{ a.manager_name }}{% else %}–{% endif %}</td>
+                <td>
+                  {% if a.suspended %}<span class="m-chip m-chip--warn">{% translate "Suspended" %}</span>{% else %}<span class="m-chip m-chip--ok">{% translate "Active" %}</span>{% endif %}
+                  {% if a.is_admin %}<span class="m-sub">{% translate "Google admin" %}</span>{% endif %}
+                </td>
+                <td class="num">{% if a.last_login %}{{ a.last_login|date:"SHORT_DATE_FORMAT" }}{% else %}{% translate "Never" %}{% endif %}</td>
+                <td>
+                  <details class="m-manage">
+                    <summary>{% translate "Manage" %}</summary>
+                    <div class="m-manage__panel">
+                      {% if a.can_change %}
+                        <div class="m-manage__row">
+                          <form method="post" action="{% url 'accounts:manage' %}#mailboxes">
+                            {% csrf_token %}<input type="hidden" name="email" value="{{ a.email }}">
+                            {% if a.suspended %}<input type="hidden" name="action" value="account-restore"><button class="btn btn--small" type="submit">{% translate "Restore" %}</button>
+                            {% else %}<input type="hidden" name="action" value="account-suspend"><button class="btn btn--small" type="submit">{% translate "Suspend" %}</button>{% endif %}
+                          </form>
+                          <form method="post" action="{% url 'accounts:manage' %}#mailboxes">
+                            {% csrf_token %}<input type="hidden" name="email" value="{{ a.email }}"><input type="hidden" name="action" value="account-password">
+                            <button class="btn btn--small" type="submit">{% translate "Reset password" %}</button>
+                          </form>
+                        </div>
+                        <form class="m-manage__form" method="post" action="{% url 'accounts:manage' %}#mailboxes">
+                          {% csrf_token %}<input type="hidden" name="email" value="{{ a.email }}"><input type="hidden" name="action" value="account-change">
+                          <label>{% translate "Staff or volunteer" %}
+                            <select name="kind">{% for value, label in mb.kinds %}<option value="{{ value }}"{% if value == a.kind %} selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+                          </label>
+                          <label>{% translate "Manager" %}
+                            <select name="manager">{% for value, label in mb.manager_choices %}{% if value != a.email %}<option value="{{ value }}"{% if value == a.manager %} selected{% endif %}>{{ label }}</option>{% endif %}{% endfor %}</select>
+                          </label>
+                          <button class="btn btn--small" type="submit">{% translate "Save" %}</button>
+                        </form>
+                        <form class="m-manage__form" method="post" action="{% url 'accounts:manage' %}#mailboxes">
+                          {% csrf_token %}<input type="hidden" name="email" value="{{ a.email }}"><input type="hidden" name="action" value="account-delete">
+                          <label>{% blocktranslate trimmed with email=a.email %}To delete it, type {{ email }}{% endblocktranslate %}
+                            <input type="text" name="confirm" autocomplete="off" spellcheck="false" autocapitalize="none">
+                          </label>
+                          <button class="btn btn--small btn--danger" type="submit">{% translate "Delete account" %}</button>
+                        </form>
+                      {% else %}
+                        <p class="m-help">{% translate "This is a Google admin account. Change it in the Google Admin console." %}</p>
+                      {% endif %}
+                    </div>
+                  </details>
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td class="empty" colspan="6">{% if mb.error %}{% translate "The accounts couldn’t be loaded." %}{% else %}{% translate "No staff or volunteer accounts yet." %}{% endif %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="m-grid">
+      <article class="card m-card" id="mailboxes-new">
+        <h3>{% translate "Add an account" %}</h3>
+        {% with f=mb.new_form %}
+        <form class="m-form" method="post" action="{% url 'accounts:manage' %}#mailboxes-new" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="action" value="account-create">
+          {% for problem in f.non_field_errors %}<p class="login-form__error" role="alert">{{ problem }}</p>{% endfor %}
+          <div class="m-row">
+            {% include "emails/_field.html" with field=f.first_name %}
+            {% include "emails/_field.html" with field=f.last_name %}
+          </div>
+          <div class="m-field{% if f.username.errors %} has-error{% endif %}">
+            <label for="{{ f.username.id_for_label }}">{{ f.username.label }}</label>
+            <div class="m-address">{{ f.username }}<span>@{{ mb.conn.domain }}</span></div>
+            {% for error in f.username.errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+          </div>
+          <fieldset class="m-services">
+            <legend class="m-label">{{ f.kind.label }}</legend>
+            {% for choice in f.kind %}<label class="m-service">{{ choice.tag }}<span><b>{{ choice.choice_label }}</b></span></label>{% endfor %}
+          </fieldset>
+          {% translate "Volunteers’ managers are staff members." as manager_help %}
+          {% include "emails/_field.html" with field=f.manager help=manager_help %}
+          <label class="m-check">{{ f.agreed }}<span><b>{{ f.agreed.label }}</b></span></label>
+          {% for error in f.agreed.errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+          <div class="m-acts"><button class="btn btn--primary" type="submit">{% translate "Create account" %}</button></div>
+          <p class="m-help">{% translate "The site makes a temporary password and shows it to you once." %}</p>
+        </form>
+        {% endwith %}
+      </article>
+      {% include "mailboxes/_monitoring.html" %}
+    </div>
+
+    <div class="m-grid">
+      <article class="card m-card" id="mailboxes-changes">
+        <div class="m-card__head">
+          <h3>{% translate "Recent changes" %}</h3>
+          <a class="m-name" href="{% url 'admin:mailboxes_accountchange_changelist' %}">{% translate "All changes" %}</a>
+        </div>
+        {% if mb.changes %}
+          <ul class="m-changes">
+            {% for c in mb.changes %}
+              <li><b>{{ c.get_action_display }}</b> {{ c.address }}{% if c.kind %} · {{ c.get_kind_display }}{% endif %}{% if c.manager %} · {% blocktranslate trimmed with email=c.manager %}manager {{ email }}{% endblocktranslate %}{% elif c.action == "changed" %} · {% translate "no manager" %}{% endif %}<span class="m-sub">{% blocktranslate trimmed with when=c.created_at|date:"SHORT_DATETIME_FORMAT" name=c.by_name %}{{ when }}, by {{ name }}{% endblocktranslate %}</span></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="m-muted">{% translate "No changes yet." %}</p>
+        {% endif %}
+      </article>
+
+      <article class="card m-card" id="mailboxes-connection">
+        <div class="m-card__head">
+          <h3>{% translate "Google Workspace" %}</h3>
+          <span class="m-chip m-chip--ok">{% translate "Connected" %}</span>
+        </div>
+        <dl class="facts">
+          <dt>{% translate "Signed in as" %}</dt><dd>{{ mb.conn.connected_as }}</dd>
+          {% if mb.conn.connected_at %}<dt>{% translate "Connected" %}</dt><dd>{{ mb.conn.connected_at|date:"SHORT_DATETIME_FORMAT" }}</dd>{% endif %}
+          <dt>{% translate "Staff unit" %}</dt><dd>{{ mb.conn.staff_unit }}</dd>
+          <dt>{% translate "Volunteer unit" %}</dt><dd>{{ mb.conn.volunteer_unit }}</dd>
+        </dl>
+        <details class="m-more"{% if mb.connection_form.is_bound %} open{% endif %}>
+          <summary>{% translate "Change the connection" %}</summary>
+          {% include "mailboxes/_connection_form.html" %}
+          <div class="m-acts m-stop">
+            <form method="post" action="{% url 'accounts:manage' %}#mailboxes">
+              {% csrf_token %}<input type="hidden" name="action" value="google-connect">
+              <button class="btn btn--small" type="submit">{% translate "Connect Google again" %}</button>
+            </form>
+            <form method="post" action="{% url 'accounts:manage' %}#mailboxes">
+              {% csrf_token %}<input type="hidden" name="action" value="google-disconnect">
+              <button class="m-linkbtn" type="submit">{% translate "Disconnect Google" %}</button>
+            </form>
+          </div>
+        </details>
+      </article>
+    </div>
+  {% endif %}
+</section>

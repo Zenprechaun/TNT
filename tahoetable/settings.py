@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
     "emails.apps.EmailsConfig",
+    "mailboxes.apps.MailboxesConfig",
     "volunteers.apps.VolunteersConfig",
     "donations.apps.DonationsConfig",
 ]

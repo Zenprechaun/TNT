@@ -7,7 +7,7 @@
   <div>
     <p class="dash-eyebrow">{% translate "Management" %}</p>
     <h1 class="dash-title">{% translate "Running the site" %}</h1>
-    <p class="dash-sub">{% translate "Email, volunteer events, donations, publishing and backups, in one place." %}</p>
+    <p class="dash-sub">{% translate "Email, staff and volunteer email accounts, volunteer events, donations, publishing and backups, in one place." %}</p>
   </div>
   <div class="dash-actions">
     <a class="btn" href="{% url 'admin:index' %}">{% translate "Open the full admin site" %}</a>
@@ -24,6 +24,7 @@
 </nav>
 
 {% include "emails/_manage.html" with e=email %}
+{% include "mailboxes/_manage.html" with mb=mailboxes %}
 {% include "volunteers/_manage.html" %}
 {% include "donations/_manage.html" %}
 {% include "accounts/_manage_site.html" %}

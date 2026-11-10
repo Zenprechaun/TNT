@@ -86,11 +86,26 @@ The Management page turns each of these on or off (except password resets), send
 
 - **At a glance:** a tile each for email, donations, volunteers, publishing and backups, marked when something needs attention.
 - **Email:** connect the email service, choose what the site emails and who hears about new volunteers, send a test, check the domain's DNS records, and see recent emails with a **Send again** button.
+- **Staff and volunteer email:** the Google Workspace accounts at @tahoeneighborhoodtable.com. See "Staff and volunteer email accounts" below.
 - **Volunteer events:** upcoming events with how full they are, links to edit each one, its sign-up page and a roster spreadsheet, plus the latest sign-ups.
 - **Donations:** this year's total, the monthly donors, whether Stripe's payment updates are connected, the latest donations and a spreadsheet of the year.
 - **Publishing and backups:** the version that's live and how the latest publish went, and the newest nightly backup.
 
 Everything else is in the full admin site, which the page links to.
+
+## Staff and volunteer email accounts
+
+Staff and volunteers get their own addresses at @tahoeneighborhoodtable.com in **Google Workspace for Nonprofits**, which Google gives free to registered 501(c)(3)s. Google keeps their mailboxes; the Management page (`/dashboard/manage/#mailboxes`) is where admins look after the accounts:
+
+- see every staff and volunteer account, its manager, whether it's suspended, and when it was last used,
+- create an account, with a temporary password the site shows once and the person replaces when they first sign in,
+- suspend or restore it, reset its password, change whether it's staff or a volunteer and who manages it, or delete it (typing the address to confirm). Google can restore a deleted account for 20 days.
+
+Only admins can do these. Each change is recorded with who made it (`mailboxes.AccountChange`).
+
+**How it's built:** the site signs in to Google once, through OAuth, as an admin account made for the website with Google's prebuilt **User Management Admin** role, so it can't change Google administrators. It asks only for the scope that manages user accounts (`admin.directory.user`), never for email, and keeps the refresh token encrypted. The code is in `mailboxes/google.py`; DEPLOY-HOSTINGER.md, "Staff and volunteer email with Google Workspace", has the setup.
+
+**Monitoring volunteers' email happens in Google, not on the site**, so the website never holds a key that could read everyone's mail. A Gmail compliance rule holds messages with words you list for a manager to review, and a routing rule can copy managers on everything. Searching past email needs Google Vault (the paid Business Plus edition). Volunteers should agree in writing, before they get an account, that the organization may read their organization email; the form to create an account asks for that.
 
 ## English and Spanish
 
@@ -141,6 +156,7 @@ To check that everything works:
 | `accounts/` | Roles, profiles, sign-in, password resets, the dashboards (the Management page is `accounts/manage.py`), the admin site setup and the tests |
 | `pages/` | The home page, the health check, publishing and backup status (`pages/status.py`) and the `translations` command (`pages/translation_files.py`) |
 | `emails/` | Email: sending and keeping a copy of each email, the email service settings, DNS checks and the `send_test_email` command |
+| `mailboxes/` | Staff and volunteer email accounts in Google Workspace: signing in to Google, and creating, suspending and deleting accounts |
 | `locale/es/` | The Spanish translations. See "English and Spanish" |
 | `volunteers/` | Volunteer events, shifts and sign-ups: the pop-up, the `/volunteer/` pages, the admin screens, emails and calendar files |
 | `donations/` | Donations through Stripe: the `/donate/` pages, receipts, the webhook, the admin screens and the `connect_stripe` command |

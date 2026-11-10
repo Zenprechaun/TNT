@@ -113,6 +113,34 @@
 .m-log__head a{color:var(--ink);font-size:14.5px;font-weight:600;text-underline-offset:.2em}
 .m-log > .m-muted{margin:0}
 
+/* ---------- staff and volunteer email ---------- */
+.m-secret{display:grid;gap:10px;padding:16px 18px;border:2px solid var(--olive);border-radius:12px;background:var(--ok-bg);color:var(--ink)}
+.m-secret p{margin:0}
+.m-secret__pw{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.m-secret code{padding:4px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:21px;font-weight:700;letter-spacing:.06em}
+.m-copy{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+.m-copy code{padding:4px 8px;border-radius:6px;background:var(--chip);overflow-wrap:anywhere}
+.m-address{display:flex;align-items:stretch;min-width:0}
+.m-address input{min-width:0;border-top-right-radius:0;border-bottom-right-radius:0}
+.m-address span{display:flex;align-items:center;padding:0 12px;border:1.5px solid var(--field-line);border-left:0;border-radius:0 10px 10px 0;background:var(--chip);color:var(--muted);white-space:nowrap}
+.m-manage summary{display:inline-flex;align-items:center;min-height:34px;padding:0 14px;border:1.5px solid var(--navy);border-radius:999px;color:var(--navy);font-size:14px;font-weight:600;cursor:pointer;list-style:none}
+.m-manage summary::-webkit-details-marker{display:none}
+.m-manage[open] summary{background:var(--navy);color:var(--on-navy)}
+.m-manage__panel{display:grid;gap:14px;width:min(320px,80vw);margin-top:10px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.m-manage__row{display:flex;flex-wrap:wrap;gap:8px}
+.m-manage__form{display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+.m-manage label{display:grid;gap:4px;font-size:13.5px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.m-manage select,.m-manage input[type="text"]{box-sizing:border-box;width:100%;min-height:38px;padding:6px 10px;border:1.5px solid var(--field-line);border-radius:8px;background:var(--field);color:var(--ink);font:inherit;font-size:15px;font-weight:400}
+.m-manage select:focus,.m-manage input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--focus-ring)}
+.m-manage__form .btn{justify-self:start}
+.btn--danger{border-color:var(--error-ink);color:var(--error-ink)}
+.btn--danger:hover{border-color:var(--error-ink);background:var(--error-ink);color:#fff}
+.m-accounts{min-width:860px}
+.m-accounts td:first-child{min-width:230px}
+.m-changes{display:grid;gap:10px;margin:0;padding:0;list-style:none;line-height:1.45}
+.m-note p{margin:0}
+.m-note form{margin-top:8px}
+
 /* ---------- donations ---------- */
 .m-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .m-stat--text b{font-family:var(--body);font-size:22px;font-weight:700;line-height:1.2}
@@ -122,6 +150,9 @@
   .m-stats{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:520px){
+  .m-address{flex-direction:column}
+  .m-address input{border-radius:10px 10px 0 0}
+  .m-address span{padding:8px 12px;border-top:0;border-left:1.5px solid var(--field-line);border-radius:0 0 10px 10px;white-space:normal;overflow-wrap:anywhere}
   .m-card .facts{grid-template-columns:minmax(0,1fr);gap:2px}
   .m-card .facts dd{margin-bottom:10px}
 }

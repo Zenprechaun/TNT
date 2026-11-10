@@ -6,7 +6,7 @@
       <p class="m-lede">{% translate "The site emails volunteers their shifts, donors their receipts, organizers about new sign-ups, and a reset link to anyone who forgets their password." %}</p>
     </div>
   </header>
-  {% for message in messages %}{% if "email" in message.extra_tags %}<p class="notice notice--{{ message.level_tag }}" role="status">{{ message }}</p>{% endif %}{% endfor %}
+  {% for message in messages %}{% if message.extra_tags == "email" %}<p class="notice notice--{{ message.level_tag }}" role="status">{{ message }}</p>{% endif %}{% endfor %}
 
   <div class="m-grid">
     <article class="card m-card" id="email-service">

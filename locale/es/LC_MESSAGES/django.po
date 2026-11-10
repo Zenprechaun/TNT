@@ -28,6 +28,7 @@ msgstr "Información personal"
 #: donations/admin.py
 #: donations/templates/donations/_manage.html
 #: emails/templates/emails/_manage.html
+#: mailboxes/templates/mailboxes/_manage.html
 #: templates/accounts/manage.html
 msgid "Status"
 msgstr "Estado"
@@ -64,6 +65,7 @@ msgid "Choose at least one role."
 msgstr "Elija al menos un rol."
 
 #: accounts/forms.py
+#: mailboxes/forms.py
 #: volunteers/admin.py
 msgid "First name"
 msgstr "Nombre"
@@ -74,6 +76,7 @@ msgid "Enter your first name."
 msgstr "Escriba su nombre."
 
 #: accounts/forms.py
+#: mailboxes/forms.py
 #: volunteers/admin.py
 msgid "Last name"
 msgstr "Apellido"
@@ -142,6 +145,10 @@ msgstr "Contraseña nueva"
 #: accounts/forms.py
 msgid "New password again"
 msgstr "Repita la contraseña nueva"
+
+#: accounts/manage.py
+msgid "Staff email"
+msgstr "Correo del personal"
 
 #: accounts/manage.py
 #: donations/apps.py
@@ -377,6 +384,7 @@ msgid "Date paid"
 msgstr "Fecha de pago"
 
 #: donations/admin.py
+#: mailboxes/templates/mailboxes/_manage.html
 #: templates/accounts/dashboard_user.html
 #: volunteers/admin.py
 #: volunteers/forms.py
@@ -480,6 +488,7 @@ msgid "For a donation over %(amount)s, please email us and we’ll help."
 msgstr "Para donar más de %(amount)s, escríbanos por correo y le ayudaremos."
 
 #: donations/models.py
+#: mailboxes/templates/mailboxes/_manage.html
 msgid "Active"
 msgstr "Activa"
 
@@ -512,6 +521,7 @@ msgid "Stripe customer"
 msgstr "cliente de Stripe"
 
 #: donations/models.py
+#: mailboxes/models.py
 msgid "account"
 msgstr "cuenta"
 
@@ -767,10 +777,14 @@ msgstr "Donantes mensuales, %(amount)s al mes en total"
 
 #: donations/templates/donations/_manage.html
 #: emails/templates/emails/_manage.html
+#: mailboxes/manage.py
+#: mailboxes/templates/mailboxes/_manage.html
 msgid "Connected"
 msgstr "Conectado"
 
 #: donations/templates/donations/_manage.html
+#: mailboxes/manage.py
+#: mailboxes/templates/mailboxes/_manage.html
 msgid "Not connected"
 msgstr "Sin conectar"
 
@@ -1212,6 +1226,7 @@ msgid "Saved, ends in …%(end)s. Leave empty to keep it."
 msgstr "Guardada, termina en …%(end)s. Déjelo vacío para conservarla."
 
 #: emails/forms.py
+#: mailboxes/forms.py
 msgid "Saved. Leave empty to keep it."
 msgstr "Guardada. Déjelo vacío para conservarla."
 
@@ -1306,6 +1321,7 @@ msgid "Connect an email service so the site can send receipts, shift confirmatio
 msgstr "Conecte un servicio de correo para que el sitio pueda enviar recibos, confirmaciones de turnos y enlaces para restablecer contraseñas."
 
 #: emails/manage.py
+#: mailboxes/manage.py
 msgid "Problem"
 msgstr "Problema"
 
@@ -1400,6 +1416,7 @@ msgid "New volunteer notice"
 msgstr "Aviso de nuevo voluntario"
 
 #: emails/models.py
+#: mailboxes/models.py
 msgid "Password reset"
 msgstr "Restablecer contraseña"
 
@@ -1556,6 +1573,8 @@ msgid "Password reset emails always go out, since people can’t log in without 
 msgstr "Los correos para restablecer la contraseña siempre se envían, porque sin ellos no se puede iniciar sesión."
 
 #: emails/templates/emails/_manage.html
+#: mailboxes/templates/mailboxes/_connection_form.html
+#: mailboxes/templates/mailboxes/_manage.html
 #: templates/accounts/dashboard_admin.html
 msgid "Save"
 msgstr "Guardar"
@@ -1674,6 +1693,532 @@ msgstr "Lo envió %(name)s desde la página de Gestión."
 #: emails/templates/emails/email/test.txt
 msgid "Sent from the server with manage.py send_test_email."
 msgstr "Enviado desde el servidor con manage.py send_test_email."
+
+#: mailboxes/apps.py
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Staff and volunteer email"
+msgstr "Correo del personal y voluntarios"
+
+#: mailboxes/forms.py
+msgid "Enter the organizational unit’s path, like /Volunteers."
+msgstr "Escriba la ruta de la unidad organizativa, como /Volunteers."
+
+#: mailboxes/forms.py
+msgid "No manager"
+msgstr "Sin responsable"
+
+#: mailboxes/forms.py
+#: mailboxes/models.py
+msgid "OAuth client ID"
+msgstr "ID de cliente de OAuth"
+
+#: mailboxes/forms.py
+msgid "OAuth client secret"
+msgstr "Secreto del cliente de OAuth"
+
+#: mailboxes/forms.py
+msgid "Domain"
+msgstr "Dominio"
+
+#: mailboxes/forms.py
+msgid "Staff organizational unit"
+msgstr "Unidad organizativa del personal"
+
+#: mailboxes/forms.py
+msgid "Volunteer organizational unit"
+msgstr "Unidad organizativa de voluntarios"
+
+#: mailboxes/forms.py
+msgid "Copy the client ID from Google Cloud. It ends in .apps.googleusercontent.com."
+msgstr "Copie el ID de cliente de Google Cloud. Termina en .apps.googleusercontent.com."
+
+#: mailboxes/forms.py
+msgid "Enter the domain only, like tahoeneighborhoodtable.com."
+msgstr "Escriba solo el dominio, como tahoeneighborhoodtable.com."
+
+#: mailboxes/forms.py
+msgid "Staff and volunteers need separate organizational units."
+msgstr "El personal y los voluntarios necesitan unidades organizativas distintas."
+
+#: mailboxes/forms.py
+msgid "Paste the client secret from Google Cloud."
+msgstr "Pegue el secreto del cliente de Google Cloud."
+
+#: mailboxes/forms.py
+msgid "Email address"
+msgstr "Dirección de correo"
+
+#: mailboxes/forms.py
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Staff or volunteer"
+msgstr "Personal o voluntario"
+
+#: mailboxes/forms.py
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Manager"
+msgstr "Responsable"
+
+#: mailboxes/forms.py
+msgid "They’ve agreed in writing that Tahoe Neighborhood Table may read their organization email."
+msgstr "La persona aceptó por escrito que Tahoe Neighborhood Table puede leer su correo de la organización."
+
+#: mailboxes/forms.py
+msgid "Get their written agreement before creating the account."
+msgstr "Obtenga su aceptación por escrito antes de crear la cuenta."
+
+#: mailboxes/forms.py
+#, python-format
+msgid "The address has to end in @%(domain)s."
+msgstr "La dirección tiene que terminar en @%(domain)s."
+
+#: mailboxes/forms.py
+msgid "Use letters, numbers, dots, dashes or underscores, like jane.doe."
+msgstr "Use letras, números, puntos, guiones o guiones bajos, como ana.perez."
+
+#: mailboxes/google.py
+msgid "The site couldn’t reach Google. Try again in a few minutes."
+msgstr "El sitio no pudo comunicarse con Google. Inténtelo de nuevo en unos minutos."
+
+#: mailboxes/google.py
+#, python-format
+msgid "Google didn’t accept the sign-in: %(reason)s"
+msgstr "Google no aceptó el inicio de sesión: %(reason)s"
+
+#: mailboxes/google.py
+#, python-format
+msgid "Google didn’t let the site sign in (%(reason)s). Connect Google again."
+msgstr "Google no dejó que el sitio iniciara sesión (%(reason)s). Vuelva a conectar Google."
+
+#: mailboxes/google.py
+msgid "The site only changes staff and volunteer accounts, never administrators."
+msgstr "El sitio solo modifica cuentas del personal y de voluntarios, nunca de administradores."
+
+#: mailboxes/manage.py
+msgid "Saved."
+msgstr "Guardado."
+
+#: mailboxes/manage.py
+msgid "Saved. Now choose Connect Google and sign in as the website’s admin account."
+msgstr "Guardado. Ahora elija Conectar Google e inicie sesión con la cuenta de administración del sitio."
+
+#: mailboxes/manage.py
+msgid "Save the OAuth client ID and secret first."
+msgstr "Primero guarde el ID y el secreto del cliente de OAuth."
+
+#: mailboxes/manage.py
+msgid "Disconnected. The email accounts keep working; the site just can’t change them until Google is connected again."
+msgstr "Se desconectó. Las cuentas de correo siguen funcionando; solo que el sitio no puede modificarlas hasta que vuelva a conectar Google."
+
+#: mailboxes/manage.py
+msgid "Connect Google first."
+msgstr "Primero conecte Google."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Created %(email)s."
+msgstr "Se creó %(email)s."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Suspended %(email)s. They can’t sign in until you restore the account."
+msgstr "Se suspendió %(email)s. No podrá iniciar sesión hasta que usted restaure la cuenta."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Restored %(email)s. They can sign in again."
+msgstr "Se restauró %(email)s. Ya puede iniciar sesión otra vez."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Reset the password for %(email)s."
+msgstr "Se restableció la contraseña de %(email)s."
+
+#: mailboxes/manage.py
+msgid "Choose staff or volunteer, and a manager from the list."
+msgstr "Elija personal o voluntario, y un responsable de la lista."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Saved the changes to %(email)s."
+msgstr "Se guardaron los cambios de %(email)s."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Not deleted. To delete %(email)s, type its address exactly."
+msgstr "No se eliminó. Para eliminar %(email)s, escriba la dirección exactamente."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Deleted %(email)s. For 20 days, a Google admin can still restore it in the Google Admin console."
+msgstr "Se eliminó %(email)s. Durante 20 días, un administrador de Google todavía puede restaurarla en la Consola del administrador de Google."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "Google said: %(reason)s"
+msgstr "Google respondió: %(reason)s"
+
+#: mailboxes/manage.py
+msgid "Connect Google Workspace to create and manage staff and volunteer email accounts here."
+msgstr "Conecte Google Workspace para crear y gestionar aquí las cuentas de correo del personal y de los voluntarios."
+
+#: mailboxes/manage.py
+msgid "Google didn’t answer. See Staff and volunteer email."
+msgstr "Google no respondió. Vea Correo del personal y voluntarios."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "%(count)s account."
+msgid_plural "%(count)s accounts."
+msgstr[0] "%(count)s cuenta."
+msgstr[1] "%(count)s cuentas."
+
+#: mailboxes/manage.py
+#, python-format
+msgid "%(count)s suspended."
+msgid_plural "%(count)s suspended."
+msgstr[0] "%(count)s suspendida."
+msgstr[1] "%(count)s suspendidas."
+
+#: mailboxes/models.py
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Staff"
+msgstr "Personal"
+
+#: mailboxes/models.py
+#: mailboxes/templates/mailboxes/_manage.html
+#: volunteers/templates/volunteers/_manage.html
+msgctxt "person"
+msgid "Volunteer"
+msgstr "Voluntario"
+
+#: mailboxes/models.py
+msgid "signed in as"
+msgstr "sesión iniciada como"
+
+#: mailboxes/models.py
+msgid "connected"
+msgstr "conectado"
+
+#: mailboxes/models.py
+msgid "domain"
+msgstr "dominio"
+
+#: mailboxes/models.py
+msgid "staff organizational unit"
+msgstr "unidad organizativa del personal"
+
+#: mailboxes/models.py
+msgid "volunteer organizational unit"
+msgstr "unidad organizativa de voluntarios"
+
+#: mailboxes/models.py
+msgid "Google Workspace connection"
+msgstr "Conexión con Google Workspace"
+
+#: mailboxes/models.py
+msgid "Created"
+msgstr "Creada"
+
+#: mailboxes/models.py
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Suspended"
+msgstr "Suspendida"
+
+#: mailboxes/models.py
+msgid "Restored"
+msgstr "Restaurada"
+
+#: mailboxes/models.py
+msgid "Changed"
+msgstr "Modificada"
+
+#: mailboxes/models.py
+msgid "Deleted"
+msgstr "Eliminada"
+
+#: mailboxes/models.py
+msgid "action"
+msgstr "acción"
+
+#: mailboxes/models.py
+msgid "staff or volunteer"
+msgstr "personal o voluntario"
+
+#: mailboxes/models.py
+msgid "manager"
+msgstr "responsable"
+
+#: mailboxes/models.py
+msgid "by"
+msgstr "por"
+
+#: mailboxes/models.py
+msgid "when"
+msgstr "cuándo"
+
+#: mailboxes/models.py
+msgid "email account change"
+msgstr "cambio en una cuenta de correo"
+
+#: mailboxes/models.py
+msgid "email account changes"
+msgstr "cambios en cuentas de correo"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#, python-format
+msgid "Google Workspace email accounts at @%(domain)s for staff and volunteers. Only admins can create, change or delete them."
+msgstr "Cuentas de correo de Google Workspace en @%(domain)s para el personal y los voluntarios. Solo los administradores pueden crearlas, modificarlas o eliminarlas."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Google Admin console"
+msgstr "Consola del administrador de Google"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "New account"
+msgstr "Cuenta nueva"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "New temporary password"
+msgstr "Contraseña temporal nueva"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Copied"
+msgstr "Copiado"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#: templates/pages/_band.html
+msgid "Copy"
+msgstr "Copiar"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Give this temporary password to them in person or by phone. They sign in at mail.google.com and choose their own password right away. It won’t be shown again."
+msgstr "Entregue esta contraseña temporal en persona o por teléfono. La persona inicia sesión en mail.google.com y elige su propia contraseña de inmediato. No se volverá a mostrar."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Connect Google Workspace"
+msgstr "Conectar Google Workspace"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Get approved for <a href=\"https://www.google.com/nonprofits/\" target=\"_blank\" rel=\"noopener\">Google for Nonprofits</a>, then turn on Google Workspace for Nonprofits for your domain."
+msgstr "Obtenga la aprobación de <a href=\"https://www.google.com/nonprofits/\" target=\"_blank\" rel=\"noopener\">Google para Organizaciones sin Fines de Lucro</a> y luego active Google Workspace for Nonprofits para su dominio."
+
+#: mailboxes/templates/mailboxes/_manage.html
+#, python-format
+msgid "In the <a href=\"https://admin.google.com\" target=\"_blank\" rel=\"noopener\">Google Admin console</a>, create two organizational units, <b>%(staff)s</b> and <b>%(volunteers)s</b>. Then create an account for the website, such as website-admin@, give it the prebuilt <b>User Management Admin</b> role, and turn on 2-Step Verification for it."
+msgstr "En la <a href=\"https://admin.google.com\" target=\"_blank\" rel=\"noopener\">Consola del administrador de Google</a>, cree dos unidades organizativas, <b>%(staff)s</b> y <b>%(volunteers)s</b>. Luego cree una cuenta para el sitio, como website-admin@, asígnele la función prediseñada <b>User Management Admin</b> y active la verificación en dos pasos para esa cuenta."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "In the <a href=\"https://console.cloud.google.com\" target=\"_blank\" rel=\"noopener\">Google Cloud console</a>, create a project and turn on the <b>Admin SDK API</b>. Set up the OAuth consent screen as <b>Internal</b>, then create an <b>OAuth client ID</b> for a <b>Web application</b>, with this authorized redirect URI:"
+msgstr "En la <a href=\"https://console.cloud.google.com\" target=\"_blank\" rel=\"noopener\">consola de Google Cloud</a>, cree un proyecto y active la <b>Admin SDK API</b>. Configure la pantalla de consentimiento de OAuth como <b>Internal</b> y luego cree un <b>OAuth client ID</b> para una <b>Web application</b>, con este URI de redireccionamiento autorizado:"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Paste the client ID and client secret here and save. Then choose <b>Connect Google</b> and sign in as the website’s admin account."
+msgstr "Pegue aquí el ID y el secreto del cliente y guárdelos. Luego elija <b>Conectar Google</b> e inicie sesión con la cuenta de administración del sitio."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Connect Google"
+msgstr "Conectar Google"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Connect Google again"
+msgstr "Volver a conectar Google"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#, python-format
+msgid "%(count)s account"
+msgid_plural "%(count)s accounts"
+msgstr[0] "%(count)s cuenta"
+msgstr[1] "%(count)s cuentas"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#, python-format
+msgid "Staff: %(staff)s · Volunteers: %(volunteers)s"
+msgstr "Personal: %(staff)s · Voluntarios: %(volunteers)s"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Last sign-in"
+msgstr "Último inicio de sesión"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Manage"
+msgstr "Gestionar"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Google admin"
+msgstr "Administrador de Google"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#: templates/accounts/dashboard_admin.html
+msgid "Never"
+msgstr "Nunca"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Restore"
+msgstr "Restaurar"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Suspend"
+msgstr "Suspender"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Reset password"
+msgstr "Restablecer la contraseña"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#, python-format
+msgid "To delete it, type %(email)s"
+msgstr "Para eliminarla, escriba %(email)s"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Delete account"
+msgstr "Eliminar la cuenta"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "This is a Google admin account. Change it in the Google Admin console."
+msgstr "Esta es una cuenta de administrador de Google. Modifíquela en la Consola del administrador de Google."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "The accounts couldn’t be loaded."
+msgstr "No se pudieron cargar las cuentas."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "No staff or volunteer accounts yet."
+msgstr "Todavía no hay cuentas del personal ni de voluntarios."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Add an account"
+msgstr "Agregar una cuenta"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Volunteers’ managers are staff members."
+msgstr "Los responsables de los voluntarios son miembros del personal."
+
+#: mailboxes/templates/mailboxes/_manage.html
+#: templates/accounts/register.html
+msgid "Create account"
+msgstr "Crear cuenta"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "The site makes a temporary password and shows it to you once."
+msgstr "El sitio crea una contraseña temporal y se la muestra una sola vez."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Recent changes"
+msgstr "Cambios recientes"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "All changes"
+msgstr "Todos los cambios"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#, python-format
+msgid "manager %(email)s"
+msgstr "responsable %(email)s"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "no manager"
+msgstr "sin responsable"
+
+#: mailboxes/templates/mailboxes/_manage.html
+#, python-format
+msgid "%(when)s, by %(name)s"
+msgstr "%(when)s, por %(name)s"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "No changes yet."
+msgstr "Todavía no hay cambios."
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Google Workspace"
+msgstr "Google Workspace"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Signed in as"
+msgstr "Sesión iniciada como"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Staff unit"
+msgstr "Unidad del personal"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Volunteer unit"
+msgstr "Unidad de voluntarios"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Change the connection"
+msgstr "Cambiar la conexión"
+
+#: mailboxes/templates/mailboxes/_manage.html
+msgid "Disconnect Google"
+msgstr "Desconectar Google"
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "Monitoring"
+msgstr "Supervisión"
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "Managers check volunteers’ email in Google, not on this site, so the website never holds a key that can read anyone’s email."
+msgstr "Los responsables revisan el correo de los voluntarios en Google, no en este sitio, así que el sitio nunca guarda una clave que pueda leer el correo de nadie."
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "Hold flagged emails for review"
+msgstr "Retener los correos marcados para revisarlos"
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "In the Google Admin console, open <b>Apps → Google Workspace → Gmail → Compliance</b>."
+msgstr "En la Consola del administrador de Google, abra <b>Apps → Google Workspace → Gmail → Compliance</b>."
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+#, python-format
+msgid "Choose the <b>%(unit)s</b> unit. Under <b>Objectionable content</b>, add a rule with the words to watch for, apply it to email volunteers send and receive, and choose <b>Quarantine message</b>."
+msgstr "Elija la unidad <b>%(unit)s</b>. En <b>Objectionable content</b>, agregue una regla con las palabras que se deben vigilar, aplíquela al correo que los voluntarios envían y reciben, y elija <b>Quarantine message</b>."
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "Held emails wait in the admin quarantine until someone releases or blocks them. Give each manager who reviews them a Google admin role with access to the quarantine."
+msgstr "Los correos retenidos esperan en la cuarentena del administrador hasta que alguien los libere o los bloquee. Dé a cada responsable que los revise una función de administrador de Google con acceso a la cuarentena."
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "Review held emails"
+msgstr "Revisar los correos retenidos"
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "To copy a manager on everything their volunteers send and receive, add a routing rule in the same Gmail settings. Searching past email needs Google Vault, which comes with the paid Business Plus edition."
+msgstr "Para enviar al responsable una copia de todo lo que sus voluntarios envían y reciben, agregue una regla de enrutamiento en la misma configuración de Gmail. Para buscar correos anteriores se necesita Google Vault, que viene con la edición de pago Business Plus."
+
+#: mailboxes/templates/mailboxes/_monitoring.html
+msgid "Before an account is created, the person should agree in writing that the organization may read their organization email."
+msgstr "Antes de crear una cuenta, la persona debe aceptar por escrito que la organización puede leer su correo de la organización."
+
+#: mailboxes/views.py
+#, python-format
+msgid "Google didn’t connect: %(reason)s"
+msgstr "Google no se conectó: %(reason)s"
+
+#: mailboxes/views.py
+msgid "That sign-in was out of date. Choose Connect Google again."
+msgstr "Ese inicio de sesión ya no era válido. Vuelva a elegir Conectar Google."
+
+#: mailboxes/views.py
+#, python-format
+msgid "Sign in with the website’s admin account at %(domain)s, not %(email)s."
+msgstr "Inicie sesión con la cuenta de administración del sitio en %(domain)s, no con %(email)s."
+
+#: mailboxes/views.py
+msgid "another account"
+msgstr "otra cuenta"
+
+#: mailboxes/views.py
+msgid "Google didn’t give the site permission to manage user accounts. Choose Connect Google again and allow it."
+msgstr "Google no le dio al sitio permiso para gestionar cuentas de usuario. Vuelva a elegir Conectar Google y permítalo."
+
+#: mailboxes/views.py
+msgid "Google didn’t give the site lasting access. Choose Connect Google again."
+msgstr "Google no le dio al sitio acceso permanente. Vuelva a elegir Conectar Google."
+
+#: mailboxes/views.py
+#, python-format
+msgid "Connected to Google Workspace as %(email)s."
+msgstr "Se conectó Google Workspace como %(email)s."
 
 #: tahoetable/urls.py
 msgid "Tahoe Neighborhood Table admin"
@@ -1911,10 +2456,6 @@ msgid "You can't remove your own Admin role"
 msgstr "No puede quitarse su propio rol de Administrador"
 
 #: templates/accounts/dashboard_admin.html
-msgid "Never"
-msgstr "Nunca"
-
-#: templates/accounts/dashboard_admin.html
 #, python-format
 msgid "No one matches “%(query)s”."
 msgstr "Nadie coincide con “%(query)s”."
@@ -2020,8 +2561,8 @@ msgid "Running the site"
 msgstr "Gestión del sitio"
 
 #: templates/accounts/manage.html
-msgid "Email, volunteer events, donations, publishing and backups, in one place."
-msgstr "Correo, eventos de voluntariado, donaciones, publicación y copias de seguridad, en un solo lugar."
+msgid "Email, staff and volunteer email accounts, volunteer events, donations, publishing and backups, in one place."
+msgstr "Correo, cuentas de correo del personal y voluntarios, eventos de voluntariado, donaciones, publicación y copias de seguridad, en un solo lugar."
 
 #: templates/accounts/password_forgot.html
 msgid "Enter the email address on your account. We’ll email you a link to choose a new password."
@@ -2087,10 +2628,6 @@ msgid "Keep your donations and receipts in one place."
 msgstr "Tenga sus donaciones y recibos en un solo lugar."
 
 #: templates/accounts/register.html
-msgid "Create account"
-msgstr "Crear cuenta"
-
-#: templates/accounts/register.html
 msgid "Already have an account?"
 msgstr "¿Ya tiene una cuenta?"
 
@@ -2117,10 +2654,6 @@ msgstr "Copiar mensaje"
 #: templates/pages/_band.html
 msgid "Copy email address"
 msgstr "Copiar el correo electrónico"
-
-#: templates/pages/_band.html
-msgid "Copy"
-msgstr "Copiar"
 
 #: templates/pages/_masthead.html
 msgid "Tahoe Neighborhood Table emblem: a round table set with soup, bread, salad and wildflowers, with pines, a lake and a snow-capped mountain behind it."
@@ -2869,11 +3402,6 @@ msgstr "No hay próximos eventos. Agregue uno con sus turnos y el botón Volunta
 msgid "Latest sign-ups"
 msgstr "Inscripciones recientes"
 
-#: volunteers/templates/volunteers/_manage.html
-msgctxt "person"
-msgid "Volunteer"
-msgstr "Voluntario"
-
 #: volunteers/templates/volunteers/_shifts.html
 #, python-format
 msgid "to %(end)s"
@@ -3057,3 +3585,6 @@ msgstr "Las inscripciones están cerradas"
 #: volunteers/views.py
 msgid "Sign-ups for this event are closed."
 msgstr "Las inscripciones para este evento están cerradas."
+
+#~ msgid "Email, volunteer events, donations, publishing and backups, in one place."
+#~ msgstr "Correo, eventos de voluntariado, donaciones, publicación y copias de seguridad, en un solo lugar."

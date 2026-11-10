@@ -1,4 +1,5 @@
-"""The Management page for admins: email, volunteer events, donations, publishing and backups."""
+"""The Management page for admins: email, staff and volunteer email accounts, volunteer events, donations,
+publishing and backups."""
 
 from django.http import Http404
 from django.http.response import HttpResponseBase
@@ -13,6 +14,7 @@ from donations import summary as donation_summary
 from donations.admin import DONATION_HEADER, donation_rows
 from donations.models import Donation, stripe_mode
 from emails import manage as email_manage
+from mailboxes import manage as mailbox_manage
 from pages import status
 from pages.spreadsheets import csv_download
 from volunteers import summary as volunteer_summary
@@ -32,10 +34,12 @@ def _tile(key, label, state, chip, text, href):
     return {"key": key, "label": label, "state": state, "chip": chip, "text": text, "href": href}
 
 
-def tiles(events, giving, publishing, backups):
+def tiles(mailboxes, events, giving, publishing, backups):
     """The row of tiles at the top: each part of the site, and whether it needs attention."""
     state, chip, text = email_manage.status()
     rows = [_tile("email", _("Email"), state, chip, text, "#email")]
+    state, chip, text = mailbox_manage.status(mailboxes)
+    rows.append(_tile("mailboxes", _("Staff email"), state, chip, text, "#mailboxes"))
 
     if not giving["connected"]:
         rows.append(_tile("donations", _("Donations"), "off", _("Off"),
@@ -104,27 +108,31 @@ def tiles(events, giving, publishing, backups):
 @never_cache
 @role_required(Role.ADMIN)
 def manage(request):
-    forms = None
+    email_forms = mailbox_forms = None
     if request.method == "POST":
-        result = email_manage.handle(request)
+        if request.POST.get("action") in mailbox_manage.ACTIONS:
+            result = mailbox_forms = mailbox_manage.handle(request)
+        else:
+            result = email_forms = email_manage.handle(request)
         if isinstance(result, HttpResponseBase):
-            return result
-        forms = result  # with mistakes to show
+            return result  # done, or off to Google to sign in
 
+    mailboxes = mailbox_manage.section(request, mailbox_forms)
     events = volunteer_summary.upcoming_events()
     giving = donation_summary.totals()
     publishing = status.publishing()
     backups = status.backups()
     return render(request, "accounts/manage.html", {
         "dash": "manage",
-        "email": email_manage.section(request, forms),
+        "email": email_manage.section(request, email_forms),
+        "mailboxes": mailboxes,
         "events": events,
         "signups": volunteer_summary.recent_signups(),
         "giving": giving,
         "donations": donation_summary.recent(),
         "publishing": publishing,
         "backups": backups,
-        "tiles": tiles(events, giving, publishing, backups),
+        "tiles": tiles(mailboxes, events, giving, publishing, backups),
     })
 
 

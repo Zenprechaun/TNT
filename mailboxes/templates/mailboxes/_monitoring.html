@@ -1,0 +1,14 @@
+{% load i18n %}
+<article class="card m-card" id="mailboxes-monitoring">
+  <h3>{% translate "Monitoring" %}</h3>
+  <p>{% translate "Managers check volunteers’ email in Google, not on this site, so the website never holds a key that can read anyone’s email." %}</p>
+  <p class="m-label">{% translate "Hold flagged emails for review" %}</p>
+  <ol class="m-steps">
+    <li>{% blocktranslate trimmed %}In the Google Admin console, open <b>Apps → Google Workspace → Gmail → Compliance</b>.{% endblocktranslate %}</li>
+    <li>{% blocktranslate trimmed with unit=mb.conn.volunteer_unit %}Choose the <b>{{ unit }}</b> unit. Under <b>Objectionable content</b>, add a rule with the words to watch for, apply it to email volunteers send and receive, and choose <b>Quarantine message</b>.{% endblocktranslate %}</li>
+    <li>{% translate "Held emails wait in the admin quarantine until someone releases or blocks them. Give each manager who reviews them a Google admin role with access to the quarantine." %}</li>
+  </ol>
+  <div class="card__acts"><a class="btn btn--small" href="{{ mb.quarantine_url }}" target="_blank" rel="noopener">{% translate "Review held emails" %}</a></div>
+  <p class="m-help">{% translate "To copy a manager on everything their volunteers send and receive, add a routing rule in the same Gmail settings. Searching past email needs Google Vault, which comes with the paid Business Plus edition." %}</p>
+  <p class="m-help">{% translate "Before an account is created, the person should agree in writing that the organization may read their organization email." %}</p>
+</article>

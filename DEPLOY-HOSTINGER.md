@@ -138,6 +138,21 @@ On the same page, **What the site emails** lists who hears about each new volunt
 
 **If email stops:** the Management page's Email tile says so, and **Recent emails** shows each email that didn't go out and why. Fix the cause (often an expired key or a daily limit), then use **Send now** or **Send again** on the emails that matter, such as receipts. Nothing is lost while email is off: the site keeps every email for six months.
 
+## Staff and volunteer email with Google Workspace
+
+Staff and volunteers' mailboxes are in Google Workspace for Nonprofits (free for registered 501(c)(3)s). Admins create and manage the accounts on the site's Management page once it's connected.
+
+1. **Apply.** At https://www.google.com/nonprofits, sign in with a Google account and apply with the organization's EIN. Google's partner Goodstack checks the 501(c)(3), usually within 2–14 working days.
+2. **Turn on Workspace.** Once approved, activate Google Workspace for Nonprofits for `tahoeneighborhoodtable.com`. Google asks you to prove you own the domain with a TXT record at GoDaddy.
+3. **Move the domain's email to Google.** Google lists its MX record (usually one, `smtp.google.com`). At GoDaddy, replace the existing MX records with it. This changes where all mail to @tahoeneighborhoodtable.com goes, so first create a Google account (or group) for every address that gets mail today, such as info@. Then, in the Google Admin console, turn on DKIM signing (**Apps → Google Workspace → Gmail → Authenticate email**) and add the TXT record it gives you, and set the domain's SPF TXT record to `v=spf1 include:_spf.google.com ~all`. Resend's records are on `send` and `resend._domainkey`, so they're unaffected.
+4. **Set up accounts for the site.** In the Admin console, create two organizational units, `Staff` and `Volunteers`. Create an account for the website, such as website-admin@, give it the prebuilt **User Management Admin** role, and turn on 2-Step Verification for it.
+5. **Create the sign-in for the site.** In the Google Cloud console (https://console.cloud.google.com), signed in as a Google admin: create a project, turn on the **Admin SDK API**, set up the **OAuth consent screen** as **Internal**, and create an **OAuth client ID** of the **Web application** type with this authorized redirect URI: `https://tahoeneighborhoodtable.com/dashboard/manage/google/callback/`.
+6. **Connect.** On the Management page, under **Staff and volunteer email**, paste the client ID and secret, save, choose **Connect Google** and sign in as the website's admin account.
+
+**Monitoring** is set up in the Google Admin console (the Management page links to it): under **Apps → Google Workspace → Gmail → Compliance**, choose the Volunteers unit and add an **Objectionable content** rule with the words to watch for, set to **Quarantine message**. Held messages wait at https://admin.google.com/ac/moderation until someone releases or blocks them. Give managers who review them an admin role with access to the quarantine.
+
+The site's own emails can also go through Google: on the Management page's **Email service**, choose Google Workspace, with an account made for the website and an app password.
+
 ## Everyday tasks
 
 Run these on the VPS as root.
